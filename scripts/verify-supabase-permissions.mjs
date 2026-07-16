@@ -1,5 +1,13 @@
 import { randomBytes, randomUUID } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { createClient } from "@supabase/supabase-js";
+
+const plan = JSON.parse(readFileSync(new URL("../app/data/summer-2026.json", import.meta.url), "utf8"));
+const expectedTaskCount = plan.tasks.length;
+const expectedHomeworkCount = new Set(plan.tasks.map((task) => task.homeworkKey)).size;
+const expectedSubjectCounts = Object.fromEntries(
+  plan.meta.allowedSubjects.map((subject) => [subject, plan.tasks.filter((task) => task.subject === subject).length]),
+);
 
 const requiredEnvironment = [
   "NEXT_PUBLIC_SUPABASE_URL",
@@ -21,7 +29,7 @@ const admin = createClient(url, serviceRoleKey, clientOptions);
 const createdUserIds = [];
 const checks = [];
 let familyId = null;
-const catalogId = "summer-2026-family-tutoring";
+const catalogId = plan.meta.id;
 
 function pass(label) {
   checks.push(label);
@@ -159,7 +167,7 @@ async function main() {
     throw new Error("数据库迁移尚未就绪。请先运行 npm run supabase:push。");
   }
   const templateProbe = await admin.from("homework_task_templates").select("id", { count: "exact", head: true }).eq("catalog_id", catalogId);
-  if (templateProbe.error || templateProbe.count !== 200) {
+  if (templateProbe.error || templateProbe.count !== expectedTaskCount) {
     throw new Error("暑期计划模板尚未同步。请先运行 npm run supabase:sync-plan。");
   }
 
@@ -201,9 +209,9 @@ async function main() {
     await parent.client.rpc("create_student_plan", { target_student_id: student.id, target_catalog_id: catalogId }),
     "家长实例化暑期计划",
   );
-  assert(insertedTasks === 200, "家长为孩子实例化200条真实任务");
+  assert(insertedTasks === expectedTaskCount, `家长为孩子实例化${expectedTaskCount}条真实任务`);
   const homeworkRows = requireData(await parent.client.from("homeworks").select("id").eq("student_id", student.id), "读取作业本体");
-  assert(homeworkRows.length === 173, "200个执行块归属173项作业本体");
+  assert(homeworkRows.length === expectedHomeworkCount, `${expectedTaskCount}个执行块归属${expectedHomeworkCount}项作业本体`);
 
   const mathToken = await createInvitation(parent, student.id, mathTutor, "tutor", "math");
   const physicsToken = await createInvitation(parent, student.id, physicsTutor, "tutor", "physics");
@@ -234,13 +242,19 @@ async function main() {
     await mathTutor.client.from("homework_tasks").select("id,subject_id,planned_date,version").eq("student_id", student.id).order("planned_date"),
     "数学家教读取本科任务",
   );
-  assert(mathTasks.length === 30 && mathTasks.every((task) => task.subject_id === "math"), "数学家教只能读取30条数学任务");
+  assert(
+    mathTasks.length === expectedSubjectCounts["数学"] && mathTasks.every((task) => task.subject_id === "math"),
+    `数学家教只能读取${expectedSubjectCounts["数学"]}条数学任务`,
+  );
 
   const physicsTasks = requireData(
     await physicsTutor.client.from("homework_tasks").select("id,subject_id").eq("student_id", student.id),
     "物理家教读取本科任务",
   );
-  assert(physicsTasks.length === 42 && physicsTasks.every((task) => task.subject_id === "physics"), "物理家教只能读取42条物理任务");
+  assert(
+    physicsTasks.length === expectedSubjectCounts["物理"] && physicsTasks.every((task) => task.subject_id === "physics"),
+    `物理家教只能读取${expectedSubjectCounts["物理"]}条物理任务`,
+  );
 
   const movedDate = new Date(`${mathTasks[0].planned_date}T00:00:00Z`);
   movedDate.setUTCDate(movedDate.getUTCDate() + 1);
@@ -277,7 +291,7 @@ async function main() {
     await studentAccount.client.from("homework_tasks").select("id,subject_id").eq("student_id", student.id),
     "孩子读取本人全部任务",
   );
-  assert(studentTasks.length === 200, "孩子可查看本人六科200条任务");
+  assert(studentTasks.length === expectedTaskCount, `孩子可查看本人六科${expectedTaskCount}条任务`);
 
   requireData(await studentAccount.client.rpc("record_student_task_event", {
     target_task_id: mathTasks[0].id,

@@ -36,7 +36,7 @@ describe("Supabase 作业闭环结构与分科权限", () => {
     expect(migration).not.toMatch(/task_plan_changes_insert/);
   });
 
-  it("同步脚本覆盖六科并复核远端200条模板", () => {
+  it("同步脚本覆盖六科并按当前计划复核远端模板", () => {
     for (const id of ["chinese", "math", "russian", "physics", "chemistry", "biology"]) expect(syncScript).toContain(`"${id}"`);
     expect(syncScript).toMatch(/rows\.length !== templates\.length/);
     expect(syncScript).toContain("homework_task_templates");

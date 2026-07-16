@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { isSupabaseConfigured } from "../lib/supabase/config";
 import { getSupabaseServerClient } from "../lib/supabase/server";
+import { SUMMER_TASKS } from "../lib/summer-plan";
 import { SetupManager } from "./setup-manager";
 
 export const metadata: Metadata = { title: { absolute: "家庭与家教设置 · 学业闭环" } };
 
 export default async function SetupPage() {
-  if (!isSupabaseConfigured()) return <SetupManager configured={false} />;
+  const expectedTaskCount = SUMMER_TASKS.length;
+  if (!isSupabaseConfigured()) return <SetupManager configured={false} expectedTaskCount={expectedTaskCount} />;
 
   const supabase = await getSupabaseServerClient();
   const { data: authData } = await supabase.auth.getUser();
@@ -53,6 +55,7 @@ export default async function SetupPage() {
       student={student ?? undefined}
       assignments={assignments}
       taskCount={taskCount}
+      expectedTaskCount={expectedTaskCount}
       userId={authData.user.id}
     />
   );

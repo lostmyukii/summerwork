@@ -20,9 +20,10 @@ type SetupProps = {
   student?: { id: string; display_name: string; grade: string };
   assignments?: Array<{ id: string; subject_id: string; tutor_user_id: string }>;
   taskCount?: number;
+  expectedTaskCount: number;
 };
 
-export function SetupManager({ configured, familyId, userId, student, assignments = [], taskCount = 0 }: SetupProps) {
+export function SetupManager({ configured, familyId, userId, student, assignments = [], taskCount = 0, expectedTaskCount }: SetupProps) {
   const [familyName, setFamilyName] = useState("我的家庭学习空间");
   const [studentName, setStudentName] = useState("");
   const [grade, setGrade] = useState("高一");
@@ -77,7 +78,7 @@ export function SetupManager({ configured, familyId, userId, student, assignment
     });
     setBusy(false);
     if (error) return setStatus(error.message);
-    setStatus(data ? `已补充 ${data} 条任务。` : "200条计划已完整，无需重复生成。");
+    setStatus(data ? `已补充 ${data} 条任务。` : `${expectedTaskCount}条计划已完整，无需重复生成。`);
     window.setTimeout(() => window.location.reload(), 700);
   }
 
@@ -126,7 +127,7 @@ export function SetupManager({ configured, familyId, userId, student, assignment
 
       {configured && !student ? (
         <article className="setup-card">
-          <span className="step-number">1</span><h2>创建家庭与孩子档案</h2><p>提交后会一次生成已核验的200条暑期任务。</p>
+          <span className="step-number">1</span><h2>创建家庭与孩子档案</h2><p>提交后会一次生成已核验的{expectedTaskCount}条暑期任务。</p>
           <form className="setup-form" onSubmit={createFamilyAndStudent}>
             {!familyId ? <label><span>家庭空间名称</span><input value={familyName} onChange={(event) => setFamilyName(event.target.value)} required /></label> : null}
             <label><span>孩子称呼</span><input value={studentName} onChange={(event) => setStudentName(event.target.value)} required /></label>
@@ -138,7 +139,7 @@ export function SetupManager({ configured, familyId, userId, student, assignment
 
       {configured && student ? (
         <div className="setup-grid">
-          <article className="setup-card profile-card"><span className="step-number done">✓</span><h2>{student.display_name}</h2><p>{student.grade} · 2026—2027学年</p><div className="setup-stat"><strong>{taskCount}</strong><span>已生成任务</span></div>{taskCount !== 200 ? <button className="secondary-button" type="button" disabled={busy} onClick={() => void ensurePlan()}>补齐200条计划</button> : <span className="verified-badge">计划完整</span>}</article>
+          <article className="setup-card profile-card"><span className="step-number done">✓</span><h2>{student.display_name}</h2><p>{student.grade} · 2026—2027学年</p><div className="setup-stat"><strong>{taskCount}</strong><span>已生成任务</span></div>{taskCount !== expectedTaskCount ? <button className="secondary-button" type="button" disabled={busy} onClick={() => void ensurePlan()}>补齐{expectedTaskCount}条计划</button> : <span className="verified-badge">计划完整</span>}</article>
           <article className="setup-card"><span className="step-number">2</span><h2>邀请账号</h2><p>邀请链接不通过本系统发送，请由家长单独转发。</p>
             <form className="setup-form" onSubmit={createInvitation}>
               <div className="invite-role-tabs"><button type="button" className={inviteRole === "tutor" ? "active" : ""} onClick={() => setInviteRole("tutor")}>分科家教</button><button type="button" className={inviteRole === "student" ? "active" : ""} onClick={() => setInviteRole("student")}>孩子账号</button></div>
