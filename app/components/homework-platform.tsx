@@ -37,6 +37,7 @@ import {
 import {
   blankTaskProgress,
   evidenceFor,
+  type ArchivedHomeworkSummary,
   type AuditEntry,
   type InitialWorkspace,
   type NotificationSummary,
@@ -50,6 +51,7 @@ import {
   addSubmissionCheckpoint,
   appendPlanBlock,
   archiveSubmissionCheckpoint,
+  createBackupSnapshot,
   createManualHomework,
   exportStudentArchive,
   generateWeeklyReport,
@@ -64,13 +66,18 @@ import {
   mergePlanBlocks,
   reviseHomework,
   reviseSubmissionCheckpoint,
+  restoreSubmissionCheckpoint,
+  restorePlanBlock,
   setHomeworkArchived,
   splitPlanBlock,
+  type HomeworkAnswerPolicy,
+  type HomeworkRevisionInput,
 } from "../lib/supabase/workspace-actions";
 import { getSupabaseBrowserClient } from "../lib/supabase/client";
 import { computePlanRisks, countRisksBySeverity, type PlanRisk } from "../lib/plan-risk";
 
 const STORAGE_KEY = "summerwork:workspace:v1";
+const REVIEW_DRAFT_FIELDS = ["accuracy", "wrongNumbers", "errorTags", "note", "correctionPassed", "redoRequired", "redoPassed"] as const;
 
 const NAV_ITEMS: Record<Role, string[]> = {
   parent: ["总览", "日历", "作业", "知识", "设置"],
@@ -87,6 +94,15 @@ const WORKFLOW_COPY = {
   awaiting_acceptance: "待验收",
   closed_loop: "已闭环",
 } as const;
+
+const DEFAULT_ANSWER_POLICY: Record<SummerSubject, HomeworkAnswerPolicy> = {
+  语文: "after_school_submission",
+  数学: "after_school_submission",
+  俄语: "guardian_held_until_attempt",
+  物理: "weekly_teacher_release",
+  化学: "locked_until_first_attempt",
+  生物: "locked_until_first_attempt",
+};
 
 function MiniIcon({ children }: { children: React.ReactNode }) {
   return <span className="mini-icon" aria-hidden="true">{children}</span>;
@@ -319,6 +335,22 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
       } catch {
         window.localStorage.removeItem(`summerwork:draft:${task.id}`);
       }
+      try {
+        const raw = window.localStorage.getItem(`summerwork:review-draft:${task.id}`);
+        if (!raw) continue;
+        const draft = JSON.parse(raw) as Partial<TaskProgress>;
+        const reviewPatch: Partial<TaskProgress> = {};
+        for (const field of REVIEW_DRAFT_FIELDS) {
+          const value = draft[field];
+          if (value !== undefined) Object.assign(reviewPatch, { [field]: value });
+        }
+        if (Object.keys(reviewPatch).length) {
+          draftPatches[task.id] = { ...(draftPatches[task.id] ?? {}), ...reviewPatch };
+          recovered = true;
+        }
+      } catch {
+        window.localStorage.removeItem(`summerwork:review-draft:${task.id}`);
+      }
     }
     if (recovered) {
       queueMicrotask(() => {
@@ -327,7 +359,7 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
           for (const [taskId, patch] of Object.entries(draftPatches)) next[taskId] = { ...(next[taskId] ?? blankTaskProgress()), ...patch };
           return next;
         });
-        showToast("已恢复上次断网时保存的不会题号草稿");
+        showToast("已恢复上次未提交的题号或批改草稿");
       });
     }
   }, [initialWorkspace, remoteEnabled]);
@@ -367,41 +399,58 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
     setPlanOpen(false);
   }
 
-  function updateTaskProgress(taskId: string, patch: Partial<TaskProgress>, persistActivity = false) {
+  async function updateTaskProgress(taskId: string, patch: Partial<TaskProgress>, persistActivity = false): Promise<boolean> {
     const previous = progress[taskId] ?? blankTaskProgress();
     const next = { ...previous, ...patch, updatedAt: new Date().toISOString() };
     setProgress((current) => ({
       ...current,
       [taskId]: { ...(current[taskId] ?? blankTaskProgress()), ...patch, updatedAt: next.updatedAt },
     }));
+    if (remoteEnabled && REVIEW_DRAFT_FIELDS.some((field) => Object.hasOwn(patch, field))) {
+      if (patch.reviewSaved || patch.masteryConfirmed) {
+        window.localStorage.removeItem(`summerwork:review-draft:${taskId}`);
+      } else {
+        const draft = Object.fromEntries(REVIEW_DRAFT_FIELDS.map((field) => [field, next[field]]));
+        window.localStorage.setItem(`summerwork:review-draft:${taskId}`, JSON.stringify({ ...draft, savedAt: next.updatedAt }));
+      }
+    }
     if (persistActivity && remoteEnabled) {
       const task = planTasks.find((item) => item.id === taskId);
-      if (task) void persistStudentActivity(task, previous, next).then((workflow) => {
-        if (workflow) {
+      if (task) {
+        try {
+          const workflow = await persistStudentActivity(task, previous, next);
+          if (workflow) {
+            setProgress((current) => ({
+              ...current,
+              [taskId]: {
+                ...(current[taskId] ?? next),
+                workflowVersion: workflow.version,
+                workflowStage: workflow.stage,
+              },
+            }));
+            router.refresh();
+          }
+          window.localStorage.removeItem(`summerwork:draft:${taskId}`);
+          return true;
+        } catch {
+          window.localStorage.setItem(`summerwork:draft:${taskId}`, JSON.stringify({ unknown: next.unknown, intendedRunState: next.runState, savedAt: next.updatedAt }));
           setProgress((current) => ({
             ...current,
-            [taskId]: {
-              ...(current[taskId] ?? next),
-              workflowVersion: workflow.version,
-              workflowStage: workflow.stage,
-            },
+            [taskId]: { ...(current[taskId] ?? next), runState: previous.runState, activeStartedAt: previous.activeStartedAt, actualSeconds: previous.actualSeconds },
           }));
-          router.refresh();
+          showToast("网络未同步；草稿已保留，请稍后重试");
+          return false;
         }
-        window.localStorage.removeItem(`summerwork:draft:${taskId}`);
-      }).catch(() => {
-        window.localStorage.setItem(`summerwork:draft:${taskId}`, JSON.stringify({ unknown: next.unknown, intendedRunState: next.runState, savedAt: next.updatedAt }));
-        setProgress((current) => ({ ...current, [taskId]: { ...(current[taskId] ?? next), runState: previous.runState, activeStartedAt: previous.activeStartedAt, actualSeconds: previous.actualSeconds } }));
-        showToast("网络未同步；不会题号草稿已保留，请稍后重试");
-      });
+      }
     }
+    return true;
   }
 
   function toggleErrorTag(tag: string) {
     const next = activeProgress.errorTags.includes(tag)
       ? activeProgress.errorTags.filter((item) => item !== tag)
       : [...activeProgress.errorTags, tag];
-    updateTaskProgress(workflowTask.id, { errorTags: next });
+    void updateTaskProgress(workflowTask.id, { errorTags: next });
   }
 
   async function saveReview() {
@@ -453,7 +502,7 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
       savedProgress = { ...savedProgress, masteryConfirmed: true };
       actionLabel = "知识点掌握已确认";
     }
-    updateTaskProgress(workflowTask.id, savedProgress);
+    void updateTaskProgress(workflowTask.id, savedProgress);
     setAuditEntries((current) => [{
       id: `review-${workflowTask.id}-${now}`,
       taskId: workflowTask.id,
@@ -472,10 +521,10 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
     try {
       if (remoteEnabled) {
         const nextWorkflow = await persistSubmissionConfirmation(workflowTask);
-        updateTaskProgress(workflowTask.id, { schoolSubmitted: true, schoolSubmittedAt: now, workflowVersion: nextWorkflow.version, workflowStage: nextWorkflow.stage });
+        void updateTaskProgress(workflowTask.id, { schoolSubmitted: true, schoolSubmittedAt: now, workflowVersion: nextWorkflow.version, workflowStage: nextWorkflow.stage });
         router.refresh();
       } else {
-        updateTaskProgress(workflowTask.id, { schoolSubmitted: true, schoolSubmittedAt: now });
+        void updateTaskProgress(workflowTask.id, { schoolSubmitted: true, schoolSubmittedAt: now });
       }
       showToast("学校平台提交已单独确认");
     } catch (error) {
@@ -489,10 +538,10 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
     try {
       if (remoteEnabled) {
         const nextWorkflow = await persistSubmissionRevocation(workflowTask, reason.trim());
-        updateTaskProgress(workflowTask.id, { schoolSubmitted: false, schoolSubmittedAt: undefined, workflowVersion: nextWorkflow.version, workflowStage: nextWorkflow.stage });
+        void updateTaskProgress(workflowTask.id, { schoolSubmitted: false, schoolSubmittedAt: undefined, workflowVersion: nextWorkflow.version, workflowStage: nextWorkflow.stage });
         router.refresh();
       } else {
-        updateTaskProgress(workflowTask.id, { schoolSubmitted: false, schoolSubmittedAt: undefined });
+        void updateTaskProgress(workflowTask.id, { schoolSubmitted: false, schoolSubmittedAt: undefined });
       }
       showToast("提交确认已撤销，原因已留痕");
     } catch (error) {
@@ -592,20 +641,16 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
     }
   }
 
-  async function editHomework(task: WorkspaceTask) {
-    const title = window.prompt("修改作业标题", task.homeworkTitle ?? task.title);
-    if (!title?.trim()) return;
-    const requirements = window.prompt("修改作业要求", task.homeworkRequirements ?? task.notes) ?? (task.homeworkRequirements ?? task.notes);
-    const deadlineDate = window.prompt("修改学校截止日期（YYYY-MM-DD，可留空）", task.deadlineDate ?? "") ?? (task.deadlineDate ?? "");
-    const reason = window.prompt("填写本次修改原因", "学校要求调整");
-    if (!reason?.trim()) return;
+  async function editHomework(task: WorkspaceTask, input: HomeworkRevisionInput): Promise<boolean> {
     try {
       if (!remoteEnabled) throw new Error("请登录家长账号后修改作业本体");
-      await reviseHomework(task, { title: title.trim(), requirements: requirements.trim(), deadlineDate: deadlineDate.trim() || undefined, reason: reason.trim() });
+      await reviseHomework(task, input);
       showToast("新版本已建立，旧版本和已开始证据均保留");
       router.refresh();
+      return true;
     } catch (error) {
       showToast(error instanceof Error ? error.message : "修改作业失败");
+      return false;
     }
   }
 
@@ -619,6 +664,19 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
       router.refresh();
     } catch (error) {
       showToast(error instanceof Error ? error.message : "归档作业失败");
+    }
+  }
+
+  async function restoreHomework(homework: ArchivedHomeworkSummary) {
+    const reason = window.prompt("填写恢复原因", "重新纳入计划");
+    if (!reason?.trim()) return;
+    try {
+      if (!remoteEnabled) throw new Error("请登录家长账号后恢复作业");
+      await setHomeworkArchived(homework, false, reason.trim());
+      showToast("作业及其任务块已恢复，历史证据保持不变");
+      router.refresh();
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : "恢复作业失败");
     }
   }
 
@@ -641,11 +699,12 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
     if (!checkpoint) return;
     const label = window.prompt("修改提交节点名称", checkpoint.label);
     if (!label?.trim()) return;
+    const dueDate = window.prompt("修改截止日期（YYYY-MM-DD，可留空）", checkpoint.dueDate ?? "") ?? (checkpoint.dueDate ?? "");
     const reason = window.prompt("修改原因", "学校截止变化");
     if (!reason?.trim()) return;
     try {
       if (!remoteEnabled) throw new Error("请登录家长账号后修改提交节点");
-      await reviseSubmissionCheckpoint(task, checkpointId, { label: label.trim(), dueDate: checkpoint.dueDate, reason: reason.trim() });
+      await reviseSubmissionCheckpoint(task, checkpointId, { label: label.trim(), dueDate: dueDate.trim() || undefined, reason: reason.trim() });
       showToast("提交节点已更新，变更已留痕");
       router.refresh();
     } catch (error) {
@@ -663,6 +722,32 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
       router.refresh();
     } catch (error) {
       showToast(error instanceof Error ? error.message : "归档提交节点失败");
+    }
+  }
+
+  async function restoreCheckpoint(task: WorkspaceTask, checkpointId: string) {
+    const reason = window.prompt("恢复提交节点的原因", "学校重新要求提交");
+    if (!reason?.trim()) return;
+    try {
+      if (!remoteEnabled) throw new Error("请登录家长账号后恢复提交节点");
+      await restoreSubmissionCheckpoint(task, checkpointId, reason.trim());
+      showToast("提交节点已恢复并重新参与闭环判断");
+      router.refresh();
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : "恢复提交节点失败");
+    }
+  }
+
+  async function restoreArchivedPlanBlock(task: WorkspaceTask) {
+    const reason = window.prompt("恢复任务块的原因", "恢复误合并或误归档的任务块");
+    if (!reason?.trim()) return;
+    try {
+      if (!remoteEnabled) throw new Error("请登录本科家教账号后恢复任务块");
+      await restorePlanBlock(task, reason.trim());
+      showToast("任务块已恢复，计划变更已留痕并通知家长");
+      router.refresh();
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : "恢复任务块失败");
     }
   }
 
@@ -686,6 +771,20 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
     }
   }
 
+  async function createCurrentBackup() {
+    if (!initialWorkspace?.studentId) {
+      showToast("尚未绑定孩子档案");
+      return;
+    }
+    try {
+      await createBackupSnapshot(initialWorkspace.studentId, `家长手动备份 ${new Date().toLocaleString("zh-CN")}`);
+      showToast("完整数据备份已生成并校验");
+      router.refresh();
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : "备份失败");
+    }
+  }
+
   async function createCurrentWeeklyReport() {
     if (!initialWorkspace?.studentId) {
       showToast("尚未绑定孩子档案");
@@ -700,7 +799,7 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
     }
   }
 
-  if (remoteEnabled && planTasks.length === 0) {
+  if (remoteEnabled && planTasks.length === 0 && !(role === "tutor" && initialWorkspace?.archivedPlanBlocks?.length)) {
     return (
       <main className="empty-workspace-page">
         <div className="brand-mark">闭</div>
@@ -762,9 +861,9 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
 
         {role === "parent" && activeNav.parent === "总览" ? <ParentView auditEntries={auditEntries} overrides={planOverrides} planRisks={planRisks} planTasks={planTasks} progress={progress} showToast={showToast} /> : null}
         {role === "parent" && activeNav.parent === "日历" ? <CalendarHome role="parent" overrides={planOverrides} planTasks={planTasks} showToast={showToast} /> : null}
-        {role === "parent" && activeNav.parent === "作业" ? <HomeworkLibraryView onAdd={addHomework} onAddCheckpoint={addCheckpoint} onArchive={archiveHomework} onArchiveCheckpoint={archiveCheckpoint} onEdit={editHomework} onEditCheckpoint={editCheckpoint} planTasks={planTasks} studentId={initialWorkspace?.studentId} /> : null}
+        {role === "parent" && activeNav.parent === "作业" ? <HomeworkLibraryView archivedHomeworks={initialWorkspace?.archivedHomeworks ?? []} onAdd={addHomework} onAddCheckpoint={addCheckpoint} onArchive={archiveHomework} onArchiveCheckpoint={archiveCheckpoint} onEdit={editHomework} onEditCheckpoint={editCheckpoint} onRestore={restoreHomework} onRestoreCheckpoint={restoreCheckpoint} planTasks={planTasks} studentId={initialWorkspace?.studentId} /> : null}
         {role === "parent" && activeNav.parent === "知识" ? <KnowledgeDashboard planTasks={planTasks} progress={progress} role="parent" /> : null}
-        {role === "parent" && activeNav.parent === "设置" ? <AccountCenter notifications={initialWorkspace?.notifications ?? []} onDownload={downloadArchive} onGenerateReport={createCurrentWeeklyReport} onMarkRead={async (id) => { await markNotificationRead(id); router.refresh(); }} remoteEnabled={remoteEnabled} reports={initialWorkspace?.weeklyReports ?? []} role="parent" signOut={signOut} /> : null}
+        {role === "parent" && activeNav.parent === "设置" ? <AccountCenter notifications={initialWorkspace?.notifications ?? []} onBackup={createCurrentBackup} onDownload={downloadArchive} onGenerateReport={createCurrentWeeklyReport} onMarkRead={async (id) => { await markNotificationRead(id); router.refresh(); }} remoteEnabled={remoteEnabled} reports={initialWorkspace?.weeklyReports ?? []} role="parent" signOut={signOut} /> : null}
         {role === "tutor" && ["今天", "日历"].includes(activeNav.tutor) ? (
           <TutorView
             auditEntries={auditEntries}
@@ -785,7 +884,7 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
         ) : null}
         {role === "tutor" && activeNav.tutor === "批改" ? <ReviewQueueView onOpen={(task) => { setWorkflowTask(task); setReviewOpen(true); }} planTasks={planTasks} progress={progress} /> : null}
         {role === "tutor" && activeNav.tutor === "知识" ? <KnowledgeDashboard planTasks={planTasks} progress={progress} role="tutor" /> : null}
-        {role === "tutor" && activeNav.tutor === "我的" ? <AccountCenter notifications={initialWorkspace?.notifications ?? []} onDownload={downloadArchive} onGenerateReport={createCurrentWeeklyReport} onMarkRead={async (id) => { await markNotificationRead(id); router.refresh(); }} remoteEnabled={remoteEnabled} reports={initialWorkspace?.weeklyReports ?? []} role="tutor" signOut={signOut} /> : null}
+        {role === "tutor" && activeNav.tutor === "我的" ? <AccountCenter archivedPlanBlocks={initialWorkspace?.archivedPlanBlocks ?? []} notifications={initialWorkspace?.notifications ?? []} onBackup={createCurrentBackup} onDownload={downloadArchive} onGenerateReport={createCurrentWeeklyReport} onMarkRead={async (id) => { await markNotificationRead(id); router.refresh(); }} onRestorePlanBlock={restoreArchivedPlanBlock} remoteEnabled={remoteEnabled} reports={initialWorkspace?.weeklyReports ?? []} role="tutor" signOut={signOut} /> : null}
         {role === "student" && activeNav.student === "今天" ? (
           <StudentView
             overrides={planOverrides}
@@ -798,7 +897,7 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
         ) : null}
         {role === "student" && activeNav.student === "本周" ? <CalendarHome role="student" overrides={planOverrides} planTasks={planTasks} showToast={showToast} /> : null}
         {role === "student" && activeNav.student === "知识" ? <KnowledgeDashboard planTasks={planTasks} progress={progress} role="student" /> : null}
-        {role === "student" && activeNav.student === "我的" ? <AccountCenter notifications={initialWorkspace?.notifications ?? []} onDownload={downloadArchive} onGenerateReport={createCurrentWeeklyReport} onMarkRead={async (id) => { await markNotificationRead(id); router.refresh(); }} remoteEnabled={remoteEnabled} reports={initialWorkspace?.weeklyReports ?? []} role="student" signOut={signOut} /> : null}
+        {role === "student" && activeNav.student === "我的" ? <AccountCenter notifications={initialWorkspace?.notifications ?? []} onBackup={createCurrentBackup} onDownload={downloadArchive} onGenerateReport={createCurrentWeeklyReport} onMarkRead={async (id) => { await markNotificationRead(id); router.refresh(); }} remoteEnabled={remoteEnabled} reports={initialWorkspace?.weeklyReports ?? []} role="student" signOut={signOut} /> : null}
 
         <nav className="bottom-nav" aria-label={`${ROLE_COPY[role].label}端导航`}>
           {NAV_ITEMS[role].map((item) => (
@@ -825,7 +924,7 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
           onRevokeSubmission={revokeSubmission}
           onSave={saveReview}
           progress={activeProgress}
-          setProgress={(patch) => updateTaskProgress(workflowTask.id, patch)}
+          setProgress={(patch) => { void updateTaskProgress(workflowTask.id, patch); }}
           toggleErrorTag={toggleErrorTag}
           task={workflowTask}
           workflowState={workflowState}
@@ -874,18 +973,23 @@ const SUBJECT_ID_BY_NAME: Record<SummerSubject, string> = {
   生物: "biology",
 };
 
-function HomeworkLibraryView({ onAdd, onAddCheckpoint, onArchive, onArchiveCheckpoint, onEdit, onEditCheckpoint, planTasks, studentId }: {
+function HomeworkLibraryView({ archivedHomeworks, onAdd, onAddCheckpoint, onArchive, onArchiveCheckpoint, onEdit, onEditCheckpoint, onRestore, onRestoreCheckpoint, planTasks, studentId }: {
+  archivedHomeworks: ArchivedHomeworkSummary[];
   onAdd: (input: Parameters<typeof createManualHomework>[0]) => void | Promise<void>;
   onAddCheckpoint: (task: WorkspaceTask) => void | Promise<void>;
   onArchive: (task: WorkspaceTask) => void | Promise<void>;
   onArchiveCheckpoint: (task: WorkspaceTask, checkpointId: string) => void | Promise<void>;
-  onEdit: (task: WorkspaceTask) => void | Promise<void>;
+  onEdit: (task: WorkspaceTask, input: HomeworkRevisionInput) => Promise<boolean>;
   onEditCheckpoint: (task: WorkspaceTask, checkpointId: string) => void | Promise<void>;
+  onRestore: (homework: ArchivedHomeworkSummary) => void | Promise<void>;
+  onRestoreCheckpoint: (task: WorkspaceTask, checkpointId: string) => void | Promise<void>;
   planTasks: WorkspaceTask[];
   studentId?: string;
 }) {
   const [creating, setCreating] = useState(false);
   const [subject, setSubject] = useState<SummerSubject>("数学");
+  const [requirementLevel, setRequirementLevel] = useState<"required" | "optional" | "pending_confirmation">("required");
+  const [answerPolicy, setAnswerPolicy] = useState<HomeworkAnswerPolicy>(DEFAULT_ANSWER_POLICY.数学);
   const [title, setTitle] = useState("");
   const [requirements, setRequirements] = useState("");
   const [knowledge, setKnowledge] = useState("");
@@ -893,6 +997,7 @@ function HomeworkLibraryView({ onAdd, onAddCheckpoint, onArchive, onArchiveCheck
   const [deadlineDate, setDeadlineDate] = useState("");
   const [answerBasis, setAnswerBasis] = useState("家长保管答案至首做完成");
   const [submissionRequirement, setSubmissionRequirement] = useState("");
+  const [editingKey, setEditingKey] = useState<string | null>(null);
   const homeworkMap = new Map<string, WorkspaceTask>();
   for (const task of planTasks) if (!homeworkMap.has(task.homeworkId ?? task.homeworkKey)) homeworkMap.set(task.homeworkId ?? task.homeworkKey, task);
   const homeworks = [...homeworkMap.values()];
@@ -907,6 +1012,8 @@ function HomeworkLibraryView({ onAdd, onAddCheckpoint, onArchive, onArchiveCheck
       requirements: requirements.trim(),
       plannedDate,
       deadlineDate: deadlineDate || undefined,
+      requirementLevel,
+      answerPolicy,
       answerBasis: answerBasis.trim(),
       submissionRequirement: submissionRequirement.trim(),
       knowledgeTags: knowledge.split(/[，,、]/).map((item) => item.trim()).filter(Boolean),
@@ -921,10 +1028,10 @@ function HomeworkLibraryView({ onAdd, onAddCheckpoint, onArchive, onArchiveCheck
     <div className="page-content">
       <AppHeader eyebrow="家长管理员" title="作业本体" subtitle={`${homeworks.length}项作业 · 任务块拆分后仍只计一项`} action={<button className="primary-button" type="button" onClick={() => setCreating((value) => !value)}>新增作业</button>} />
       {creating ? <form className="review-form ontology-brief" onSubmit={(event) => void submit(event)}>
-        <fieldset><legend>科目与标题</legend><div className="choice-row">{SUMMER_SUBJECTS.map((item) => <label className={subject === item ? "choice-chip selected" : "choice-chip"} key={item}><input type="radio" checked={subject === item} onChange={() => setSubject(item)} />{item === "语文" ? "语文·考背" : item}</label>)}</div><input className="line-input" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="作业标题" required /></fieldset>
+        <fieldset><legend>科目与标题</legend><div className="choice-row">{SUMMER_SUBJECTS.map((item) => <label className={subject === item ? "choice-chip selected" : "choice-chip"} key={item}><input type="radio" checked={subject === item} onChange={() => { setSubject(item); setAnswerPolicy(DEFAULT_ANSWER_POLICY[item]); }} />{item === "语文" ? "语文·考背" : item}</label>)}</div><input className="line-input" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="作业标题" required /></fieldset>
         <fieldset><legend>要求与知识点</legend><input className="line-input" value={requirements} onChange={(event) => setRequirements(event.target.value)} placeholder="精简填写作业要求" /><input className="line-input" value={knowledge} onChange={(event) => setKnowledge(event.target.value)} placeholder="知识点，用顿号分隔" /></fieldset>
         <fieldset><legend>计划与学校截止</legend><div className="choice-row"><label>首个任务日期<input type="date" value={plannedDate} min={SUMMER_PLAN.meta.dateRange.start} max={SUMMER_PLAN.meta.dateRange.end} onChange={(event) => setPlannedDate(event.target.value)} /></label><label>学校截止（可空）<input type="date" value={deadlineDate} onChange={(event) => setDeadlineDate(event.target.value)} /></label></div></fieldset>
-        <fieldset><legend>答案与提交</legend><input className="line-input" value={answerBasis} onChange={(event) => setAnswerBasis(event.target.value)} placeholder="答案/批改依据" /><input className="line-input" value={submissionRequirement} onChange={(event) => setSubmissionRequirement(event.target.value)} placeholder="学校平台提交要求；没有则留空" /></fieldset>
+        <fieldset><legend>属性与答案</legend><div className="choice-row"><label>任务属性<select value={requirementLevel} onChange={(event) => setRequirementLevel(event.target.value as typeof requirementLevel)}><option value="required">必做</option><option value="optional">选做/拓展</option><option value="pending_confirmation">待老师确认</option></select></label><label>答案开放规则<select value={answerPolicy} onChange={(event) => setAnswerPolicy(event.target.value as HomeworkAnswerPolicy)}><option value="after_school_submission">学校提交后开放</option><option value="guardian_held_until_attempt">家长保管至首做</option><option value="weekly_teacher_release">老师按周发布</option><option value="locked_until_first_attempt">首做后解锁附件答案</option></select></label></div><input className="line-input" value={answerBasis} onChange={(event) => setAnswerBasis(event.target.value)} placeholder="答案/批改依据" /><input className="line-input" value={submissionRequirement} onChange={(event) => setSubmissionRequirement(event.target.value)} placeholder="学校平台提交要求；没有则留空" /></fieldset>
         <button className="primary-button" type="submit" disabled={!studentId || !title.trim()}>创建作业与首个90分钟块</button>
       </form> : null}
       <div className="real-task-list">
@@ -932,13 +1039,60 @@ function HomeworkLibraryView({ onAdd, onAddCheckpoint, onArchive, onArchiveCheck
           <div className="real-task-top"><StatusPill tone={SUBJECT_TONES[task.subject]}>{task.subject === "语文" ? "语文·考背" : task.subject}</StatusPill><span>{planTasks.filter((candidate) => (candidate.homeworkId ?? candidate.homeworkKey) === (task.homeworkId ?? task.homeworkKey)).length}个任务块</span></div>
           <h3>{task.homeworkTitle ?? task.title}</h3>
           {task.homeworkRequirements ? <p>{task.homeworkRequirements}</p> : null}
-          <dl className="task-facts"><div><dt>知识点</dt><dd>{task.knowledgeTags.join("、") || task.knowledge}</dd></div><div><dt>学校截止</dt><dd>{task.deadlineAt ?? task.deadlineDate ?? "未提供"}</dd></div><div><dt>提交节点</dt><dd>{task.submissionCheckpoints?.map((item) => item.label).join("、") || "无需学校提交"}</dd></div><div><dt>本体版本</dt><dd>v{task.homeworkRecordVersion ?? 1}</dd></div></dl>
-          {task.submissionCheckpoints?.length ? <div className="task-audit-list">{task.submissionCheckpoints.map((checkpoint) => <article key={checkpoint.id}><div className={`timeline-dot ${checkpoint.status === "confirmed" ? "green" : "orange"}`} /><div><strong>{checkpoint.label}</strong><p>{checkpoint.dueAt ?? checkpoint.dueDate ?? "未提供截止"} · {checkpoint.status === "confirmed" ? "已确认" : "待确认"}</p><div className="task-card-actions"><button className="text-action" type="button" onClick={() => void onEditCheckpoint(task, checkpoint.id)}>修改</button><button className="text-action" type="button" onClick={() => void onArchiveCheckpoint(task, checkpoint.id)}>归档</button></div></div></article>)}</div> : null}
-          <div className="task-card-actions"><button className="secondary-button" type="button" onClick={() => void onEdit(task)}>建立新版本</button><button className="secondary-button" type="button" onClick={() => void onAddCheckpoint(task)}>新增提交节点</button><button className="text-action" type="button" onClick={() => void onArchive(task)}>归档</button></div>
+          <dl className="task-facts"><div><dt>知识点</dt><dd>{(task.homeworkKnowledgeTags ?? task.knowledgeTags).join("、") || task.knowledge}</dd></div><div><dt>学校截止</dt><dd>{task.homeworkDeadlineDate ?? task.deadlineAt ?? task.deadlineDate ?? "未提供"}</dd></div><div><dt>提交节点</dt><dd>{task.submissionCheckpoints?.filter((item) => !item.archivedAt).map((item) => item.label).join("、") || "无需学校提交"}</dd></div><div><dt>本体版本</dt><dd>v{task.homeworkRecordVersion ?? 1}</dd></div></dl>
+          {task.submissionCheckpoints?.some((checkpoint) => !checkpoint.archivedAt) ? <div className="task-audit-list">{task.submissionCheckpoints.filter((checkpoint) => !checkpoint.archivedAt).map((checkpoint) => <article key={checkpoint.id}><div className={`timeline-dot ${checkpoint.status === "confirmed" ? "green" : "orange"}`} /><div><strong>{checkpoint.label}</strong><p>{checkpoint.dueAt ?? checkpoint.dueDate ?? "未提供截止"} · {checkpoint.status === "confirmed" ? "已确认" : "待确认"}</p><div className="task-card-actions"><button className="text-action" type="button" onClick={() => void onEditCheckpoint(task, checkpoint.id)}>修改</button><button className="text-action" type="button" onClick={() => void onArchiveCheckpoint(task, checkpoint.id)}>归档</button></div></div></article>)}</div> : null}
+          {task.submissionCheckpoints?.some((checkpoint) => checkpoint.archivedAt) ? <div className="archived-checkpoints"><strong>已归档提交节点</strong>{task.submissionCheckpoints.filter((checkpoint) => checkpoint.archivedAt).map((checkpoint) => <button className="text-action" type="button" key={checkpoint.id} onClick={() => void onRestoreCheckpoint(task, checkpoint.id)}>恢复“{checkpoint.label}”</button>)}</div> : null}
+          {editingKey === (task.homeworkId ?? task.homeworkKey) ? <HomeworkVersionEditor task={task} onCancel={() => setEditingKey(null)} onSubmit={async (input) => { const saved = await onEdit(task, input); if (saved) setEditingKey(null); }} /> : null}
+          <div className="task-card-actions"><button className="secondary-button" type="button" onClick={() => setEditingKey((current) => current === (task.homeworkId ?? task.homeworkKey) ? null : (task.homeworkId ?? task.homeworkKey))}>建立新版本</button><button className="secondary-button" type="button" onClick={() => void onAddCheckpoint(task)}>新增提交节点</button><button className="text-action" type="button" onClick={() => void onArchive(task)}>归档</button></div>
         </article>)}
       </div>
+      {archivedHomeworks.length ? <><SectionHeading title={`已归档作业 · ${archivedHomeworks.length}`} /><div className="real-task-list archived-list">{archivedHomeworks.map((homework) => <article className="real-task-card" key={homework.id}><div className="real-task-top"><StatusPill tone={SUBJECT_TONES[homework.subject]}>{homework.subject === "语文" ? "语文·考背" : homework.subject}</StatusPill><span>已归档 · v{homework.version}</span></div><h3>{homework.title}</h3><p>归档不会删除旧版本、学习记录或知识证据。</p><button className="secondary-button" type="button" onClick={() => void onRestore(homework)}>恢复作业与任务块</button></article>)}</div></> : null}
     </div>
   );
+}
+
+function HomeworkVersionEditor({ onCancel, onSubmit, task }: {
+  onCancel: () => void;
+  onSubmit: (input: HomeworkRevisionInput) => void | Promise<void>;
+  task: WorkspaceTask;
+}) {
+  const [title, setTitle] = useState(task.homeworkTitle ?? task.title);
+  const [requirements, setRequirements] = useState(task.homeworkRequirements ?? task.notes);
+  const [knowledge, setKnowledge] = useState((task.homeworkKnowledgeTags ?? task.knowledgeTags).join("、"));
+  const [deadlineDate, setDeadlineDate] = useState(task.homeworkDeadlineDate ?? task.deadlineDate ?? "");
+  const [requirementLevel, setRequirementLevel] = useState(task.homeworkRequirementLevel ?? task.requirementLevel);
+  const [answerPolicy, setAnswerPolicy] = useState<HomeworkAnswerPolicy>(task.homeworkAnswerPolicy ?? task.answerPolicy);
+  const [answerBasis, setAnswerBasis] = useState(task.homeworkAnswerBasis ?? task.answerBasis);
+  const [submissionRequirement, setSubmissionRequirement] = useState(task.homeworkSubmissionRequirement ?? task.submission);
+  const [reason, setReason] = useState("学校要求调整");
+  const [busy, setBusy] = useState(false);
+
+  async function submit(event: React.FormEvent) {
+    event.preventDefault();
+    if (!title.trim() || !reason.trim()) return;
+    setBusy(true);
+    await onSubmit({
+      title: title.trim(),
+      requirements: requirements.trim(),
+      deadlineDate: deadlineDate || undefined,
+      requirementLevel,
+      answerPolicy,
+      answerBasis: answerBasis.trim(),
+      submissionRequirement: submissionRequirement.trim(),
+      knowledgeTags: knowledge.split(/[，,、]/).map((item) => item.trim()).filter(Boolean),
+      reason: reason.trim(),
+    });
+    setBusy(false);
+  }
+
+  return <form className="review-form ontology-brief version-editor" onSubmit={(event) => void submit(event)}>
+    <strong>建立作业新版本</strong><p>已开始任务继续关联旧版本；未开始任务使用新版本。</p>
+    <fieldset><legend>标题与要求</legend><input className="line-input" value={title} onChange={(event) => setTitle(event.target.value)} required /><input className="line-input" value={requirements} onChange={(event) => setRequirements(event.target.value)} placeholder="作业要求" /></fieldset>
+    <fieldset><legend>知识点与属性</legend><input className="line-input" value={knowledge} onChange={(event) => setKnowledge(event.target.value)} placeholder="知识点，用顿号分隔" /><div className="choice-row"><label>任务属性<select value={requirementLevel} onChange={(event) => setRequirementLevel(event.target.value as typeof requirementLevel)}><option value="required">必做</option><option value="optional">选做/拓展</option><option value="pending_confirmation">待老师确认</option></select></label><label>答案开放规则<select value={answerPolicy} onChange={(event) => setAnswerPolicy(event.target.value as HomeworkAnswerPolicy)}><option value="after_school_submission">学校提交后开放</option><option value="guardian_held_until_attempt">家长保管至首做</option><option value="weekly_teacher_release">老师按周发布</option><option value="locked_until_first_attempt">首做后解锁附件答案</option></select></label></div></fieldset>
+    <fieldset><legend>截止、答案与提交</legend><input type="date" className="line-input" value={deadlineDate} onChange={(event) => setDeadlineDate(event.target.value)} /><input className="line-input" value={answerBasis} onChange={(event) => setAnswerBasis(event.target.value)} placeholder="答案/批改依据" /><input className="line-input" value={submissionRequirement} onChange={(event) => setSubmissionRequirement(event.target.value)} placeholder="学校平台提交要求；没有则留空" /></fieldset>
+    <fieldset><legend>变更原因</legend><input className="line-input" value={reason} onChange={(event) => setReason(event.target.value)} maxLength={200} required /></fieldset>
+    <div className="task-card-actions"><button className="primary-button" type="submit" disabled={busy || !title.trim() || !reason.trim()}>{busy ? "正在建立…" : "保存新版本"}</button><button className="secondary-button" type="button" disabled={busy} onClick={onCancel}>取消</button></div>
+  </form>;
 }
 
 function KnowledgeDashboard({ planTasks, progress, role }: { planTasks: WorkspaceTask[]; progress: Record<string, TaskProgress>; role: Role }) {
@@ -965,18 +1119,21 @@ function ReviewQueueView({ onOpen, planTasks, progress }: { onOpen: (task: Works
   return <div className="page-content"><AppHeader eyebrow={`${planTasks[0]?.subject ?? "分科"}家教`} title="待办队列" subtitle="批改、订正验收、复做、掌握和提交确认分步处理" /><div className="real-task-list">{queue.length ? queue.map((task) => { const item = progress[task.id] ?? blankTaskProgress(); const state = item.workflowStage ?? deriveWorkflowState(evidenceFor(item, task.requiresSubmission)); return <article className="real-task-card" key={task.id}><div className="real-task-top"><StatusPill tone={SUBJECT_TONES[task.subject]}>{task.subject}</StatusPill><StatusPill tone="orange">{WORKFLOW_COPY[state]}</StatusPill></div><h3>{task.title}</h3><p>不会题号：{item.unknown || "无"} · 错题：{item.wrongNumbers || "待批改"}</p><button className="primary-button" type="button" onClick={() => onOpen(task)}>继续处理</button></article>; }) : <div className="empty-day"><span>✓</span><h3>当前没有待办</h3><p>孩子完成任务后会自动进入这里。</p></div>}</div></div>;
 }
 
-function AccountCenter({ notifications, onDownload, onGenerateReport, onMarkRead, remoteEnabled, reports, role, signOut }: {
+function AccountCenter({ archivedPlanBlocks = [], notifications, onBackup, onDownload, onGenerateReport, onMarkRead, onRestorePlanBlock, remoteEnabled, reports, role, signOut }: {
+  archivedPlanBlocks?: WorkspaceTask[];
   notifications: NotificationSummary[];
+  onBackup: () => void | Promise<void>;
   onDownload: () => void | Promise<void>;
   onGenerateReport: () => void | Promise<void>;
   onMarkRead: (id: number) => void | Promise<void>;
+  onRestorePlanBlock?: (task: WorkspaceTask) => void | Promise<void>;
   remoteEnabled: boolean;
   reports: WeeklyReportSummary[];
   role: Role;
   signOut: () => void | Promise<void>;
 }) {
   const unread = notifications.filter((item) => !item.readAt).length;
-  return <div className="page-content"><AppHeader eyebrow={ROLE_COPY[role].label} title={role === "parent" ? "设置与档案" : "我的"} subtitle="只在系统内提醒，不发送微信、短信或邮件" /><section className="metric-grid"><article className="metric-card"><span>未读通知</span><strong>{unread}</strong><small>站内实时同步</small></article><article className="metric-card"><span>周报</span><strong>{reports.length}</strong><small>长期趋势数据已预留</small></article></section>{role === "parent" ? <section className="ontology-brief"><strong>数据与周报</strong><p>导出包含作业版本、任务块、学习事件、批改、订正、提交与知识证据。</p><div className="task-card-actions"><button className="primary-button" type="button" onClick={() => void onGenerateReport()}>生成本周周报</button><button className="secondary-button" type="button" onClick={() => void onDownload()}>导出完整档案</button></div></section> : null}<SectionHeading title="站内通知" /><div className="task-audit-list">{notifications.length ? notifications.map((item) => <article key={item.id}><div className={`timeline-dot ${item.readAt ? "green" : "orange"}`} /><div><strong>{item.title}</strong><p>{item.body}</p><small>{new Date(item.createdAt).toLocaleString("zh-CN")}</small>{!item.readAt ? <button className="text-action" type="button" onClick={() => void onMarkRead(item.id)}>标为已读</button> : null}</div></article>) : <div className="empty-audit"><span>静</span><div><strong>暂无通知</strong><p>计划变更、待批改和提交确认会出现在这里。</p></div></div>}</div>{reports[0] ? <><SectionHeading title="最新周报" /><article className="ontology-brief"><strong>{reports[0].weekStart}—{reports[0].weekEnd}</strong><p>{reports[0].narrative}</p></article></> : null}<button className="account-link" type="button" disabled={!remoteEnabled} onClick={() => void signOut()}>{remoteEnabled ? "退出当前账号" : "开发预览无需退出"}</button></div>;
+  return <div className="page-content"><AppHeader eyebrow={ROLE_COPY[role].label} title={role === "parent" ? "设置与档案" : "我的"} subtitle="只在系统内提醒，不发送微信、短信或邮件" /><section className="metric-grid"><article className="metric-card"><span>未读通知</span><strong>{unread}</strong><small>站内实时同步</small></article><article className="metric-card"><span>周报</span><strong>{reports.length}</strong><small>长期趋势数据已预留</small></article></section>{role === "parent" ? <section className="ontology-brief"><strong>数据与周报</strong><p>导出和备份均包含作业版本、任务块、学习事件、批改、订正、提交与知识证据。</p><div className="task-card-actions"><button className="primary-button" type="button" onClick={() => void onGenerateReport()}>生成本周周报</button><button className="secondary-button" type="button" onClick={() => void onBackup()}>生成校验备份</button><button className="secondary-button" type="button" onClick={() => void onDownload()}>导出完整档案</button></div></section> : null}{role === "tutor" && archivedPlanBlocks.length ? <><SectionHeading title={`可恢复任务块 · ${archivedPlanBlocks.length}`} /><div className="real-task-list archived-list">{archivedPlanBlocks.map((task) => <article className="real-task-card" key={task.id}><div className="real-task-top"><StatusPill tone={SUBJECT_TONES[task.subject]}>{task.subject}</StatusPill><span>已归档 · v{task.recordVersion}</span></div><h3>{task.title}</h3><p>{formatPlanDate(task.date)} · {task.blockMinutes} 分钟 · 恢复后重新进入本科计划</p><button className="secondary-button" type="button" disabled={!onRestorePlanBlock} onClick={() => void onRestorePlanBlock?.(task)}>恢复任务块</button></article>)}</div></> : null}<SectionHeading title="站内通知" /><div className="task-audit-list">{notifications.length ? notifications.map((item) => <article key={item.id}><div className={`timeline-dot ${item.readAt ? "green" : "orange"}`} /><div><strong>{item.title}</strong><p>{item.body}</p><small>{new Date(item.createdAt).toLocaleString("zh-CN")}</small>{!item.readAt ? <button className="text-action" type="button" onClick={() => void onMarkRead(item.id)}>标为已读</button> : null}</div></article>) : <div className="empty-audit"><span>静</span><div><strong>暂无通知</strong><p>计划变更、待批改和提交确认会出现在这里。</p></div></div>}</div>{reports[0] ? <><SectionHeading title="最新周报" /><article className="ontology-brief"><strong>{reports[0].weekStart}—{reports[0].weekEnd}</strong><p>{reports[0].narrative}</p></article></> : null}<button className="account-link" type="button" disabled={!remoteEnabled} onClick={() => void signOut()}>{remoteEnabled ? "退出当前账号" : "开发预览无需退出"}</button></div>;
 }
 
 function ParentView({ auditEntries, overrides, planRisks, planTasks, progress, showToast }: { auditEntries: AuditEntry[]; overrides: Record<string, PlanOverride>; planRisks: PlanRisk[]; planTasks: WorkspaceTask[]; progress: Record<string, TaskProgress>; showToast: (message: string) => void }) {
@@ -1154,7 +1311,7 @@ type StudentViewProps = {
   progress: Record<string, TaskProgress>;
   setWorkflowTask: (task: WorkspaceTask) => void;
   showToast: (message: string) => void;
-  updateTaskProgress: (taskId: string, patch: Partial<TaskProgress>, persistActivity?: boolean) => void;
+  updateTaskProgress: (taskId: string, patch: Partial<TaskProgress>, persistActivity?: boolean) => Promise<boolean>;
 };
 
 function StudentView({ overrides, planTasks, progress, setWorkflowTask, showToast, updateTaskProgress }: StudentViewProps) {
@@ -1164,6 +1321,7 @@ function StudentView({ overrides, planTasks, progress, setWorkflowTask, showToas
   const masteryLevel = deriveMasteryLevel(evidenceFor(focusProgress, focusTask.requiresSubmission));
   const runState = focusProgress.runState;
   const [clock, setClock] = useState(() => Date.now());
+  const [syncing, setSyncing] = useState(false);
   useEffect(() => {
     if (runState !== "running") return;
     const timer = window.setInterval(() => setClock(Date.now()), 1000);
@@ -1173,9 +1331,23 @@ function StudentView({ overrides, planTasks, progress, setWorkflowTask, showToas
   const liveTime = `${String(Math.floor(liveSeconds / 60)).padStart(2, "0")}:${String(liveSeconds % 60).padStart(2, "0")}`;
   const nextTask = todayTasks.find((task) => task.id !== focusTask.id) ?? planTasks.find((task) => (overrides[task.id]?.date ?? task.date) > PLAN_REFERENCE_DATE) ?? planTasks[1] ?? SUMMER_PLAN.tasks[1];
   const buttonCopy = { ready: "开始做题", running: "暂停", paused: "继续", completed: "已完成" }[runState];
-  function handleMainAction() {
-    if (runState === "ready" || runState === "paused") updateTaskProgress(focusTask.id, { runState: "running", activeStartedAt: new Date().toISOString() }, true);
-    else if (runState === "running") updateTaskProgress(focusTask.id, { runState: "paused", actualSeconds: liveSeconds, activeStartedAt: undefined }, true);
+  async function handleMainAction() {
+    setSyncing(true);
+    if (runState === "ready" || runState === "paused") await updateTaskProgress(focusTask.id, { runState: "running", activeStartedAt: new Date().toISOString() }, true);
+    else if (runState === "running") await updateTaskProgress(focusTask.id, { runState: "paused", actualSeconds: liveSeconds, activeStartedAt: undefined }, true);
+    setSyncing(false);
+  }
+  async function completeTask() {
+    setSyncing(true);
+    const saved = await updateTaskProgress(focusTask.id, { runState: "completed", actualSeconds: liveSeconds, activeStartedAt: undefined }, true);
+    setSyncing(false);
+    if (saved) showToast("任务已完成，家教会看到待批改提醒");
+  }
+  async function recordUnknownNumbers() {
+    setSyncing(true);
+    const saved = await updateTaskProgress(focusTask.id, { unknown: normalizeQuestionNumbers(focusProgress.unknown) }, true);
+    setSyncing(false);
+    if (saved) showToast("不会题号已记录");
   }
   return (
     <div className="page-content student-page">
@@ -1189,8 +1361,8 @@ function StudentView({ overrides, planTasks, progress, setWorkflowTask, showToas
           <p>{focusTask.knowledge || "按任务要求独立完成"}<br />{ANSWER_POLICY_COPY[focusTask.answerPolicy]}。</p>
           <div className={`study-orb state-${runState}`}><span>{runState === "running" ? "进行中" : runState === "paused" ? "已暂停" : runState === "completed" ? "完成" : "准备好"}</span><strong>{runState === "ready" ? focusTask.blockMinutes : liveTime}</strong><small>{runState === "ready" ? "分钟" : "已学习"}</small></div>
           <div className="student-actions">
-            <button type="button" className="primary-button" disabled={runState === "completed"} onClick={handleMainAction}>{buttonCopy}</button>
-            <button type="button" className="secondary-button" disabled={runState === "ready" || runState === "completed"} onClick={() => { updateTaskProgress(focusTask.id, { runState: "completed", actualSeconds: liveSeconds, activeStartedAt: undefined }, true); showToast("任务已完成，家教会看到待批改提醒"); }}>我已完成</button>
+            <button type="button" className="primary-button" disabled={syncing || runState === "completed"} onClick={() => void handleMainAction()}>{syncing ? "同步中…" : buttonCopy}</button>
+            <button type="button" className="secondary-button" disabled={syncing || runState === "ready" || runState === "completed"} onClick={() => void completeTask()}>我已完成</button>
           </div>
         </section>
 
@@ -1198,7 +1370,7 @@ function StudentView({ overrides, planTasks, progress, setWorkflowTask, showToas
           <SectionHeading title="遇到困难" />
           <article className="unknown-card">
             <label htmlFor="student-unknown">不会的题号</label>
-            <div><input id="student-unknown" value={focusProgress.unknown} onChange={(event) => updateTaskProgress(focusTask.id, { unknown: event.target.value })} placeholder="例如 3、7、12(2)" /><button type="button" onClick={() => { updateTaskProgress(focusTask.id, { unknown: normalizeQuestionNumbers(focusProgress.unknown) }, true); showToast("不会题号已记录"); }}>记录</button></div>
+            <div><input id="student-unknown" disabled={runState === "completed"} value={focusProgress.unknown} onChange={(event) => { void updateTaskProgress(focusTask.id, { unknown: event.target.value }); }} placeholder="例如 3、7、12(2)" /><button type="button" disabled={syncing || runState === "completed"} onClick={() => void recordUnknownNumbers()}>记录</button></div>
             <p>家教批改时会优先看到这些题。</p>
           </article>
           <SectionHeading title="我的点亮" />

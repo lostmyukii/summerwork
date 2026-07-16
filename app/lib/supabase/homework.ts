@@ -4,6 +4,7 @@ import { weekdayFor, type RequirementLevel, type SummerTask, type SummerTaskKind
 import type { MasteryLevel, WorkflowState } from "../workflow";
 import {
   blankTaskProgress,
+  type ArchivedHomeworkSummary,
   type AuditEntry,
   type InitialWorkspace,
   type PlanOverride,
@@ -48,6 +49,7 @@ type TaskRow = {
   version: number;
   block_type: WorkspaceTask["blockType"];
   sequence_number: number;
+  deleted_at: string | null;
 };
 
 type WorkflowRow = {
@@ -71,10 +73,22 @@ type CheckpointRow = {
   due_at: string | null;
   status: "not_due" | "awaiting_confirmation" | "confirmed" | "revoked";
   confirmed_at: string | null;
+  archived_at: string | null;
   version: number;
 };
 type HomeworkSummaryRow = { id: string; version: number; current_version_id: string | null };
-type HomeworkVersionSummaryRow = { id: string; title: string; requirements: string };
+type ArchivedHomeworkRow = HomeworkSummaryRow & { subject_id: string; updated_at: string };
+type HomeworkVersionSummaryRow = {
+  id: string;
+  title: string;
+  requirements: string;
+  knowledge_tags: string[];
+  requirement_level: RequirementLevel;
+  answer_policy: SummerTask["answerPolicy"];
+  answer_basis: string;
+  submission_requirement: string;
+  deadline_date: string | null;
+};
 type NotificationRow = { id: number; notification_type: string; title: string; body: string; read_at: string | null; created_at: string };
 type WeeklyReportRow = { id: string; week_start: string; week_end: string; metrics: Record<string, number>; narrative: string; generated_at: string };
 
@@ -127,6 +141,8 @@ const ACCURACY_COPY: Record<ReviewRow["accuracy_band"], string> = {
   "below-70": "70%以下",
 };
 
+const TASK_SELECT = "id,student_id,subject_id,title,planned_date,original_date,slot_type,knowledge,knowledge_tags,answer_basis,submission_requirement,notes,task_kind,block_minutes,recommended_minutes,requires_submission,course_integrated,optional,uncertainty,priority,answer_policy,requirement_level,evidence_required,source_reference,deadline_date,deadline_at,deadline_precision,homework_id,homework_version_id,version,block_type,sequence_number,deleted_at";
+
 function requireData<T>(result: { data: T | null; error: { message: string } | null }, label: string): T {
   if (result.error) throw new Error(`${label}：${result.error.message}`);
   if (result.data === null) throw new Error(`${label}：没有返回数据`);
@@ -172,6 +188,7 @@ function toWorkspaceTask(row: TaskRow): WorkspaceTask {
     recordVersion: row.version,
     blockType: row.block_type,
     sequenceNumber: row.sequence_number,
+    deletedAt: row.deleted_at ?? undefined,
   };
 }
 
@@ -210,8 +227,60 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
   ]);
   const notificationRows = requireData(notificationResult, "读取站内通知") as NotificationRow[];
   const weeklyReportRows = requireData(weeklyReportResult, "读取周报") as WeeklyReportRow[];
+  let archivedHomeworks: ArchivedHomeworkSummary[] = [];
+  let archivedPlanBlocks: WorkspaceTask[] = [];
+  if (membership.role === "parent") {
+    const archivedRows = requireData(
+      await client.from("homeworks").select("id,subject_id,version,current_version_id,updated_at").eq("student_id", studentId).eq("status", "archived").is("deleted_at", null).order("updated_at", { ascending: false }),
+      "读取已归档作业",
+    ) as ArchivedHomeworkRow[];
+    const archivedVersionIds = archivedRows.map((row) => row.current_version_id).filter((id): id is string => Boolean(id));
+    const archivedVersions = archivedVersionIds.length
+      ? requireData(await client.from("homework_versions").select("id,title").in("id", archivedVersionIds), "读取已归档作业版本") as Array<{ id: string; title: string }>
+      : [];
+    const archivedTitleByVersion = new Map(archivedVersions.map((row) => [row.id, row.title]));
+    archivedHomeworks = archivedRows.map((row) => ({
+      id: row.id,
+      subject: SUBJECT_BY_ID[row.subject_id],
+      title: archivedTitleByVersion.get(row.current_version_id ?? "") ?? "已归档作业",
+      version: row.version,
+      updatedAt: row.updated_at,
+    })).filter((row) => Boolean(row.subject));
+  }
+  if (membership.role === "tutor") {
+    const activeHomeworkRows = requireData(
+      await client
+        .from("homeworks")
+        .select("id")
+        .eq("student_id", studentId)
+        .eq("status", "active")
+        .is("deleted_at", null),
+      "读取有效作业范围",
+    ) as Array<{ id: string }>;
+    const activeHomeworkIds = activeHomeworkRows.map((row) => row.id);
+    const archivedRows = activeHomeworkIds.length
+      ? requireData(
+        await client
+          .from("homework_tasks")
+          .select(TASK_SELECT)
+          .eq("student_id", studentId)
+          .in("homework_id", activeHomeworkIds)
+          .not("deleted_at", "is", null)
+          .order("deleted_at", { ascending: false })
+          .limit(30),
+        "读取可恢复任务块",
+      ) as TaskRow[]
+      : [];
+    archivedPlanBlocks = archivedRows.map((row) => ({
+      ...toWorkspaceTask(row),
+      date: row.planned_date,
+      weekday: weekdayFor(row.planned_date),
+    }));
+  }
   const workspaceExtras = {
     studentId,
+    archivedHomeworks,
+    archivedPlanBlocks,
     notifications: notificationRows.map((row) => ({ id: row.id, type: row.notification_type, title: row.title, body: row.body, readAt: row.read_at ?? undefined, createdAt: row.created_at })),
     weeklyReports: weeklyReportRows.map((row) => ({ id: row.id, weekStart: row.week_start, weekEnd: row.week_end, metrics: row.metrics, narrative: row.narrative, generatedAt: row.generated_at })),
   };
@@ -219,7 +288,7 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
   const taskRows = requireData(
     await client
       .from("homework_tasks")
-      .select("id,student_id,subject_id,title,planned_date,original_date,slot_type,knowledge,knowledge_tags,answer_basis,submission_requirement,notes,task_kind,block_minutes,recommended_minutes,requires_submission,course_integrated,optional,uncertainty,priority,answer_policy,requirement_level,evidence_required,source_reference,deadline_date,deadline_at,deadline_precision,homework_id,homework_version_id,version,block_type,sequence_number")
+      .select(TASK_SELECT)
       .eq("student_id", studentId)
       .is("deleted_at", null)
       .order("planned_date"),
@@ -237,7 +306,7 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
     client.from("task_plan_changes").select("id,task_id,old_date,new_date,reason,changed_by,created_at").in("task_id", taskIds).order("created_at", { ascending: false }),
     client.from("task_workflow_current").select("task_id,stage,actual_seconds,active_started_at,version,updated_at").in("task_id", taskIds),
     homeworkIds.length
-      ? client.from("submission_checkpoints").select("id,homework_id,label,required,due_date,due_at,status,confirmed_at,version").in("homework_id", homeworkIds).is("archived_at", null)
+      ? client.from("submission_checkpoints").select("id,homework_id,label,required,due_date,due_at,status,confirmed_at,archived_at,version").in("homework_id", homeworkIds)
       : Promise.resolve({ data: [] as CheckpointRow[], error: null }),
     taskIds.length
       ? client.from("task_knowledge_links").select("task_id,knowledge_node_id").in("task_id", taskIds)
@@ -257,7 +326,7 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
   const knowledgeNodeIds = [...new Set(linkRows.map((link) => link.knowledge_node_id))];
   const currentHomeworkVersionIds = homeworkRows.map((row) => row.current_version_id).filter((id): id is string => Boolean(id));
   const versionRows = currentHomeworkVersionIds.length
-    ? requireData(await client.from("homework_versions").select("id,title,requirements").in("id", currentHomeworkVersionIds), "读取当前作业版本") as HomeworkVersionSummaryRow[]
+    ? requireData(await client.from("homework_versions").select("id,title,requirements,knowledge_tags,requirement_level,answer_policy,answer_basis,submission_requirement,deadline_date").in("id", currentHomeworkVersionIds), "读取当前作业版本") as HomeworkVersionSummaryRow[]
     : [];
   const [nodeRows, snapshotRows] = knowledgeNodeIds.length ? await Promise.all([
     client.from("knowledge_nodes").select("id,display_name").in("id", knowledgeNodeIds).then((result) => requireData(result, "读取知识点")) as Promise<KnowledgeNodeRow[]>,
@@ -274,11 +343,19 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
   for (const link of linkRows) linksByTask.set(link.task_id, [...(linksByTask.get(link.task_id) ?? []), link]);
   const checkpointsByHomework = new Map<string, CheckpointRow[]>();
   for (const checkpoint of checkpointRows) checkpointsByHomework.set(checkpoint.homework_id, [...(checkpointsByHomework.get(checkpoint.homework_id) ?? []), checkpoint]);
-  const enrichedTasks = tasks.map((task) => ({
+  const enrichedTasks = tasks.map((task) => {
+    const currentVersion = homeworkVersionById.get(homeworkById.get(task.homeworkId ?? "")?.current_version_id ?? "");
+    return {
     ...task,
     homeworkRecordVersion: homeworkById.get(task.homeworkId ?? "")?.version,
-    homeworkTitle: homeworkVersionById.get(homeworkById.get(task.homeworkId ?? "")?.current_version_id ?? "")?.title,
-    homeworkRequirements: homeworkVersionById.get(homeworkById.get(task.homeworkId ?? "")?.current_version_id ?? "")?.requirements,
+    homeworkTitle: currentVersion?.title,
+    homeworkRequirements: currentVersion?.requirements,
+    homeworkKnowledgeTags: currentVersion?.knowledge_tags,
+    homeworkRequirementLevel: currentVersion?.requirement_level,
+    homeworkAnswerPolicy: currentVersion?.answer_policy,
+    homeworkAnswerBasis: currentVersion?.answer_basis,
+    homeworkSubmissionRequirement: currentVersion?.submission_requirement,
+    homeworkDeadlineDate: currentVersion?.deadline_date ?? undefined,
     knowledgeNodes: (linksByTask.get(task.id) ?? []).map((link) => ({
       id: link.knowledge_node_id,
       name: nodeById.get(link.knowledge_node_id)?.display_name ?? task.knowledge,
@@ -294,8 +371,9 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
       dueDate: checkpoint.due_date ?? undefined,
       dueAt: checkpoint.due_at ?? undefined,
       confirmedAt: checkpoint.confirmed_at ?? undefined,
+      archivedAt: checkpoint.archived_at ?? undefined,
     })),
-  }));
+  }; });
   const taskById = new Map(enrichedTasks.map((task) => [task.id, task]));
   const progress: Record<string, TaskProgress> = {};
 

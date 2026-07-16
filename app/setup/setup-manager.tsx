@@ -103,9 +103,14 @@ export function SetupManager({ configured, familyId, userId, student, assignment
   }
 
   async function revokeAssignment(assignmentId: string, subjectName: string) {
-    if (!window.confirm(`确认撤销${subjectName}家教的当前权限？`)) return;
+    const reason = window.prompt(`请输入撤销${subjectName}家教权限的原因`, "家教安排变化");
+    if (!reason?.trim()) return;
     setBusy(true);
-    const { error } = await getSupabaseBrowserClient().from("tutor_assignments").update({ ends_at: new Date().toISOString() }).eq("id", assignmentId);
+    const { error } = await getSupabaseBrowserClient().rpc("revoke_tutor_access", {
+      target_assignment_id: assignmentId,
+      revoke_reason: reason.trim(),
+      target_idempotency_key: crypto.randomUUID(),
+    });
     setBusy(false);
     if (error) return setStatus(error.message);
     setStatus(`${subjectName}家教权限已撤销，当前登录会话立即失权。`);

@@ -42,13 +42,30 @@ insert into public.students(id, family_id, user_id, display_name, grade, school_
 values(:'student_record_id', :'family_id', :'student_user_id', '测试孩子', '高一升高二', '2026', :'parent_id');
 insert into public.students(id, family_id, display_name, grade, school_year, created_by)
 values(:'import_student_id', :'family_id', '导入测试孩子', '高一升高二', '2026', :'parent_id');
-insert into public.family_memberships(family_id, user_id, role) values
-  (:'family_id', :'student_user_id', 'student'),
-  (:'family_id', :'math_tutor_id', 'tutor'),
-  (:'family_id', :'physics_tutor_id', 'tutor');
-insert into public.tutor_assignments(family_id, student_id, subject_id, tutor_user_id, created_by) values
-  (:'family_id', :'student_record_id', 'math', :'math_tutor_id', :'parent_id'),
-  (:'family_id', :'student_record_id', 'physics', :'physics_tutor_id', :'parent_id');
+
+select set_config('request.jwt.claim.sub', :'parent_id', false);
+set role authenticated;
+select raw_token as math_invite_token from public.create_account_invitation('math@example.test', 'tutor', :'student_record_id', 'math', 168) \gset
+select raw_token as physics_invite_token from public.create_account_invitation('physics@example.test', 'tutor', :'student_record_id', 'physics', 168) \gset
+select raw_token as student_invite_token from public.create_account_invitation('student@example.test', 'student', :'student_record_id', null, 168) \gset
+reset role;
+
+select set_config('request.jwt.claim.sub', :'physics_tutor_id', false);
+set role authenticated;
+select pg_temp.expect_error(format('select public.accept_invitation(%L)', :'math_invite_token'), 'invitation email mismatch');
+select public.accept_invitation(:'physics_invite_token');
+reset role;
+
+select set_config('request.jwt.claim.sub', :'math_tutor_id', false);
+set role authenticated;
+select public.accept_invitation(:'math_invite_token');
+select pg_temp.expect_error(format('select public.accept_invitation(%L)', :'math_invite_token'), 'invitation invalid or expired');
+reset role;
+
+select set_config('request.jwt.claim.sub', :'student_user_id', false);
+set role authenticated;
+select public.accept_invitation(:'student_invite_token');
+reset role;
 
 insert into public.plan_catalogs(id, title, version, starts_on, ends_on)
 values('integration-catalog', '作业与任务块分离测试', 1, '2026-07-16', '2026-08-29');
@@ -78,6 +95,20 @@ select public.add_submission_checkpoint(
   :'homework_id', 'correction_return', '订正后回传', true,
   '2026-07-19', null, '99999999-0000-4000-8000-000000000001'
 ) as checkpoint_2_id \gset
+select public.revise_homework(
+  :'homework_id', 1, '函数综合测试（新版）', '独立完成、批改、订正并复做',
+  '2026-07-18', null, '补充完整本体字段', 'required',
+  'locked_until_first_attempt', '首做完成后由家教核对', '学校平台提交',
+  array['函数单调性']
+) as revised_version_id \gset
+select pg_temp.assert_true((select version = 2 and current_version_id = :'revised_version_id' from public.homeworks where id = :'homework_id'), 'homework revision should create an authoritative second version');
+select pg_temp.assert_true((select count(*) = 2 from public.homework_versions where homework_id = :'homework_id'), 'homework revision must retain the old immutable version');
+select pg_temp.assert_true((select title = '函数综合测试（新版）' and homework_version_id = :'revised_version_id' from public.homework_tasks where homework_id = :'homework_id'), 'unstarted task should move to the new homework version');
+select pg_temp.assert_true((select cardinality(evidence_required) = 5 from public.homework_tasks where homework_id = :'homework_id'), 'manual homework should receive the complete evidence requirement list');
+select public.set_submission_checkpoint_archived(:'checkpoint_2_id', true, true, '暂时取消回传', 1, '99999999-0000-4000-8000-000000000002');
+select pg_temp.assert_true((select archived_at is not null and not required from public.submission_checkpoints where id = :'checkpoint_2_id'), 'archived checkpoint must stop blocking the workflow');
+select public.set_submission_checkpoint_archived(:'checkpoint_2_id', false, true, '学校恢复要求', 2, '99999999-0000-4000-8000-000000000003');
+select pg_temp.assert_true((select archived_at is null and required and version = 3 from public.submission_checkpoints where id = :'checkpoint_2_id'), 'restored checkpoint must rejoin the required submission gate');
 reset role;
 
 select id as task_id from public.homework_tasks where homework_id = :'homework_id' \gset
@@ -132,19 +163,40 @@ select public.confirm_knowledge_mastery(
 ) as evidence_id \gset
 select pg_temp.assert_true((select stage = 'awaiting_acceptance' and version = 10 from public.task_workflow_current where task_id = :'task_id'), 'required submission must keep workflow open');
 select pg_temp.assert_true((select current_level = 'mastered' from public.mastery_snapshots where knowledge_node_id = :'knowledge_node_id'), 'mastery evidence should light the knowledge node');
-select public.confirm_submission_checkpoint(:'checkpoint_id', '', 1, 'dddddddd-0000-4000-8000-000000000006');
+select public.confirm_submission_checkpoint(:'checkpoint_id', '', 2, 'dddddddd-0000-4000-8000-000000000006');
 select pg_temp.assert_true((select stage = 'awaiting_acceptance' and version = 11 from public.task_workflow_current where task_id = :'task_id'), 'one of two required checkpoints must not close the loop');
-select public.confirm_submission_checkpoint(:'checkpoint_2_id', '', 1, 'dddddddd-0000-4000-8000-000000000010');
+select public.confirm_submission_checkpoint(:'checkpoint_2_id', '', 3, 'dddddddd-0000-4000-8000-000000000010');
 select pg_temp.assert_true((select stage = 'closed_loop' and version = 12 from public.task_workflow_current where task_id = :'task_id'), 'all required checkpoints should close the loop');
-select public.confirm_submission_checkpoint(:'checkpoint_id', '', 1, 'dddddddd-0000-4000-8000-000000000006');
+select public.confirm_submission_checkpoint(:'checkpoint_id', '', 2, 'dddddddd-0000-4000-8000-000000000006');
 select pg_temp.assert_true((select count(*) = 1 from public.submission_confirmations where idempotency_key = 'dddddddd-0000-4000-8000-000000000006'), 'submission confirmation must be idempotent');
-select public.revoke_submission_checkpoint(:'checkpoint_id', '误点提交', 2, 'dddddddd-0000-4000-8000-000000000007');
+select public.revoke_submission_checkpoint(:'checkpoint_id', '误点提交', 3, 'dddddddd-0000-4000-8000-000000000007');
 select pg_temp.assert_true((select stage = 'awaiting_acceptance' and version = 13 from public.task_workflow_current where task_id = :'task_id'), 'revoked submission must reopen only submission gate');
 select pg_temp.assert_true((select current_level = 'mastered' from public.mastery_snapshots where knowledge_node_id = :'knowledge_node_id'), 'submission revoke must not change mastery');
-select public.confirm_submission_checkpoint(:'checkpoint_id', '重新核对', 3, 'dddddddd-0000-4000-8000-000000000008');
+select public.confirm_submission_checkpoint(:'checkpoint_id', '重新核对', 4, 'dddddddd-0000-4000-8000-000000000008');
 select public.reopen_task_workflow(:'task_id', '发现新错误，需要重做', 14, 'dddddddd-0000-4000-8000-000000000009');
 select pg_temp.assert_true((select stage = 'ready' and version = 15 from public.task_workflow_current where task_id = :'task_id'), 'reopen should create a fresh ready cycle');
-select pg_temp.assert_true((select current_level = 'reinforce' and highest_level = 'basic' from public.mastery_snapshots where knowledge_node_id = :'knowledge_node_id'), 'reopen evidence should roll current mastery back while retaining valid history');
+select pg_temp.assert_true((select current_level = 'reinforce' and highest_level = 'mastered' from public.mastery_snapshots where knowledge_node_id = :'knowledge_node_id'), 'reopen evidence should roll current mastery back while retaining the historical mastered level');
+select pg_temp.assert_true((select preserve_for_highest from public.mastery_evidence_revocations where evidence_id = :'evidence_id'), 'workflow reopen should invalidate current evidence without erasing the legitimate high-water mark');
+reset role;
+
+select set_config('request.jwt.claim.sub', :'student_user_id', false);
+set role authenticated;
+select public.record_student_task_event(:'task_id', 'unknown_updated', array['5','5','12(2)'], 15, 'aaaaaaaa-0000-4000-8000-000000000005');
+select pg_temp.assert_true((select stage = 'ready' and version = 16 from public.task_workflow_current where task_id = :'task_id'), 'recording unknown numbers must preserve the ready workflow while advancing optimistic version');
+select pg_temp.assert_true((select unknown_numbers = array['5','12(2)'] from public.student_task_activity where task_id = :'task_id'), 'unknown-number update must persist and deduplicate independently of start or completion');
+reset role;
+
+select set_config('request.jwt.claim.sub', :'parent_id', false);
+set role authenticated;
+select public.revise_homework(
+  :'homework_id', 2, '函数综合测试（第三版）', '学校补充要求，但不得污染旧学习证据',
+  '2026-07-20', null, '孩子开始后再次调整', 'required',
+  'after_school_submission', '提交后开放新答案', '学校平台提交',
+  array['函数单调性']
+) as third_version_id \gset
+select pg_temp.assert_true((select version = 3 and current_version_id = :'third_version_id' from public.homeworks where id = :'homework_id'), 'a later parent revision should become the current homework version');
+select pg_temp.assert_true((select homework_version_id = :'revised_version_id' from public.homework_tasks where id = :'task_id'), 'a task with study history must remain linked to the version actually attempted');
+select pg_temp.assert_true((select count(*) = 3 from public.homework_versions where homework_id = :'homework_id'), 'all immutable homework versions must remain available for evidence tracing');
 reset role;
 
 select set_config('request.jwt.claim.sub', :'parent_id', false);
@@ -153,18 +205,40 @@ select public.create_manual_homework(
   :'student_record_id', 'math', '计划块操作测试', '用于移动拆分合并测试',
   '2026-07-17', null, null, 'required', 'locked_until_first_attempt', '', '', array['计划能力']
 ) as plan_homework_id \gset
-reset role;
 select id as plan_task_id from public.homework_tasks where homework_id = :'plan_homework_id' \gset
+select public.set_homework_archived(:'plan_homework_id', true, '暂时取消计划', 1, '99999999-1000-4000-8000-000000000001');
+reset role;
+select pg_temp.assert_true((select deleted_at is not null from public.homework_tasks where id = :'plan_task_id'), 'archiving a homework should soft-delete its plan block');
+select set_config('request.jwt.claim.sub', :'parent_id', false);
+set role authenticated;
+select public.set_homework_archived(:'plan_homework_id', false, '恢复计划', 2, '99999999-1000-4000-8000-000000000002');
+reset role;
+select pg_temp.assert_true((select deleted_at is null and version = 3 from public.homework_tasks where id = :'plan_task_id'), 'restoring a homework should recover its plan block without losing history');
 
 select set_config('request.jwt.claim.sub', :'math_tutor_id', false);
 set role authenticated;
-select public.move_homework_blocks(:'plan_task_id', '2026-07-18', '与课程冲突', 1, false, 'eeeeeeee-0000-4000-8000-000000000001');
-select public.split_homework_block(:'plan_task_id', 45, '2026-07-19', '拆成两次完成', 2, 'eeeeeeee-0000-4000-8000-000000000002') as second_task_id \gset
-select pg_temp.assert_true((select block_minutes = 45 and version = 3 from public.homework_tasks where id = :'plan_task_id'), 'split should preserve first half');
-select public.merge_homework_blocks(:'plan_task_id', :'second_task_id', 3, 1, '恢复为一个任务块', 'eeeeeeee-0000-4000-8000-000000000003');
-select pg_temp.assert_true((select block_minutes = 90 and version = 4 from public.homework_tasks where id = :'plan_task_id'), 'merge should restore duration');
+select public.move_homework_blocks(:'plan_task_id', '2026-07-18', '与课程冲突', 3, false, 'eeeeeeee-0000-4000-8000-000000000001');
+select public.split_homework_block(:'plan_task_id', 45, '2026-07-19', '拆成两次完成', 4, 'eeeeeeee-0000-4000-8000-000000000002') as second_task_id \gset
+select pg_temp.assert_true((select block_minutes = 45 and version = 5 from public.homework_tasks where id = :'plan_task_id'), 'split should preserve first half');
+select public.merge_homework_blocks(:'plan_task_id', :'second_task_id', 5, 1, '恢复为一个任务块', 'eeeeeeee-0000-4000-8000-000000000003');
+select pg_temp.assert_true((select block_minutes = 90 and version = 6 from public.homework_tasks where id = :'plan_task_id'), 'merge should restore duration');
 reset role;
 select pg_temp.assert_true((select deleted_at is not null from public.homework_tasks where id = :'second_task_id'), 'merged-away block must be soft deleted');
+
+select set_config('request.jwt.claim.sub', :'math_tutor_id', false);
+set role authenticated;
+select pg_temp.assert_true((select count(*) = 1 from public.homework_tasks where id = :'second_task_id' and deleted_at is not null), 'assigned subject tutor should be able to discover a recoverable archived block');
+reset role;
+
+select set_config('request.jwt.claim.sub', :'student_user_id', false);
+set role authenticated;
+select pg_temp.assert_true((select count(*) = 0 from public.homework_tasks where id = :'second_task_id' and deleted_at is not null), 'student must not discover archived plan blocks');
+reset role;
+
+select set_config('request.jwt.claim.sub', :'physics_tutor_id', false);
+set role authenticated;
+select pg_temp.assert_true((select count(*) = 0 from public.homework_tasks where id = :'second_task_id' and deleted_at is not null), 'other-subject tutor must not discover archived math blocks');
+reset role;
 
 select set_config('request.jwt.claim.sub', :'math_tutor_id', false);
 set role authenticated;
@@ -194,5 +268,23 @@ reset role;
 
 select pg_temp.assert_true((select count(*) >= 1 from public.notifications where recipient_id = :'parent_id'), 'plan and submission changes should notify parent inside the system');
 select pg_temp.assert_true((select count(*) >= 1 from public.notifications where recipient_id = :'math_tutor_id'), 'student completion should notify the subject tutor');
+
+select id as math_assignment_id from public.tutor_assignments
+where student_id = :'student_record_id' and subject_id = 'math' and ends_at is null \gset
+select set_config('request.jwt.claim.sub', :'parent_id', false);
+set role authenticated;
+select pg_temp.expect_error(
+  format('update public.tutor_assignments set ends_at = now() where id = %L::uuid', :'math_assignment_id'),
+  'permission denied'
+);
+select public.revoke_tutor_access(:'math_assignment_id', '家教安排变化', 'ffffffff-0000-4000-8000-000000000001');
+select pg_temp.assert_true((select count(*) = 1 from public.change_events where entity_id = :'math_assignment_id' and event_type = 'tutor_access_revoked' and reason = '家教安排变化'), 'permission revocation must be audited with its reason');
+reset role;
+
+select set_config('request.jwt.claim.sub', :'math_tutor_id', false);
+set role authenticated;
+select pg_temp.assert_true((select count(*) = 0 from public.homeworks), 'revoked tutor session must immediately lose homework access');
+select pg_temp.assert_true(not public.is_subject_tutor(:'student_record_id', 'math'), 'revoked tutor must immediately lose subject authorization');
+reset role;
 
 select 'WORKFLOW_INTEGRATION_OK' as result;

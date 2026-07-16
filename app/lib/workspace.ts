@@ -11,9 +11,16 @@ export type WorkspaceTask = SummerTask & {
   homeworkRecordVersion?: number;
   homeworkTitle?: string;
   homeworkRequirements?: string;
+  homeworkKnowledgeTags?: string[];
+  homeworkRequirementLevel?: SummerTask["requirementLevel"];
+  homeworkAnswerPolicy?: SummerTask["answerPolicy"];
+  homeworkAnswerBasis?: string;
+  homeworkSubmissionRequirement?: string;
+  homeworkDeadlineDate?: string;
   recordVersion?: number;
   blockType?: "knowledge_review" | "first_attempt" | "continuation" | "tutor_review" | "correction" | "independent_redo" | "submission_confirmation" | "reading";
   sequenceNumber?: number;
+  deletedAt?: string;
   knowledgeNodes?: KnowledgeNodeSummary[];
   submissionCheckpoints?: SubmissionCheckpointSummary[];
 };
@@ -34,6 +41,7 @@ export type SubmissionCheckpointSummary = {
   dueDate?: string;
   dueAt?: string;
   confirmedAt?: string;
+  archivedAt?: string;
 };
 
 export type TaskProgress = {
@@ -100,11 +108,21 @@ export type WeeklyReportSummary = {
   generatedAt: string;
 };
 
+export type ArchivedHomeworkSummary = {
+  id: string;
+  subject: SummerTask["subject"];
+  title: string;
+  version: number;
+  updatedAt: string;
+};
+
 export type InitialWorkspace = StoredWorkspace & {
   tasks: WorkspaceTask[];
   studentId?: string;
   notifications?: NotificationSummary[];
   weeklyReports?: WeeklyReportSummary[];
+  archivedHomeworks?: ArchivedHomeworkSummary[];
+  archivedPlanBlocks?: WorkspaceTask[];
   role?: "parent" | "tutor" | "student";
   userId?: string;
   remoteEnabled?: boolean;

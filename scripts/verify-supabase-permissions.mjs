@@ -1,4 +1,4 @@
-import { createHash, randomBytes, randomUUID } from "node:crypto";
+import { randomBytes, randomUUID } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 
 const requiredEnvironment = [
@@ -38,10 +38,6 @@ function requireData(result, label) {
   return result.data;
 }
 
-function hashToken(token) {
-  return createHash("sha256").update(token).digest("hex");
-}
-
 function makeUserClient() {
   return createClient(url, anonKey, clientOptions);
 }
@@ -68,21 +64,19 @@ async function createTestAccount(role, runId) {
 }
 
 async function createInvitation(parent, studentId, account, role, subjectId = null) {
-  const rawToken = randomBytes(32).toString("base64url");
-  requireData(
-    await parent.client.from("invitations").insert({
-      family_id: familyId,
-      email: account.email,
-      role,
-      student_id: studentId,
-      subject_id: subjectId,
-      token_hash: hashToken(rawToken),
-      expires_at: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
-      created_by: parent.id,
+  const rows = requireData(
+    await parent.client.rpc("create_account_invitation", {
+      target_email: account.email,
+      target_role: role,
+      target_student_id: studentId,
+      target_subject_id: subjectId,
+      valid_hours: 1,
     }),
     `创建${role === "student" ? "孩子" : subjectId}邀请`,
   );
-  return rawToken;
+  const token = rows?.[0]?.raw_token;
+  if (typeof token !== "string" || token.length < 32) throw new Error(`创建${role}邀请：数据库未返回有效的一次性令牌`);
+  return token;
 }
 
 async function acceptInvitation(account, token, label) {
@@ -315,23 +309,15 @@ async function main() {
     "孩子不能读取家教授权表",
   );
 
-  const revokedAt = new Date().toISOString();
-  requireData(
-    await parent.client
-      .from("tutor_assignments")
-      .update({ ends_at: revokedAt })
-      .eq("student_id", student.id)
-      .eq("subject_id", "math"),
-    "撤销数学家教科目授权",
+  const mathAssignment = requireData(
+    await parent.client.from("tutor_assignments").select("id").eq("student_id", student.id).eq("subject_id", "math").single(),
+    "读取数学家教授权",
   );
-  requireData(
-    await parent.client
-      .from("family_memberships")
-      .update({ removed_at: revokedAt })
-      .eq("family_id", familyId)
-      .eq("user_id", mathTutor.id),
-    "移除数学家教家庭成员关系",
-  );
+  requireData(await parent.client.rpc("revoke_tutor_access", {
+    target_assignment_id: mathAssignment.id,
+    revoke_reason: "真实权限撤销验收",
+    target_idempotency_key: randomUUID(),
+  }), "撤销数学家教科目授权");
 
   const revokedStudentRows = requireData(
     await mathTutor.client.from("students").select("id").eq("id", student.id),

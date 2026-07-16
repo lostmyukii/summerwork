@@ -1,5 +1,5 @@
 import { normalizeQuestionNumbers } from "../workflow";
-import type { TaskProgress, WorkspaceTask } from "../workspace";
+import type { ArchivedHomeworkSummary, TaskProgress, WorkspaceTask } from "../workspace";
 import { getSupabaseBrowserClient } from "./client";
 
 const ACCURACY_BAND: Record<string, "100" | "90+" | "70-89" | "below-70"> = {
@@ -10,6 +10,23 @@ const ACCURACY_BAND: Record<string, "100" | "90+" | "70-89" | "below-70"> = {
 };
 
 type WorkflowRpcRow = { version: number; stage: TaskProgress["workflowStage"] };
+
+export type HomeworkRequirementLevel = "required" | "optional" | "pending_confirmation";
+export type HomeworkAnswerPolicy = "after_school_submission" | "guardian_held_until_attempt" | "weekly_teacher_release" | "locked_until_first_attempt";
+export type HomeworkAuthoringInput = {
+  studentId: string;
+  subjectId: string;
+  title: string;
+  requirements: string;
+  plannedDate: string;
+  deadlineDate?: string;
+  requirementLevel: HomeworkRequirementLevel;
+  answerPolicy: HomeworkAnswerPolicy;
+  answerBasis: string;
+  submissionRequirement: string;
+  knowledgeTags: string[];
+};
+export type HomeworkRevisionInput = Omit<HomeworkAuthoringInput, "studentId" | "subjectId" | "plannedDate"> & { reason: string };
 
 function requireRemoteTask(task: WorkspaceTask) {
   if (!task.databaseId || !task.studentId) throw new Error("任务尚未绑定 Supabase 实例");
@@ -38,11 +55,11 @@ async function currentWorkflow(taskId: string): Promise<WorkflowRpcRow> {
 
 export async function persistStudentActivity(task: WorkspaceTask, previous: TaskProgress, next: TaskProgress): Promise<WorkflowRpcRow | undefined> {
   const { taskId } = requireRemoteTask(task);
-  let event: "started" | "paused" | "completed" | undefined;
+  let event: "started" | "paused" | "completed" | "unknown_updated" | undefined;
   if (next.runState === "running" && previous.runState !== "running") event = "started";
   else if (next.runState === "paused" && previous.runState === "running") event = "paused";
   else if (next.runState === "completed" && previous.runState !== "completed") event = "completed";
-  if (!event) return undefined;
+  if (!event) event = "unknown_updated";
 
   const { data, error } = await getSupabaseBrowserClient().rpc("record_student_task_event", {
     target_task_id: taskId,
@@ -169,17 +186,16 @@ export async function exportStudentArchive(studentId: string) {
   return data as Record<string, unknown>;
 }
 
-export async function createManualHomework(input: {
-  studentId: string;
-  subjectId: string;
-  title: string;
-  requirements: string;
-  plannedDate: string;
-  deadlineDate?: string;
-  answerBasis: string;
-  submissionRequirement: string;
-  knowledgeTags: string[];
-}) {
+export async function createBackupSnapshot(studentId: string, label: string) {
+  const { data, error } = await getSupabaseBrowserClient().rpc("create_backup_snapshot", {
+    target_student_id: studentId,
+    snapshot_label: label,
+  });
+  if (error) throw new Error(error.message);
+  return data as string;
+}
+
+export async function createManualHomework(input: HomeworkAuthoringInput) {
   const { data, error } = await getSupabaseBrowserClient().rpc("create_manual_homework", {
     target_student_id: input.studentId,
     target_subject_id: input.subjectId,
@@ -188,8 +204,8 @@ export async function createManualHomework(input: {
     target_planned_date: input.plannedDate,
     target_deadline_date: input.deadlineDate || null,
     target_deadline_at: null,
-    target_requirement_level: "required",
-    target_answer_policy: "locked_until_first_attempt",
+    target_requirement_level: input.requirementLevel,
+    target_answer_policy: input.answerPolicy,
     target_answer_basis: input.answerBasis,
     target_submission_requirement: input.submissionRequirement,
     target_knowledge_tags: input.knowledgeTags,
@@ -198,7 +214,7 @@ export async function createManualHomework(input: {
   return data as string;
 }
 
-export async function reviseHomework(task: WorkspaceTask, input: { title: string; requirements: string; deadlineDate?: string; reason: string }) {
+export async function reviseHomework(task: WorkspaceTask, input: HomeworkRevisionInput) {
   if (!task.homeworkId || !task.homeworkRecordVersion) throw new Error("缺少作业版本，请刷新后重试");
   const { data, error } = await getSupabaseBrowserClient().rpc("revise_homework", {
     target_homework_id: task.homeworkId,
@@ -208,17 +224,27 @@ export async function reviseHomework(task: WorkspaceTask, input: { title: string
     target_deadline_date: input.deadlineDate || null,
     target_deadline_at: null,
     revision_reason: input.reason,
+    target_requirement_level: input.requirementLevel,
+    target_answer_policy: input.answerPolicy,
+    target_answer_basis: input.answerBasis,
+    target_submission_requirement: input.submissionRequirement,
+    target_knowledge_tags: input.knowledgeTags,
   });
   if (error) throw new Error(error.message);
   return data as string;
 }
 
-export async function setHomeworkArchived(task: WorkspaceTask, archived: boolean, reason: string) {
-  if (!task.homeworkId) throw new Error("缺少作业标识，请刷新后重试");
+export async function setHomeworkArchived(taskOrHomework: WorkspaceTask | ArchivedHomeworkSummary, archived: boolean, reason: string) {
+  const isArchivedSummary = "updatedAt" in taskOrHomework;
+  const homeworkId = isArchivedSummary ? taskOrHomework.id : taskOrHomework.homeworkId;
+  const version = isArchivedSummary ? taskOrHomework.version : taskOrHomework.homeworkRecordVersion;
+  if (!homeworkId || !version) throw new Error("缺少作业版本，请刷新后重试");
   const { error } = await getSupabaseBrowserClient().rpc("set_homework_archived", {
-    target_homework_id: task.homeworkId,
+    target_homework_id: homeworkId,
     archive_value: archived,
     change_reason: reason,
+    expected_version: version,
+    target_idempotency_key: crypto.randomUUID(),
   });
   if (error) throw new Error(error.message);
 }
@@ -276,6 +302,20 @@ export async function archiveSubmissionCheckpoint(task: WorkspaceTask, checkpoin
   if (error) throw new Error(error.message);
 }
 
+export async function restoreSubmissionCheckpoint(task: WorkspaceTask, checkpointId: string, reason: string) {
+  const checkpoint = task.submissionCheckpoints?.find((item) => item.id === checkpointId);
+  if (!checkpoint) throw new Error("提交节点不存在，请刷新后重试");
+  const { error } = await getSupabaseBrowserClient().rpc("set_submission_checkpoint_archived", {
+    target_checkpoint_id: checkpoint.id,
+    archive_value: false,
+    required_on_restore: true,
+    change_reason: reason,
+    expected_version: checkpoint.version,
+    target_idempotency_key: crypto.randomUUID(),
+  });
+  if (error) throw new Error(error.message);
+}
+
 export async function splitPlanBlock(task: WorkspaceTask, secondDate: string, reason: string) {
   const { taskId } = requireRemoteTask(task);
   if (!task.recordVersion) throw new Error("缺少计划块版本，请刷新后重试");
@@ -319,4 +359,16 @@ export async function mergePlanBlocks(first: WorkspaceTask, second: WorkspaceTas
   });
   if (error) throw new Error(error.message);
   return data as string;
+}
+
+export async function restorePlanBlock(task: WorkspaceTask, reason: string) {
+  const { taskId } = requireRemoteTask(task);
+  if (!task.recordVersion) throw new Error("缺少计划块版本，请刷新后重试");
+  const { error } = await getSupabaseBrowserClient().rpc("restore_plan_block", {
+    target_task_id: taskId,
+    restore_reason: reason,
+    expected_version: task.recordVersion,
+    target_idempotency_key: crypto.randomUUID(),
+  });
+  if (error) throw new Error(error.message);
 }
