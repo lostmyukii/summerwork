@@ -90,6 +90,7 @@ test("secrets, upstream assets and rollback boundaries are fail-closed", async (
   assert.doesNotMatch(restore, /pg_restore -U postgres/);
   assert.match(cron, /^17 3 \* \* \* root \/srv\/summerwork\/deploy\/scripts\/backup\.sh/m);
   assert.match(logrotate, /^\/var\/log\/summerwork-backup\.log/m);
+  assert.match(logrotate, /^\s+su root adm$/m);
   assert.doesNotMatch(`${cron}\n${logrotate}`, /docker system prune|down -v|\/etc\/nginx/);
 
   const operational = `${readme}\n${backup}\n${restore}`;
