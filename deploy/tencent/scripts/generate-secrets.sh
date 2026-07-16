@@ -80,6 +80,7 @@ const publishableKey = opaqueKey("sb_publishable_");
 const secretKey = opaqueKey("sb_secret_");
 const values = {
   COMPOSE_PROJECT_NAME: "summerwork",
+  SUMMERWORK_APP_ROOT: "/srv/summerwork/app",
   POSTGRES_HOST: "db",
   POSTGRES_PORT: "5432",
   POSTGRES_DB: "postgres",

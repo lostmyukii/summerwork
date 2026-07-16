@@ -21,24 +21,24 @@ docker compose --env-file deploy/tencent/env.example -f deploy/tencent/docker-co
 
 ## 2. 服务器检查点
 
-在启动任何新容器前执行：
+服务器上的源码位于 `/srv/summerwork/app`，已验证部署文件复制到 `/srv/summerwork/deploy`。在启动任何新容器前执行：
 
 ```bash
 sudo install -d -o ubuntu -g ubuntu -m 0750 /srv/summerwork/{app,deploy,backups,checkpoints}
-deploy/tencent/scripts/checkpoint.sh
-deploy/tencent/scripts/fetch-supabase-db-assets.sh
-deploy/tencent/scripts/generate-secrets.sh
-deploy/tencent/scripts/preflight.sh
+/srv/summerwork/deploy/scripts/checkpoint.sh
+/srv/summerwork/deploy/scripts/fetch-supabase-db-assets.sh
+/srv/summerwork/deploy/scripts/generate-secrets.sh
+/srv/summerwork/deploy/scripts/preflight.sh
 ```
 
 `preflight.sh` 在端口冲突、磁盘低于 45GB、可用内存低于 4GB、Nginx 原配置无效、密钥权限不为 `0600` 或固定资产缺失时停止。
 
 ## 3. 分门启动
 
-以下命令均在仓库根目录执行：
+以下命令均在服务器 `/srv/summerwork` 下执行：
 
 ```bash
-COMPOSE='docker compose --project-name summerwork --env-file deploy/tencent/.env -f deploy/tencent/docker-compose.yml'
+COMPOSE='docker compose --project-name summerwork --env-file deploy/.env -f deploy/docker-compose.yml'
 $COMPOSE pull db auth rest realtime kong
 $COMPOSE up -d db
 $COMPOSE ps
@@ -51,12 +51,12 @@ $COMPOSE ps
 ## 4. 迁移、计划和应用
 
 ```bash
-deploy/tencent/scripts/apply-migrations.sh
+/srv/summerwork/deploy/scripts/apply-migrations.sh
 $COMPOSE build app
 $COMPOSE up -d app
-deploy/tencent/scripts/sync-plan.sh
-deploy/tencent/scripts/healthcheck.sh
-deploy/tencent/scripts/verify-workflow.sh
+/srv/summerwork/deploy/scripts/sync-plan.sh
+/srv/summerwork/deploy/scripts/healthcheck.sh
+/srv/summerwork/deploy/scripts/verify-workflow.sh
 ```
 
 验收脚本使用合成家长、数学家教、物理家教和孩子账号完成邀请、跨科拒绝、学习、批改、订正、掌握、提交和撤权测试，并在结束时清理合成数据。
@@ -64,7 +64,7 @@ deploy/tencent/scripts/verify-workflow.sh
 ## 5. 资源静置
 
 ```bash
-deploy/tencent/scripts/resource-soak.sh
+/srv/summerwork/deploy/scripts/resource-soak.sh
 ```
 
 至少观察 15 分钟。若现有站点退化、新容器重启、发生 OOM、Swap 持续增长、可用内存持续低于 2GB，或 5 分钟负载持续接近 2 核上限，则停止新栈且不接入公网。
@@ -73,8 +73,8 @@ deploy/tencent/scripts/resource-soak.sh
 
 ```bash
 sudo install -d -m 0755 /var/www/summerwork-acme
-sudo install -m 0644 deploy/tencent/nginx/summerwork-rate-limit.conf /etc/nginx/conf.d/summerwork-rate-limit.conf
-sudo install -m 0644 deploy/tencent/nginx/summerwork-http.conf /etc/nginx/sites-available/summerwork-http
+sudo install -m 0644 /srv/summerwork/deploy/nginx/summerwork-rate-limit.conf /etc/nginx/conf.d/summerwork-rate-limit.conf
+sudo install -m 0644 /srv/summerwork/deploy/nginx/summerwork-http.conf /etc/nginx/sites-available/summerwork-http
 sudo ln -s /etc/nginx/sites-available/summerwork-http /etc/nginx/sites-enabled/summerwork-http
 sudo nginx -t
 sudo nginx -s reload
@@ -85,7 +85,7 @@ sudo nginx -s reload
 ```bash
 sudo certbot certonly --webroot -w /var/www/summerwork-acme -d summerwork.ilelezhan.cn
 sudo certbot certonly --webroot -w /var/www/summerwork-acme -d summerwork-api.ilelezhan.cn
-sudo install -m 0644 deploy/tencent/nginx/summerwork-https.conf /etc/nginx/sites-available/summerwork-https
+sudo install -m 0644 /srv/summerwork/deploy/nginx/summerwork-https.conf /etc/nginx/sites-available/summerwork-https
 sudo ln -s /etc/nginx/sites-available/summerwork-https /etc/nginx/sites-enabled/summerwork-https
 sudo nginx -t
 sudo nginx -s reload
@@ -96,8 +96,8 @@ sudo nginx -s reload
 ## 7. 备份与恢复演练
 
 ```bash
-deploy/tencent/scripts/backup.sh
-deploy/tencent/scripts/restore-drill.sh /srv/summerwork/backups/summerwork-postgres-<时间>.dump
+/srv/summerwork/deploy/scripts/backup.sh
+/srv/summerwork/deploy/scripts/restore-drill.sh /srv/summerwork/backups/summerwork-postgres-<时间>.dump
 ```
 
 确认演练通过后，才为备份脚本增加项目专用定时任务。备份默认保留 14 天，清理表达式只匹配专用目录内的 `summerwork-postgres-*` 文件。
@@ -111,7 +111,7 @@ deploy/tencent/scripts/restore-drill.sh /srv/summerwork/backups/summerwork-postg
 先删除本项目的两个 `sites-enabled` 软链接和项目限速文件，执行 `sudo nginx -t`，通过后平滑 reload。随后执行：
 
 ```bash
-docker compose --project-name summerwork --env-file deploy/tencent/.env -f deploy/tencent/docker-compose.yml down
+docker compose --project-name summerwork --env-file /srv/summerwork/deploy/.env -f /srv/summerwork/deploy/docker-compose.yml down
 ```
 
 回滚保留 `/srv/summerwork`、证书、密钥、备份和两个数据库命名卷。不得使用删除卷参数，也不得清理其他项目的容器、镜像、网络或卷。

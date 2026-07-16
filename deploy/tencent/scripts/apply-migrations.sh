@@ -3,9 +3,14 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEPLOY_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
-REPO_ROOT="$(cd "$DEPLOY_DIR/../.." && pwd)"
 ENV_FILE="${1:-$DEPLOY_DIR/.env}"
 COMPOSE_FILE="$DEPLOY_DIR/docker-compose.yml"
+
+set -a
+# shellcheck disable=SC1090
+source "$ENV_FILE"
+set +a
+REPO_ROOT="${SUMMERWORK_APP_ROOT:-$(cd "$DEPLOY_DIR/../.." && pwd)}"
 
 compose=(docker compose --project-name summerwork --env-file "$ENV_FILE" -f "$COMPOSE_FILE")
 ${compose[@]} exec -T db psql -v ON_ERROR_STOP=1 -U postgres -d postgres <<'SQL'
