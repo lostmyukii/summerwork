@@ -14,7 +14,7 @@ fi
 
 (cd "$(dirname "$BACKUP_FILE")" && shasum -a 256 -c "$(basename "$BACKUP_FILE").sha256") >/dev/null
 
-compose=(docker compose --project-name summerwork --env-file "$ENV_FILE" -f "$COMPOSE_FILE")
+compose=("$SCRIPT_DIR/compose.sh" --project-name summerwork --env-file "$ENV_FILE" -f "$COMPOSE_FILE")
 drill_db="summerwork_restore_$(date -u +%Y%m%d%H%M%S)_$$"
 
 cleanup() {

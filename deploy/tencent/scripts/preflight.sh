@@ -13,7 +13,7 @@ for command_name in "${required_commands[@]}"; do
   fi
 done
 
-docker compose version >/dev/null
+"$SCRIPT_DIR/compose.sh" version >/dev/null
 docker info >/dev/null
 nginx -t >/dev/null
 

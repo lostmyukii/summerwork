@@ -16,7 +16,7 @@
 npm run verify:local
 npm run test:deploy
 bash -n deploy/tencent/scripts/*.sh deploy/tencent/kong/entrypoint.sh
-docker compose --env-file deploy/tencent/env.example -f deploy/tencent/docker-compose.yml config --quiet
+deploy/tencent/scripts/compose.sh --env-file deploy/tencent/env.example -f deploy/tencent/docker-compose.yml config --quiet
 ```
 
 ## 2. 服务器检查点
@@ -38,7 +38,7 @@ sudo install -d -o ubuntu -g ubuntu -m 0750 /srv/summerwork/{app,deploy,backups,
 以下命令均在服务器 `/srv/summerwork` 下执行：
 
 ```bash
-COMPOSE='docker compose --project-name summerwork --env-file deploy/.env -f deploy/docker-compose.yml'
+COMPOSE='/srv/summerwork/deploy/scripts/compose.sh --project-name summerwork --env-file deploy/.env -f deploy/docker-compose.yml'
 $COMPOSE pull db auth rest realtime kong
 $COMPOSE up -d db
 $COMPOSE ps
@@ -111,7 +111,7 @@ sudo nginx -s reload
 先删除本项目的两个 `sites-enabled` 软链接和项目限速文件，执行 `sudo nginx -t`，通过后平滑 reload。随后执行：
 
 ```bash
-docker compose --project-name summerwork --env-file /srv/summerwork/deploy/.env -f /srv/summerwork/deploy/docker-compose.yml down
+/srv/summerwork/deploy/scripts/compose.sh --project-name summerwork --env-file /srv/summerwork/deploy/.env -f /srv/summerwork/deploy/docker-compose.yml down
 ```
 
 回滚保留 `/srv/summerwork`、证书、密钥、备份和两个数据库命名卷。不得使用删除卷参数，也不得清理其他项目的容器、镜像、网络或卷。

@@ -6,7 +6,7 @@ DEPLOY_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 ENV_FILE="${1:-$DEPLOY_DIR/.env}"
 OUTPUT_FILE="${2:-/srv/summerwork/checkpoints/resource-soak-$(date -u +%Y%m%dT%H%M%SZ).log}"
 COMPOSE_FILE="$DEPLOY_DIR/docker-compose.yml"
-compose=(docker compose --project-name summerwork --env-file "$ENV_FILE" -f "$COMPOSE_FILE")
+compose=("$SCRIPT_DIR/compose.sh" --project-name summerwork --env-file "$ENV_FILE" -f "$COMPOSE_FILE")
 
 umask 077
 mkdir -p "$(dirname "$OUTPUT_FILE")"

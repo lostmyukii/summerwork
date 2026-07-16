@@ -11,7 +11,7 @@ set -a
 source "$ENV_FILE"
 set +a
 
-docker compose --project-name summerwork --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
+"$SCRIPT_DIR/compose.sh" --project-name summerwork --env-file "$ENV_FILE" -f "$COMPOSE_FILE" \
   run --rm --no-deps \
   -e NEXT_PUBLIC_SUPABASE_URL=http://kong:8000 \
   -e NEXT_PUBLIC_SUPABASE_ANON_KEY="$SUPABASE_PUBLISHABLE_KEY" \

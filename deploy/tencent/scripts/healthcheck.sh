@@ -16,7 +16,7 @@ set -a
 source "$ENV_FILE"
 set +a
 
-compose=(docker compose --project-name summerwork --env-file "$ENV_FILE" -f "$COMPOSE_FILE")
+compose=("$SCRIPT_DIR/compose.sh" --project-name summerwork --env-file "$ENV_FILE" -f "$COMPOSE_FILE")
 
 for service in db auth rest realtime kong app; do
   container_id="$(${compose[@]} ps -q "$service")"

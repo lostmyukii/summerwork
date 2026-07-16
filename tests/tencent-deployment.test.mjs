@@ -32,6 +32,7 @@ test("Tencent compose is minimal, pinned and loopback-only", async () => {
   assert.equal((compose.match(/cpus:/g) ?? []).length, 6);
   assert.match(compose, /name: summerwork_net/);
   assert.match(compose, /name: summerwork_db_data/);
+  assert.match(compose, /version: "2\.4"/);
 
   const appBlock = servicesBlock.slice(servicesBlock.indexOf("\n  app:"));
   assert.doesNotMatch(appBlock, /SUPABASE_SERVICE_ROLE_KEY|SUPABASE_SECRET_KEY|POSTGRES_PASSWORD/);
@@ -56,7 +57,7 @@ test("Nginx templates add only the two named sites and preserve WebSocket", asyn
 });
 
 test("secrets, upstream assets and rollback boundaries are fail-closed", async () => {
-  const [example, generate, fetch, backup, restore, readme, dockerfile] = await Promise.all([
+  const [example, generate, fetch, backup, restore, readme, dockerfile, composeWrapper] = await Promise.all([
     read("deploy/tencent/env.example"),
     read("deploy/tencent/scripts/generate-secrets.sh"),
     read("deploy/tencent/scripts/fetch-supabase-db-assets.sh"),
@@ -64,6 +65,7 @@ test("secrets, upstream assets and rollback boundaries are fail-closed", async (
     read("deploy/tencent/scripts/restore-drill.sh"),
     read("deploy/tencent/README.md"),
     read("deploy/tencent/Dockerfile"),
+    read("deploy/tencent/scripts/compose.sh"),
   ]);
 
   assert.doesNotMatch(example, /eyJhbGciOiJIUzI1Ni/);
@@ -85,6 +87,8 @@ test("secrets, upstream assets and rollback boundaries are fail-closed", async (
   assert.match(dockerfile, /FROM node:22\.19\.0-bookworm-slim/);
   assert.match(dockerfile, /USER node/);
   assert.doesNotMatch(dockerfile, /ARG\s+(?:SUPABASE_SERVICE_ROLE_KEY|SUPABASE_SECRET_KEY|POSTGRES_PASSWORD)/);
+  assert.match(composeWrapper, /docker compose version/);
+  assert.match(composeWrapper, /exec docker-compose/);
 });
 
 test("Kong exposes Auth, REST and Realtime only", async () => {

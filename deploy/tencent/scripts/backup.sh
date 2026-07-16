@@ -13,7 +13,7 @@ mkdir -p "$BACKUP_DIR"
 timestamp="$(date -u +%Y%m%dT%H%M%SZ)"
 backup_file="$BACKUP_DIR/summerwork-postgres-$timestamp.dump"
 tmp_file="$backup_file.tmp"
-compose=(docker compose --project-name summerwork --env-file "$ENV_FILE" -f "$COMPOSE_FILE")
+compose=("$SCRIPT_DIR/compose.sh" --project-name summerwork --env-file "$ENV_FILE" -f "$COMPOSE_FILE")
 
 cleanup() {
   rm -f "$tmp_file"

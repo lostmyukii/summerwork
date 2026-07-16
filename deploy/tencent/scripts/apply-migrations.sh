@@ -12,7 +12,7 @@ source "$ENV_FILE"
 set +a
 REPO_ROOT="${SUMMERWORK_APP_ROOT:-$(cd "$DEPLOY_DIR/../.." && pwd)}"
 
-compose=(docker compose --project-name summerwork --env-file "$ENV_FILE" -f "$COMPOSE_FILE")
+compose=("$SCRIPT_DIR/compose.sh" --project-name summerwork --env-file "$ENV_FILE" -f "$COMPOSE_FILE")
 ${compose[@]} exec -T db psql -v ON_ERROR_STOP=1 -U postgres -d postgres <<'SQL'
 create schema if not exists summerwork_deploy;
 create table if not exists summerwork_deploy.schema_migrations (
