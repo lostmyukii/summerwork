@@ -98,7 +98,7 @@ const values = {
   SUPABASE_PUBLISHABLE_KEY: publishableKey,
   SUPABASE_SECRET_KEY: secretKey,
   SECRET_KEY_BASE: randomHex(64),
-  REALTIME_DB_ENC_KEY: randomHex(16),
+  REALTIME_DB_ENC_KEY: randomHex(8),
   SITE_URL: "https://summerwork.ilelezhan.cn",
   API_EXTERNAL_URL: "https://summerwork-api.ilelezhan.cn/auth/v1",
   ADDITIONAL_REDIRECT_URLS: "https://summerwork.ilelezhan.cn/**",

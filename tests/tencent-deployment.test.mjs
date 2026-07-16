@@ -74,6 +74,7 @@ test("secrets, upstream assets and rollback boundaries are fail-closed", async (
   assert.doesNotMatch(example, /eyJhbGciOiJIUzI1Ni/);
   assert.doesNotMatch(example, /your-super-secret-and-long-postgres-password|super-secret-jwt-token-with-at-least-32-characters-long/i);
   assert.match(generate, /openSync\(outputFile, "wx", 0o600\)/);
+  assert.match(generate, /REALTIME_DB_ENC_KEY: randomHex\(8\)/);
   assert.doesNotMatch(generate, /console\.log\([^)]*(?:values|secret|password)/i);
   assert.match(fetch, /11fb71514905d73c006da32bdbcbcc0d3274ba31/);
   assert.match(fetch, /7e9e442e7fc4dae05544c07b67bede37a00d84644304dfce4d937134cb4c8f88/);

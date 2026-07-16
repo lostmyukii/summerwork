@@ -33,6 +33,12 @@ if grep -Eqi 'CHANGE_ME|placeholder|example|your-' "$ENV_FILE"; then
   exit 1
 fi
 
+realtime_key="$(awk -F= '$1 == "REALTIME_DB_ENC_KEY" {print $2}' "$ENV_FILE")"
+if [[ ! "$realtime_key" =~ ^[0-9a-fA-F]{16}$ ]]; then
+  echo "Realtime 数据库加密密钥必须为 16 个十六进制字符。" >&2
+  exit 1
+fi
+
 for file_name in realtime.sql jwt.sql; do
   if [[ ! -s "$DEPLOY_DIR/vendor/db/$file_name" ]]; then
     echo "缺少已校验数据库资产：$file_name" >&2
