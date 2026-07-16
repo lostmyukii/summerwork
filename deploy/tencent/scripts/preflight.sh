@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DEPLOY_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 ENV_FILE="${1:-$DEPLOY_DIR/.env}"
 
-required_commands=(docker curl ss awk grep df nginx stat ionice)
+required_commands=(docker curl ss awk grep df nginx stat ionice sudo)
 for command_name in "${required_commands[@]}"; do
   if ! command -v "$command_name" >/dev/null 2>&1; then
     echo "缺少必需命令：$command_name" >&2
@@ -15,7 +15,7 @@ done
 
 "$SCRIPT_DIR/compose.sh" version >/dev/null
 docker info >/dev/null
-nginx -t >/dev/null
+sudo -n nginx -t >/dev/null
 
 if [[ ! -f "$ENV_FILE" ]]; then
   echo "缺少生产环境文件：$ENV_FILE" >&2
