@@ -27,8 +27,9 @@ SQL
 for migration in "$REPO_ROOT"/supabase/migrations/*.sql; do
   filename="$(basename "$migration")"
   sha256="$(shasum -a 256 "$migration" | awk '{print $1}')"
-  recorded="$(${compose[@]} exec -T db psql -qAt -U postgres -d postgres \
-    -v filename="$filename" -c "select sha256 from summerwork_deploy.schema_migrations where filename = :'filename'")"
+  recorded="$(printf '%s\n' \
+    "select sha256 from summerwork_deploy.schema_migrations where filename = :'filename';" | \
+    "${compose[@]}" exec -T db psql -qAt -U postgres -d postgres -v filename="$filename")"
   if [[ -n "$recorded" ]]; then
     if [[ "$recorded" != "$sha256" ]]; then
       echo "已应用迁移被改写，停止：$filename" >&2
@@ -38,9 +39,10 @@ for migration in "$REPO_ROOT"/supabase/migrations/*.sql; do
   fi
 
   ${compose[@]} exec -T db psql -1 -v ON_ERROR_STOP=1 -U postgres -d postgres < "$migration"
-  ${compose[@]} exec -T db psql -v ON_ERROR_STOP=1 -U postgres -d postgres \
-    -v filename="$filename" -v sha256="$sha256" \
-    -c "insert into summerwork_deploy.schema_migrations(filename, sha256) values (:'filename', :'sha256')" >/dev/null
+  printf '%s\n' \
+    "insert into summerwork_deploy.schema_migrations(filename, sha256) values (:'filename', :'sha256');" | \
+    "${compose[@]}" exec -T db psql -v ON_ERROR_STOP=1 -U postgres -d postgres \
+      -v filename="$filename" -v sha256="$sha256" >/dev/null
   echo "已应用：$filename"
 done
 
