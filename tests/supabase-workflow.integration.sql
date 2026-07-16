@@ -25,6 +25,7 @@ $$;
 \set math_tutor_id '33333333-3333-4333-8333-333333333333'
 \set physics_tutor_id '44444444-4444-4444-8444-444444444444'
 \set student_record_id '55555555-5555-4555-8555-555555555555'
+\set import_student_id '66666666-6666-4666-8666-666666666666'
 
 insert into auth.users(id, email, raw_user_meta_data) values
   (:'parent_id', 'parent@example.test', '{"display_name":"家长"}'),
@@ -39,6 +40,8 @@ reset role;
 
 insert into public.students(id, family_id, user_id, display_name, grade, school_year, created_by)
 values(:'student_record_id', :'family_id', :'student_user_id', '测试孩子', '高一升高二', '2026', :'parent_id');
+insert into public.students(id, family_id, display_name, grade, school_year, created_by)
+values(:'import_student_id', :'family_id', '导入测试孩子', '高一升高二', '2026', :'parent_id');
 insert into public.family_memberships(family_id, user_id, role) values
   (:'family_id', :'student_user_id', 'student'),
   (:'family_id', :'math_tutor_id', 'tutor'),
@@ -47,19 +50,39 @@ insert into public.tutor_assignments(family_id, student_id, subject_id, tutor_us
   (:'family_id', :'student_record_id', 'math', :'math_tutor_id', :'parent_id'),
   (:'family_id', :'student_record_id', 'physics', :'physics_tutor_id', :'parent_id');
 
+insert into public.plan_catalogs(id, title, version, starts_on, ends_on)
+values('integration-catalog', '作业与任务块分离测试', 1, '2026-07-16', '2026-08-29');
+insert into public.homework_task_templates(
+  id, catalog_id, homework_key, subject_id, planned_date, slot_type, source_slot_type,
+  title, knowledge, knowledge_tags, answer_basis, submission_requirement, task_kind,
+  requires_submission, answer_policy, requirement_level, source_reference
+) values
+  ('integration-block-1', 'integration-catalog', 'shared-homework', 'math', '2026-07-20', '自学', '自学', '同一作业上半', '函数', array['函数'], '首做后批改', '学校平台提交', 'practice', true, 'locked_until_first_attempt', 'required', 'fixture#1'),
+  ('integration-block-2', 'integration-catalog', 'shared-homework', 'math', '2026-07-21', '自学', '自学', '同一作业下半', '向量', array['向量'], '首做后批改', '学校平台提交', 'practice', true, 'locked_until_first_attempt', 'required', 'fixture#2'),
+  ('integration-block-3', 'integration-catalog', 'other-homework', 'math', '2026-07-22', '自学', '自学', '另一项作业', '概率', array['概率'], '首做后批改', '', 'practice', false, 'locked_until_first_attempt', 'required', 'fixture#3');
+
 select set_config('request.jwt.claim.sub', :'parent_id', false);
 set role authenticated;
+select pg_temp.assert_true(public.create_student_plan(:'import_student_id', 'integration-catalog') = 3, 'three templates should create three plan blocks');
+select pg_temp.assert_true((select count(*) = 2 from public.homeworks where student_id = :'import_student_id'), 'two templates with one homework key must count as one homework');
+select pg_temp.assert_true((select count(distinct homework_id) = 1 and max(sequence_number) = 2 from public.homework_tasks where student_id = :'import_student_id' and template_id in ('integration-block-1', 'integration-block-2')), 'one homework should own multiple ordered blocks');
+select pg_temp.assert_true((select count(*) = 1 from public.task_knowledge_links link join public.homework_tasks task on task.id = link.task_id where task.template_id = 'integration-block-1'), 'first block should only link its own knowledge scope');
+select pg_temp.assert_true((select node.display_name = '向量' from public.task_knowledge_links link join public.homework_tasks task on task.id = link.task_id join public.knowledge_nodes node on node.id = link.knowledge_node_id where task.template_id = 'integration-block-2'), 'second block should keep a distinct knowledge scope');
 select public.create_manual_homework(
   :'student_record_id', 'math', '函数综合测试', '独立完成并订正',
   '2026-07-17', '2026-07-18', null, 'required',
   'locked_until_first_attempt', '家长保管答案至首做完成',
   '学校平台提交', array['函数单调性']
 ) as homework_id \gset
+select public.add_submission_checkpoint(
+  :'homework_id', 'correction_return', '订正后回传', true,
+  '2026-07-19', null, '99999999-0000-4000-8000-000000000001'
+) as checkpoint_2_id \gset
 reset role;
 
 select id as task_id from public.homework_tasks where homework_id = :'homework_id' \gset
 select id as knowledge_node_id from public.knowledge_nodes where student_id = :'student_record_id' and knowledge_key = '函数单调性' \gset
-select id as checkpoint_id from public.submission_checkpoints where homework_id = :'homework_id' \gset
+select id as checkpoint_id from public.submission_checkpoints where homework_id = :'homework_id' and checkpoint_type = 'initial' \gset
 
 select set_config('request.jwt.claim.sub', :'student_user_id', false);
 set role authenticated;
@@ -110,15 +133,17 @@ select public.confirm_knowledge_mastery(
 select pg_temp.assert_true((select stage = 'awaiting_acceptance' and version = 10 from public.task_workflow_current where task_id = :'task_id'), 'required submission must keep workflow open');
 select pg_temp.assert_true((select current_level = 'mastered' from public.mastery_snapshots where knowledge_node_id = :'knowledge_node_id'), 'mastery evidence should light the knowledge node');
 select public.confirm_submission_checkpoint(:'checkpoint_id', '', 1, 'dddddddd-0000-4000-8000-000000000006');
-select pg_temp.assert_true((select stage = 'closed_loop' and version = 11 from public.task_workflow_current where task_id = :'task_id'), 'all gates should close the loop');
+select pg_temp.assert_true((select stage = 'awaiting_acceptance' and version = 11 from public.task_workflow_current where task_id = :'task_id'), 'one of two required checkpoints must not close the loop');
+select public.confirm_submission_checkpoint(:'checkpoint_2_id', '', 1, 'dddddddd-0000-4000-8000-000000000010');
+select pg_temp.assert_true((select stage = 'closed_loop' and version = 12 from public.task_workflow_current where task_id = :'task_id'), 'all required checkpoints should close the loop');
 select public.confirm_submission_checkpoint(:'checkpoint_id', '', 1, 'dddddddd-0000-4000-8000-000000000006');
 select pg_temp.assert_true((select count(*) = 1 from public.submission_confirmations where idempotency_key = 'dddddddd-0000-4000-8000-000000000006'), 'submission confirmation must be idempotent');
 select public.revoke_submission_checkpoint(:'checkpoint_id', '误点提交', 2, 'dddddddd-0000-4000-8000-000000000007');
-select pg_temp.assert_true((select stage = 'awaiting_acceptance' and version = 12 from public.task_workflow_current where task_id = :'task_id'), 'revoked submission must reopen only submission gate');
+select pg_temp.assert_true((select stage = 'awaiting_acceptance' and version = 13 from public.task_workflow_current where task_id = :'task_id'), 'revoked submission must reopen only submission gate');
 select pg_temp.assert_true((select current_level = 'mastered' from public.mastery_snapshots where knowledge_node_id = :'knowledge_node_id'), 'submission revoke must not change mastery');
 select public.confirm_submission_checkpoint(:'checkpoint_id', '重新核对', 3, 'dddddddd-0000-4000-8000-000000000008');
-select public.reopen_task_workflow(:'task_id', '发现新错误，需要重做', 13, 'dddddddd-0000-4000-8000-000000000009');
-select pg_temp.assert_true((select stage = 'ready' and version = 14 from public.task_workflow_current where task_id = :'task_id'), 'reopen should create a fresh ready cycle');
+select public.reopen_task_workflow(:'task_id', '发现新错误，需要重做', 14, 'dddddddd-0000-4000-8000-000000000009');
+select pg_temp.assert_true((select stage = 'ready' and version = 15 from public.task_workflow_current where task_id = :'task_id'), 'reopen should create a fresh ready cycle');
 select pg_temp.assert_true((select current_level = 'reinforce' and highest_level = 'basic' from public.mastery_snapshots where knowledge_node_id = :'knowledge_node_id'), 'reopen evidence should roll current mastery back while retaining valid history');
 reset role;
 

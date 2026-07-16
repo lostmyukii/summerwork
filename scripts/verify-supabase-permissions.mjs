@@ -1,4 +1,4 @@
-import { createHash, randomBytes } from "node:crypto";
+import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 
 const requiredEnvironment = [
@@ -170,6 +170,8 @@ async function main() {
     "家长实例化暑期计划",
   );
   assert(insertedTasks === 200, "家长为孩子实例化200条真实任务");
+  const homeworkRows = requireData(await parent.client.from("homeworks").select("id").eq("student_id", student.id), "读取作业本体");
+  assert(homeworkRows.length === 173, "200个执行块归属173项作业本体");
 
   const mathToken = await createInvitation(parent, student.id, mathTutor, "tutor", "math");
   const physicsToken = await createInvitation(parent, student.id, physicsTutor, "tutor", "physics");
@@ -197,7 +199,7 @@ async function main() {
   assert(physicsSubjects.length === 1 && physicsSubjects[0] === "physics", "物理家教只能看到物理授权");
 
   const mathTasks = requireData(
-    await mathTutor.client.from("homework_tasks").select("id,subject_id,planned_date").eq("student_id", student.id).order("planned_date"),
+    await mathTutor.client.from("homework_tasks").select("id,subject_id,planned_date,version").eq("student_id", student.id).order("planned_date"),
     "数学家教读取本科任务",
   );
   assert(mathTasks.length === 30 && mathTasks.every((task) => task.subject_id === "math"), "数学家教只能读取30条数学任务");
@@ -212,30 +214,27 @@ async function main() {
   movedDate.setUTCDate(movedDate.getUTCDate() + 1);
   const movedDateKey = movedDate.toISOString().slice(0, 10);
   requireData(
-    await mathTutor.client.rpc("move_homework_task", { target_task_id: mathTasks[0].id, target_date: movedDateKey, change_reason: "权限验收" }),
+    await mathTutor.client.rpc("move_homework_blocks", {
+      target_task_id: mathTasks[0].id,
+      target_date: movedDateKey,
+      change_reason: "权限验收",
+      expected_version: mathTasks[0].version,
+      move_following: false,
+      target_idempotency_key: randomUUID(),
+    }),
     "数学家教调整本科计划",
   );
   pass("数学家教可调整本科计划并自动留痕");
 
-  const crossSubjectMove = await physicsTutor.client.rpc("move_homework_task", {
+  const crossSubjectMove = await physicsTutor.client.rpc("move_homework_blocks", {
     target_task_id: mathTasks[0].id,
     target_date: mathTasks[0].planned_date,
     change_reason: "跨科权限验收",
+    expected_version: mathTasks[0].version + 1,
+    move_following: false,
+    target_idempotency_key: randomUUID(),
   });
   assert(Boolean(crossSubjectMove.error), "物理家教不能调整数学计划");
-
-  requireData(
-    await mathTutor.client.from("task_reviews").insert({ task_id: mathTasks[0].id, reviewed_by: mathTutor.id, review_confirmed_at: new Date().toISOString() }),
-    "数学家教写入本科批改",
-  );
-  pass("数学家教可写入本科批改记录");
-
-  const crossSubjectReview = await physicsTutor.client.from("task_reviews").insert({
-    task_id: mathTasks[1].id,
-    reviewed_by: physicsTutor.id,
-    review_confirmed_at: new Date().toISOString(),
-  });
-  assert(Boolean(crossSubjectReview.error), "物理家教不能批改数学任务");
 
   const studentRows = requireData(
     await studentAccount.client.from("students").select("id").eq("id", student.id),
@@ -248,29 +247,67 @@ async function main() {
   );
   assert(studentTasks.length === 200, "孩子可查看本人六科200条任务");
 
-  requireData(
-    await studentAccount.client.from("student_task_activity").insert({
-      task_id: mathTasks[0].id,
-      student_id: student.id,
-      run_state: "completed",
-      unknown_numbers: ["7", "12(2)"],
-      started_at: new Date().toISOString(),
-      completed_at: new Date().toISOString(),
-    }),
-    "孩子记录开始完成与不会题号",
-  );
+  requireData(await studentAccount.client.rpc("record_student_task_event", {
+    target_task_id: mathTasks[0].id,
+    target_event: "started",
+    target_unknown_numbers: ["7", "12(2)"],
+    expected_version: 1,
+    target_idempotency_key: randomUUID(),
+  }), "孩子开始任务");
+  requireData(await studentAccount.client.rpc("record_student_task_event", {
+    target_task_id: mathTasks[0].id,
+    target_event: "completed",
+    target_unknown_numbers: ["7", "12(2)"],
+    expected_version: 2,
+    target_idempotency_key: randomUUID(),
+  }), "孩子完成任务");
   pass("孩子只能写本人任务活动");
 
-  const studentReview = await studentAccount.client.from("task_reviews").insert({
-    task_id: mathTasks[2].id,
-    reviewed_by: studentAccount.id,
+  requireData(await mathTutor.client.rpc("save_task_review", {
+    target_task_id: mathTasks[0].id,
+    target_accuracy_band: "100",
+    target_wrong_numbers: [],
+    target_error_tags: [],
+    target_correction_required: false,
+    target_redo_required: false,
+    target_note: "权限验收",
+    expected_version: 3,
+    target_idempotency_key: randomUUID(),
+  }), "数学家教确认本科批改");
+  pass("数学家教可写入本科批改记录");
+
+  const crossSubjectReview = await physicsTutor.client.rpc("save_task_review", {
+    target_task_id: mathTasks[0].id,
+    target_accuracy_band: "100",
+    target_wrong_numbers: [],
+    target_error_tags: [],
+    target_correction_required: false,
+    target_redo_required: false,
+    target_note: "跨科权限验收",
+    expected_version: 4,
+    target_idempotency_key: randomUUID(),
+  });
+  assert(Boolean(crossSubjectReview.error), "物理家教不能批改数学任务");
+
+  const studentReview = await studentAccount.client.rpc("save_task_review", {
+    target_task_id: mathTasks[1].id,
+    target_accuracy_band: "100",
+    target_wrong_numbers: [],
+    target_error_tags: [],
+    target_correction_required: false,
+    target_redo_required: false,
+    target_note: "越权尝试",
+    expected_version: 1,
+    target_idempotency_key: randomUUID(),
   });
   assert(Boolean(studentReview.error), "孩子不能写批改或提交确认");
 
-  const tutorActivity = await physicsTutor.client.from("student_task_activity").insert({
-    task_id: physicsTasks[0].id,
-    student_id: student.id,
-    run_state: "completed",
+  const tutorActivity = await physicsTutor.client.rpc("record_student_task_event", {
+    target_task_id: physicsTasks[0].id,
+    target_event: "started",
+    target_unknown_numbers: [],
+    expected_version: 1,
+    target_idempotency_key: randomUUID(),
   });
   assert(Boolean(tutorActivity.error), "家教不能代替孩子标记完成");
   assert(

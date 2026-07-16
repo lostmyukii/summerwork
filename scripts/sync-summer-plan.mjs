@@ -55,6 +55,7 @@ requireSuccess(await admin.from("plan_catalogs").upsert({
 
 const templates = plan.tasks.map((task) => ({
   id: task.id,
+  homework_key: task.homeworkKey,
   catalog_id: catalogId,
   subject_id: subjectIds[task.subject],
   planned_date: task.date,

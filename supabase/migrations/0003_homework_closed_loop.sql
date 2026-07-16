@@ -29,6 +29,7 @@ create table if not exists public.plan_catalogs (
 create table if not exists public.homework_task_templates (
   id text primary key,
   catalog_id text not null references public.plan_catalogs(id) on delete cascade,
+  homework_key text not null,
   subject_id text not null references public.subjects(id),
   planned_date date not null,
   slot_type text not null,

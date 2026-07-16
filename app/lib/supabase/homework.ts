@@ -1,6 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Role } from "../demo-data";
 import { weekdayFor, type RequirementLevel, type SummerTask, type SummerTaskKind } from "../summer-plan";
+import type { MasteryLevel, WorkflowState } from "../workflow";
 import {
   blankTaskProgress,
   type AuditEntry,
@@ -42,7 +43,40 @@ type TaskRow = {
   deadline_date: string | null;
   deadline_at: string | null;
   deadline_precision: SummerTask["deadlinePrecision"];
+  homework_id: string | null;
+  homework_version_id: string | null;
+  version: number;
+  block_type: WorkspaceTask["blockType"];
+  sequence_number: number;
 };
+
+type WorkflowRow = {
+  task_id: string;
+  stage: WorkflowState | "unscheduled";
+  actual_seconds: number;
+  active_started_at: string | null;
+  version: number;
+  updated_at: string;
+};
+
+type KnowledgeLinkRow = { task_id: string; knowledge_node_id: string };
+type KnowledgeNodeRow = { id: string; display_name: string };
+type MasterySnapshotRow = { knowledge_node_id: string; current_level: MasteryLevel; highest_level: MasteryLevel };
+type CheckpointRow = {
+  id: string;
+  homework_id: string;
+  label: string;
+  required: boolean;
+  due_date: string | null;
+  due_at: string | null;
+  status: "not_due" | "awaiting_confirmation" | "confirmed" | "revoked";
+  confirmed_at: string | null;
+  version: number;
+};
+type HomeworkSummaryRow = { id: string; version: number; current_version_id: string | null };
+type HomeworkVersionSummaryRow = { id: string; title: string; requirements: string };
+type NotificationRow = { id: number; notification_type: string; title: string; body: string; read_at: string | null; created_at: string };
+type WeeklyReportRow = { id: string; week_start: string; week_end: string; metrics: Record<string, number>; narrative: string; generated_at: string };
 
 type ActivityRow = {
   task_id: string;
@@ -56,6 +90,7 @@ type ReviewRow = {
   accuracy_band: "100" | "90+" | "70-89" | "below-70";
   wrong_numbers: string[];
   error_tags: string[];
+  note: string;
   correction_passed: boolean;
   redo_required: boolean;
   redo_passed: boolean;
@@ -103,6 +138,7 @@ function toWorkspaceTask(row: TaskRow): WorkspaceTask {
   if (!subject) throw new Error(`未知科目：${row.subject_id}`);
   return {
     id: row.id,
+    homeworkKey: row.homework_id ?? row.id,
     databaseId: row.id,
     studentId: row.student_id,
     date: row.original_date,
@@ -117,7 +153,7 @@ function toWorkspaceTask(row: TaskRow): WorkspaceTask {
     submission: row.submission_requirement,
     notes: row.notes,
     kind: row.task_kind,
-    blockMinutes: 90,
+    blockMinutes: row.block_minutes,
     recommendedMinutes: row.recommended_minutes,
     requiresSubmission: row.requires_submission,
     courseIntegrated: row.course_integrated,
@@ -131,6 +167,11 @@ function toWorkspaceTask(row: TaskRow): WorkspaceTask {
     deadlineDate: row.deadline_date,
     deadlineAt: row.deadline_at,
     deadlinePrecision: row.deadline_precision,
+    homeworkId: row.homework_id ?? undefined,
+    homeworkVersionId: row.homework_version_id ?? undefined,
+    recordVersion: row.version,
+    blockType: row.block_type,
+    sequenceNumber: row.sequence_number,
   };
 }
 
@@ -163,10 +204,22 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
 
   if (!studentId) return { tasks: [], progress: {}, overrides: {}, audit: [], role: membership.role, userId, remoteEnabled: true };
 
+  const [notificationResult, weeklyReportResult] = await Promise.all([
+    client.from("notifications").select("id,notification_type,title,body,read_at,created_at").eq("recipient_id", userId).order("created_at", { ascending: false }).limit(30),
+    client.from("weekly_reports").select("id,week_start,week_end,metrics,narrative,generated_at").eq("student_id", studentId).order("week_start", { ascending: false }).limit(12),
+  ]);
+  const notificationRows = requireData(notificationResult, "读取站内通知") as NotificationRow[];
+  const weeklyReportRows = requireData(weeklyReportResult, "读取周报") as WeeklyReportRow[];
+  const workspaceExtras = {
+    studentId,
+    notifications: notificationRows.map((row) => ({ id: row.id, type: row.notification_type, title: row.title, body: row.body, readAt: row.read_at ?? undefined, createdAt: row.created_at })),
+    weeklyReports: weeklyReportRows.map((row) => ({ id: row.id, weekStart: row.week_start, weekEnd: row.week_end, metrics: row.metrics, narrative: row.narrative, generatedAt: row.generated_at })),
+  };
+
   const taskRows = requireData(
     await client
       .from("homework_tasks")
-      .select("id,student_id,subject_id,title,planned_date,original_date,slot_type,knowledge,knowledge_tags,answer_basis,submission_requirement,notes,task_kind,block_minutes,recommended_minutes,requires_submission,course_integrated,optional,uncertainty,priority,answer_policy,requirement_level,evidence_required,source_reference,deadline_date,deadline_at,deadline_precision")
+      .select("id,student_id,subject_id,title,planned_date,original_date,slot_type,knowledge,knowledge_tags,answer_basis,submission_requirement,notes,task_kind,block_minutes,recommended_minutes,requires_submission,course_integrated,optional,uncertainty,priority,answer_policy,requirement_level,evidence_required,source_reference,deadline_date,deadline_at,deadline_precision,homework_id,homework_version_id,version,block_type,sequence_number")
       .eq("student_id", studentId)
       .is("deleted_at", null)
       .order("planned_date"),
@@ -174,26 +227,85 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
   ) as TaskRow[];
 
   const tasks = taskRows.map(toWorkspaceTask);
-  if (tasks.length === 0) return { tasks, progress: {}, overrides: {}, audit: [], role: membership.role, userId, remoteEnabled: true };
+  if (tasks.length === 0) return { tasks, progress: {}, overrides: {}, audit: [], role: membership.role, userId, remoteEnabled: true, ...workspaceExtras };
   const taskIds = tasks.map((task) => task.id);
+  const homeworkIds = [...new Set(taskRows.map((task) => task.homework_id).filter((id): id is string => Boolean(id)))];
 
-  const [activityResult, reviewResult, changeResult] = await Promise.all([
+  const [activityResult, reviewResult, changeResult, workflowResult, checkpointResult, linkResult, homeworkResult] = await Promise.all([
     client.from("student_task_activity").select("task_id,run_state,unknown_numbers,updated_at").in("task_id", taskIds),
-    client.from("task_reviews").select("task_id,accuracy_band,wrong_numbers,error_tags,correction_passed,redo_required,redo_passed,mastery_confirmed,review_confirmed_at,review_saved_at,school_submitted_at,updated_at").in("task_id", taskIds),
+    client.from("task_reviews").select("task_id,accuracy_band,wrong_numbers,error_tags,note,correction_passed,redo_required,redo_passed,mastery_confirmed,review_confirmed_at,review_saved_at,school_submitted_at,updated_at").in("task_id", taskIds),
     client.from("task_plan_changes").select("id,task_id,old_date,new_date,reason,changed_by,created_at").in("task_id", taskIds).order("created_at", { ascending: false }),
+    client.from("task_workflow_current").select("task_id,stage,actual_seconds,active_started_at,version,updated_at").in("task_id", taskIds),
+    homeworkIds.length
+      ? client.from("submission_checkpoints").select("id,homework_id,label,required,due_date,due_at,status,confirmed_at,version").in("homework_id", homeworkIds).is("archived_at", null)
+      : Promise.resolve({ data: [] as CheckpointRow[], error: null }),
+    taskIds.length
+      ? client.from("task_knowledge_links").select("task_id,knowledge_node_id").in("task_id", taskIds)
+      : Promise.resolve({ data: [] as KnowledgeLinkRow[], error: null }),
+    homeworkIds.length
+      ? client.from("homeworks").select("id,version,current_version_id").in("id", homeworkIds)
+      : Promise.resolve({ data: [] as HomeworkSummaryRow[], error: null }),
   ]);
 
   const activityRows = requireData(activityResult, "读取孩子任务状态") as ActivityRow[];
   const reviewRows = requireData(reviewResult, "读取家教批改") as ReviewRow[];
   const changeRows = requireData(changeResult, "读取计划变更") as PlanChangeRow[];
+  const workflowRows = requireData(workflowResult, "读取权威工作流") as WorkflowRow[];
+  const checkpointRows = requireData(checkpointResult, "读取学校提交节点") as CheckpointRow[];
+  const linkRows = requireData(linkResult, "读取知识点关联") as KnowledgeLinkRow[];
+  const homeworkRows = requireData(homeworkResult, "读取作业版本") as HomeworkSummaryRow[];
+  const knowledgeNodeIds = [...new Set(linkRows.map((link) => link.knowledge_node_id))];
+  const currentHomeworkVersionIds = homeworkRows.map((row) => row.current_version_id).filter((id): id is string => Boolean(id));
+  const versionRows = currentHomeworkVersionIds.length
+    ? requireData(await client.from("homework_versions").select("id,title,requirements").in("id", currentHomeworkVersionIds), "读取当前作业版本") as HomeworkVersionSummaryRow[]
+    : [];
+  const [nodeRows, snapshotRows] = knowledgeNodeIds.length ? await Promise.all([
+    client.from("knowledge_nodes").select("id,display_name").in("id", knowledgeNodeIds).then((result) => requireData(result, "读取知识点")) as Promise<KnowledgeNodeRow[]>,
+    client.from("mastery_snapshots").select("knowledge_node_id,current_level,highest_level").in("knowledge_node_id", knowledgeNodeIds).then((result) => requireData(result, "读取知识点亮")) as Promise<MasterySnapshotRow[]>,
+  ]) : [[], []];
   const activityByTask = new Map(activityRows.map((row) => [row.task_id, row]));
   const reviewByTask = new Map(reviewRows.map((row) => [row.task_id, row]));
-  const taskById = new Map(tasks.map((task) => [task.id, task]));
+  const workflowByTask = new Map(workflowRows.map((row) => [row.task_id, row]));
+  const nodeById = new Map(nodeRows.map((row) => [row.id, row]));
+  const snapshotByNode = new Map(snapshotRows.map((row) => [row.knowledge_node_id, row]));
+  const homeworkById = new Map(homeworkRows.map((row) => [row.id, row]));
+  const homeworkVersionById = new Map(versionRows.map((row) => [row.id, row]));
+  const linksByTask = new Map<string, KnowledgeLinkRow[]>();
+  for (const link of linkRows) linksByTask.set(link.task_id, [...(linksByTask.get(link.task_id) ?? []), link]);
+  const checkpointsByHomework = new Map<string, CheckpointRow[]>();
+  for (const checkpoint of checkpointRows) checkpointsByHomework.set(checkpoint.homework_id, [...(checkpointsByHomework.get(checkpoint.homework_id) ?? []), checkpoint]);
+  const enrichedTasks = tasks.map((task) => ({
+    ...task,
+    homeworkRecordVersion: homeworkById.get(task.homeworkId ?? "")?.version,
+    homeworkTitle: homeworkVersionById.get(homeworkById.get(task.homeworkId ?? "")?.current_version_id ?? "")?.title,
+    homeworkRequirements: homeworkVersionById.get(homeworkById.get(task.homeworkId ?? "")?.current_version_id ?? "")?.requirements,
+    knowledgeNodes: (linksByTask.get(task.id) ?? []).map((link) => ({
+      id: link.knowledge_node_id,
+      name: nodeById.get(link.knowledge_node_id)?.display_name ?? task.knowledge,
+      currentLevel: snapshotByNode.get(link.knowledge_node_id)?.current_level ?? "unpracticed",
+      highestLevel: snapshotByNode.get(link.knowledge_node_id)?.highest_level ?? "unpracticed",
+    })),
+    submissionCheckpoints: (checkpointsByHomework.get(task.homeworkId ?? "") ?? []).map((checkpoint) => ({
+      id: checkpoint.id,
+      label: checkpoint.label,
+      required: checkpoint.required,
+      status: checkpoint.status,
+      version: checkpoint.version,
+      dueDate: checkpoint.due_date ?? undefined,
+      dueAt: checkpoint.due_at ?? undefined,
+      confirmedAt: checkpoint.confirmed_at ?? undefined,
+    })),
+  }));
+  const taskById = new Map(enrichedTasks.map((task) => [task.id, task]));
   const progress: Record<string, TaskProgress> = {};
 
-  for (const task of tasks) {
+  for (const task of enrichedTasks) {
     const activity = activityByTask.get(task.id);
     const review = reviewByTask.get(task.id);
+    const workflow = workflowByTask.get(task.id);
+    const requiredCheckpoints = (task.submissionCheckpoints ?? []).filter((checkpoint) => checkpoint.required);
+    const confirmedCheckpoints = requiredCheckpoints.filter((checkpoint) => checkpoint.status === "confirmed");
+    const latestConfirmation = confirmedCheckpoints.map((checkpoint) => checkpoint.confirmedAt).filter((value): value is string => Boolean(value)).sort().at(-1);
     progress[task.id] = {
       ...blankTaskProgress(),
       runState: activity?.run_state ?? "ready",
@@ -201,6 +313,7 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
       accuracy: review ? ACCURACY_COPY[review.accuracy_band] : "70%—89%",
       wrongNumbers: review?.wrong_numbers?.join("、") ?? "",
       errorTags: review?.error_tags ?? [],
+      note: review?.note ?? "",
       reviewConfirmed: Boolean(review?.review_confirmed_at),
       reviewConfirmedAt: review?.review_confirmed_at ?? undefined,
       reviewSaved: Boolean(review?.review_saved_at),
@@ -208,9 +321,13 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
       redoRequired: review?.redo_required ?? true,
       redoPassed: review?.redo_passed ?? false,
       masteryConfirmed: review?.mastery_confirmed ?? false,
-      schoolSubmitted: Boolean(review?.school_submitted_at),
-      schoolSubmittedAt: review?.school_submitted_at ?? undefined,
-      updatedAt: review?.updated_at ?? activity?.updated_at,
+      schoolSubmitted: requiredCheckpoints.length > 0 && confirmedCheckpoints.length === requiredCheckpoints.length,
+      schoolSubmittedAt: latestConfirmation ?? review?.school_submitted_at ?? undefined,
+      workflowStage: workflow?.stage === "unscheduled" ? "ready" : workflow?.stage,
+      workflowVersion: workflow?.version ?? 1,
+      actualSeconds: workflow?.actual_seconds ?? 0,
+      activeStartedAt: workflow?.active_started_at ?? undefined,
+      updatedAt: workflow?.updated_at ?? review?.updated_at ?? activity?.updated_at,
     };
   }
 
@@ -241,5 +358,5 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
     };
   });
 
-  return { tasks, progress, overrides, audit, role: membership.role, userId, remoteEnabled: true };
+  return { tasks: enrichedTasks, progress, overrides, audit, role: membership.role, userId, remoteEnabled: true, ...workspaceExtras };
 }

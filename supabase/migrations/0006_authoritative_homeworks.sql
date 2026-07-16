@@ -42,6 +42,8 @@ create table if not exists public.homeworks (
   family_id uuid not null references public.family_spaces(id) on delete cascade,
   student_id uuid not null references public.students(id) on delete cascade,
   subject_id text not null references public.subjects(id),
+  catalog_id text references public.plan_catalogs(id) on delete set null,
+  homework_key text,
   template_id text references public.homework_task_templates(id) on delete set null,
   status public.homework_status not null default 'active',
   current_version_id uuid,
@@ -170,6 +172,9 @@ create table if not exists public.change_events (
 create index if not exists homeworks_student_subject_idx on public.homeworks(student_id, subject_id) where deleted_at is null;
 alter table public.homeworks drop constraint if exists homeworks_student_id_template_id_key;
 create unique index if not exists homeworks_student_template_unique on public.homeworks(student_id, template_id) where template_id is not null;
+create unique index if not exists homeworks_student_catalog_key_unique
+  on public.homeworks(student_id, catalog_id, homework_key)
+  where catalog_id is not null and homework_key is not null;
 create index if not exists homework_versions_homework_idx on public.homework_versions(homework_id, version_number desc);
 create index if not exists knowledge_nodes_student_subject_idx on public.knowledge_nodes(student_id, subject_id) where active;
 create index if not exists submission_checkpoints_due_idx on public.submission_checkpoints(due_date, status) where required;
@@ -223,11 +228,12 @@ begin
   select family_id into target_family_id from public.students where id = target_student_id and deleted_at is null;
   if target_family_id is null or not public.is_family_parent(target_family_id) then raise exception 'parent access required'; end if;
 
-  insert into public.homeworks(family_id, student_id, subject_id, template_id, created_by, updated_by)
-  select target_family_id, target_student_id, template.subject_id, template.id, auth.uid(), auth.uid()
+  insert into public.homeworks(family_id, student_id, subject_id, catalog_id, homework_key, created_by, updated_by)
+  select distinct target_family_id, target_student_id, template.subject_id,
+    template.catalog_id, template.homework_key, auth.uid(), auth.uid()
   from public.homework_task_templates template
   where template.catalog_id = target_catalog_id
-  on conflict (student_id, template_id) where template_id is not null do nothing;
+  on conflict (student_id, catalog_id, homework_key) where catalog_id is not null and homework_key is not null do nothing;
 
   insert into public.homework_versions(
     homework_id, version_number, title, requirements, source_reference,
@@ -239,8 +245,12 @@ begin
     template.submission_requirement, template.deadline_date, template.deadline_at,
     template.deadline_precision, template.knowledge_tags, auth.uid()
   from public.homeworks homework
-  join public.homework_task_templates template on template.id = homework.template_id
-  where homework.student_id = target_student_id and template.catalog_id = target_catalog_id
+  join lateral (
+    select candidate.* from public.homework_task_templates candidate
+    where candidate.catalog_id = homework.catalog_id and candidate.homework_key = homework.homework_key
+    order by candidate.planned_date, candidate.id limit 1
+  ) template on true
+  where homework.student_id = target_student_id and homework.catalog_id = target_catalog_id
   on conflict (homework_id, version_number) do nothing;
 
   update public.homeworks homework
@@ -265,7 +275,7 @@ begin
     auth.uid()
   from public.homeworks homework
   join public.homework_versions version on version.homework_id = homework.id and version.version_number = 1
-  join public.homework_task_templates template on template.id = homework.template_id
+  join public.homework_task_templates template on template.catalog_id = homework.catalog_id and template.homework_key = homework.homework_key
   cross join lateral unnest(
     case when cardinality(template.knowledge_tags) > 0 then template.knowledge_tags
       else array[coalesce(nullif(template.knowledge, ''), template.title)] end
@@ -299,9 +309,11 @@ begin
       when 'review' then 'tutor_review'::public.plan_block_type
       when 'submission' then 'submission_confirmation'::public.plan_block_type
       else 'first_attempt'::public.plan_block_type end,
-    1, auth.uid(), auth.uid()
+    row_number() over (partition by template.homework_key order by template.planned_date, template.id)::integer,
+    auth.uid(), auth.uid()
   from public.homework_task_templates template
-  join public.homeworks homework on homework.student_id = target_student_id and homework.template_id = template.id
+  join public.homeworks homework on homework.student_id = target_student_id
+    and homework.catalog_id = template.catalog_id and homework.homework_key = template.homework_key
   join public.homework_versions version on version.homework_id = homework.id and version.version_number = 1
   where template.catalog_id = target_catalog_id
   on conflict (student_id, template_id) where template_id is not null do nothing;
@@ -313,7 +325,7 @@ begin
       deadline_precision = template.deadline_precision, updated_by = auth.uid()
   from public.homeworks homework
   join public.homework_versions version on version.homework_id = homework.id and version.version_number = 1
-  join public.homework_task_templates template on template.id = homework.template_id
+  join public.homework_task_templates template on template.catalog_id = homework.catalog_id and template.homework_key = homework.homework_key
   where task.student_id = target_student_id and task.template_id = template.id
     and (task.homework_id is null or task.homework_version_id is null);
 
@@ -329,7 +341,7 @@ begin
     auth.uid()
   from public.homeworks homework
   join public.homework_versions version on version.homework_id = homework.id and version.version_number = 1
-  join public.homework_task_templates template on template.id = homework.template_id
+  join public.homework_task_templates template on template.catalog_id = homework.catalog_id and template.homework_key = homework.homework_key
   left join public.homework_tasks task on task.student_id = target_student_id and task.template_id = template.id
   where homework.student_id = target_student_id and template.catalog_id = target_catalog_id
     and template.requires_submission
@@ -431,6 +443,8 @@ begin
     end if;
   end loop;
 
+  perform public.sync_task_knowledge_links(new_task_id);
+
   if nullif(trim(target_submission_requirement), '') is not null then
     insert into public.submission_checkpoints(homework_id, homework_version_id, task_id, checkpoint_type, label, required, due_date, due_at, created_by)
     values(new_homework_id, new_version_id, new_task_id, 'initial', trim(target_submission_requirement), true, target_deadline_date, target_deadline_at, auth.uid());
@@ -486,8 +500,10 @@ begin
 
   update public.homeworks set current_version_id = new_version_id, version = version + 1, updated_by = auth.uid() where id = homework_row.id;
   update public.homework_tasks task
-  set homework_version_id = new_version_id, title = trim(homework_title),
-      notes = coalesce(homework_requirements, ''), deadline_date = target_deadline_date,
+  set homework_version_id = new_version_id,
+      title = case when (select count(*) from public.homework_tasks sibling where sibling.homework_id = homework_row.id and sibling.deleted_at is null) = 1 then trim(homework_title) else task.title end,
+      notes = case when (select count(*) from public.homework_tasks sibling where sibling.homework_id = homework_row.id and sibling.deleted_at is null) = 1 then coalesce(homework_requirements, '') else task.notes end,
+      deadline_date = target_deadline_date,
       deadline_at = target_deadline_at,
       deadline_precision = case when target_deadline_at is not null then 'time' when target_deadline_date is not null then 'date' else 'unknown' end,
       version = version + 1, updated_by = auth.uid()
@@ -497,8 +513,10 @@ begin
       where activity.task_id = task.id and activity.run_state = 'completed'
     );
   update public.submission_checkpoints checkpoint
-  set homework_version_id = new_version_id, due_date = target_deadline_date,
-      due_at = target_deadline_at, version = version + 1
+  set homework_version_id = new_version_id,
+      due_date = case when (select count(*) from public.submission_checkpoints sibling where sibling.homework_id = homework_row.id) = 1 then target_deadline_date else checkpoint.due_date end,
+      due_at = case when (select count(*) from public.submission_checkpoints sibling where sibling.homework_id = homework_row.id) = 1 then target_deadline_at else checkpoint.due_at end,
+      version = version + 1
   where checkpoint.homework_id = homework_row.id and checkpoint.status <> 'confirmed';
   insert into public.change_events(family_id, student_id, subject_id, entity_type, entity_id, event_type, before_value, after_value, reason, actor_id)
   values(homework_row.family_id, homework_row.student_id, homework_row.subject_id, 'homework', homework_row.id::text, 'version_created',

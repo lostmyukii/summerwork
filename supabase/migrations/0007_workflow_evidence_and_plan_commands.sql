@@ -357,11 +357,11 @@ begin
         next_stage := 'awaiting_redo';
       else
         select exists (
-          select 1 from public.homework_knowledge_links link
-          where link.homework_version_id = task_row.homework_version_id
+          select 1 from public.task_knowledge_links link
+          where link.task_id = target_task_id
         ) and not exists (
-          select 1 from public.homework_knowledge_links link
-          where link.homework_version_id = task_row.homework_version_id
+          select 1 from public.task_knowledge_links link
+          where link.task_id = target_task_id
             and not exists (
               select 1 from public.mastery_evidence evidence
               where evidence.task_id = target_task_id
@@ -480,8 +480,8 @@ begin
 
     for node_id in
       select link.knowledge_node_id
-      from public.homework_knowledge_links link
-      where link.homework_version_id = task_row.homework_version_id
+      from public.task_knowledge_links link
+      where link.task_id = task_row.id
     loop
       insert into public.mastery_evidence(
         student_id, subject_id, knowledge_node_id, task_id, homework_version_id,
@@ -909,8 +909,8 @@ begin
 
   evidence_level := case when cardinality(normalized_wrongs) > 0 then 'reinforce'::public.mastery_level else 'practiced'::public.mastery_level end;
   for node_id in
-    select link.knowledge_node_id from public.homework_knowledge_links link
-    where link.homework_version_id = task_row.homework_version_id
+    select link.knowledge_node_id from public.task_knowledge_links link
+    where link.task_id = task_row.id
   loop
     insert into public.mastery_evidence(
       student_id, subject_id, knowledge_node_id, task_id, homework_version_id,
@@ -1076,8 +1076,8 @@ begin
     when not correction_passed then 'reinforce'::public.mastery_level
     else 'basic'::public.mastery_level end;
   for node_id in
-    select link.knowledge_node_id from public.homework_knowledge_links link
-    where link.homework_version_id = task_row.homework_version_id
+    select link.knowledge_node_id from public.task_knowledge_links link
+    where link.task_id = task_row.id
   loop
     insert into public.mastery_evidence(
       student_id, subject_id, knowledge_node_id, task_id, homework_version_id,
@@ -1194,8 +1194,8 @@ begin
   select * into task_row from public.homework_tasks where id = target_task_id and deleted_at is null;
   if task_row.id is null or not public.is_task_tutor(task_row.id) then raise exception 'subject tutor access required'; end if;
   if not exists (
-    select 1 from public.homework_knowledge_links
-    where homework_version_id = task_row.homework_version_id and knowledge_node_id = target_knowledge_node_id
+    select 1 from public.task_knowledge_links
+    where task_id = target_task_id and knowledge_node_id = target_knowledge_node_id
   ) then raise exception 'knowledge node is not linked to this homework version'; end if;
   select * into workflow_row from public.task_workflow_current where task_id = target_task_id for update;
   if workflow_row.version <> expected_version then raise exception 'version conflict'; end if;
@@ -1242,8 +1242,8 @@ begin
   perform public.recalculate_mastery_snapshot(target_knowledge_node_id);
   current_stage := public.refresh_task_workflow(target_task_id);
   if current_stage in ('awaiting_acceptance', 'closed_loop') and not exists (
-    select 1 from public.homework_knowledge_links link
-    where link.homework_version_id = task_row.homework_version_id
+    select 1 from public.task_knowledge_links link
+    where link.task_id = task_row.id
       and not exists (
         select 1 from public.mastery_evidence evidence
         where evidence.task_id = task_row.id and evidence.knowledge_node_id = link.knowledge_node_id
@@ -1440,8 +1440,8 @@ begin
     perform public.recalculate_mastery_snapshot(evidence_row.knowledge_node_id);
   end loop;
   for node_id in
-    select link.knowledge_node_id from public.homework_knowledge_links link
-    where link.homework_version_id = task_row.homework_version_id
+    select link.knowledge_node_id from public.task_knowledge_links link
+    where link.task_id = task_row.id
   loop
     insert into public.mastery_evidence(
       student_id, subject_id, knowledge_node_id, task_id, homework_version_id,

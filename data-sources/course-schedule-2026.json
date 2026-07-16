@@ -1,0 +1,33 @@
+{
+  "sourceFile": "假期课表初排.xlsx",
+  "sourceSha256": "f2cd21f188ee4b10720cbfc6a27d5dae9845aec9fa9339908cdf28222e7fabfd",
+  "sheets": ["7月", "8月"],
+  "entries": [
+    { "date": "2026-07-05", "rawLabels": ["数学13:00-15:00", "化学18:00"], "labels": ["数学", "化学"], "subjects": ["数学", "化学"], "disposition": "excluded_by_user", "reason": "后续明确删除7月5日全部安排" },
+    { "date": "2026-07-13", "rawLabels": ["上海"], "labels": ["上海出行"], "subjects": [], "disposition": "important_date", "reason": "行程记录，不作为家教课程" },
+    { "date": "2026-07-14", "rawLabels": ["上海"], "labels": ["上海出行"], "subjects": [], "disposition": "important_date", "reason": "行程记录，不作为家教课程" },
+    { "date": "2026-07-19", "rawLabels": ["数学新课13:00-15:00", "俄语"], "labels": ["数学新课", "俄语"], "subjects": ["数学", "俄语"], "disposition": "included", "reason": "界面按90分钟标准块展示，不显示具体钟点" },
+    { "date": "2026-07-20", "rawLabels": ["生物2", "俄语3", "化学3"], "labels": ["生物2", "俄语3", "化学3"], "subjects": ["生物", "俄语", "化学"], "disposition": "included" },
+    { "date": "2026-07-21", "rawLabels": ["数学新课3", "物理3"], "labels": ["数学新课3", "物理3"], "subjects": ["数学", "物理"], "disposition": "included" },
+    { "date": "2026-07-22", "rawLabels": ["生物2", "俄语3", "化学3"], "labels": ["生物2", "俄语3", "化学3"], "subjects": ["生物", "俄语", "化学"], "disposition": "included" },
+    { "date": "2026-07-23", "rawLabels": ["数学新课3", "物理3"], "labels": ["数学新课3", "物理3"], "subjects": ["数学", "物理"], "disposition": "included" },
+    { "date": "2026-07-24", "rawLabels": ["生物2", "俄语3", "化学3"], "labels": ["生物2", "俄语3", "化学3"], "subjects": ["生物", "俄语", "化学"], "disposition": "included" },
+    { "date": "2026-07-25", "rawLabels": ["数学新课3", "物理3"], "labels": ["数学新课3", "物理3"], "subjects": ["数学", "物理"], "disposition": "included" },
+    { "date": "2026-08-12", "rawLabels": ["物理3", "数学作业3", "考背"], "labels": ["物理3", "数学作业3", "考背"], "subjects": ["物理", "数学", "语文"], "disposition": "included" },
+    { "date": "2026-08-13", "rawLabels": ["生物2", "俄语3", "化学3"], "labels": ["生物2", "俄语3", "化学3"], "subjects": ["生物", "俄语", "化学"], "disposition": "included" },
+    { "date": "2026-08-14", "rawLabels": ["物理3", "数学作业3", "考背"], "labels": ["物理3", "数学作业3", "考背"], "subjects": ["物理", "数学", "语文"], "disposition": "included" },
+    { "date": "2026-08-15", "rawLabels": ["生物2", "俄语3", "化学3"], "labels": ["生物2", "俄语3", "化学3"], "subjects": ["生物", "俄语", "化学"], "disposition": "included" },
+    { "date": "2026-08-17", "rawLabels": ["生物2", "俄语3", "化学3"], "labels": ["生物2", "俄语3", "化学3"], "subjects": ["生物", "俄语", "化学"], "disposition": "included" },
+    { "date": "2026-08-18", "rawLabels": ["物理3", "数学作业3", "考背"], "labels": ["物理3", "数学作业3", "考背"], "subjects": ["物理", "数学", "语文"], "disposition": "included" },
+    { "date": "2026-08-19", "rawLabels": ["生物2", "俄语3", "化学3"], "labels": ["生物2", "俄语3", "化学3"], "subjects": ["生物", "俄语", "化学"], "disposition": "included" },
+    { "date": "2026-08-20", "rawLabels": ["物理3", "数学作业3", "考背"], "labels": ["物理3", "数学作业3", "考背"], "subjects": ["物理", "数学", "语文"], "disposition": "included" },
+    { "date": "2026-08-21", "rawLabels": ["生物2", "俄语3", "化学3"], "labels": ["生物2", "俄语3", "化学3"], "subjects": ["生物", "俄语", "化学"], "disposition": "included" },
+    { "date": "2026-08-22", "rawLabels": ["物理3", "数学作业3", "考背"], "labels": ["物理3", "数学作业3", "考背"], "subjects": ["物理", "数学", "语文"], "disposition": "included" },
+    { "date": "2026-08-24", "rawLabels": ["物理3", "数学作业3", "考背"], "labels": ["物理3", "数学作业3", "考背"], "subjects": ["物理", "数学", "语文"], "disposition": "included" },
+    { "date": "2026-08-25", "rawLabels": ["生物2", "俄语3", "化学3"], "labels": ["生物2", "俄语3", "化学3"], "subjects": ["生物", "俄语", "化学"], "disposition": "included" },
+    { "date": "2026-08-26", "rawLabels": ["物理3", "数学作业3", "考背"], "labels": ["物理3", "数学作业3", "考背"], "subjects": ["物理", "数学", "语文"], "disposition": "included" },
+    { "date": "2026-08-27", "rawLabels": ["生物2", "俄语3", "化学3"], "labels": ["生物2", "俄语3", "化学3"], "subjects": ["生物", "俄语", "化学"], "disposition": "included" },
+    { "date": "2026-08-28", "rawLabels": ["物理3", "数学作业3", "考背"], "labels": ["物理3", "数学作业3", "考背"], "subjects": ["物理", "数学", "语文"], "disposition": "included" },
+    { "date": "2026-08-29", "rawLabels": ["生物2", "俄语3", "化学3"], "labels": ["生物2", "俄语3", "化学3"], "subjects": ["生物", "俄语", "化学"], "disposition": "included" }
+  ]
+}

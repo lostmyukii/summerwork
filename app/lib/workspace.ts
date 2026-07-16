@@ -1,11 +1,39 @@
 import type { SummerTask } from "./summer-plan";
-import { normalizeQuestionNumbers, type WorkflowEvidence } from "./workflow";
+import { normalizeQuestionNumbers, type MasteryLevel, type WorkflowEvidence, type WorkflowState } from "./workflow";
 
 export type StudentRunState = "ready" | "running" | "paused" | "completed";
 
 export type WorkspaceTask = SummerTask & {
   databaseId?: string;
   studentId?: string;
+  homeworkId?: string;
+  homeworkVersionId?: string;
+  homeworkRecordVersion?: number;
+  homeworkTitle?: string;
+  homeworkRequirements?: string;
+  recordVersion?: number;
+  blockType?: "knowledge_review" | "first_attempt" | "continuation" | "tutor_review" | "correction" | "independent_redo" | "submission_confirmation" | "reading";
+  sequenceNumber?: number;
+  knowledgeNodes?: KnowledgeNodeSummary[];
+  submissionCheckpoints?: SubmissionCheckpointSummary[];
+};
+
+export type KnowledgeNodeSummary = {
+  id: string;
+  name: string;
+  currentLevel: MasteryLevel;
+  highestLevel: MasteryLevel;
+};
+
+export type SubmissionCheckpointSummary = {
+  id: string;
+  label: string;
+  required: boolean;
+  status: "not_due" | "awaiting_confirmation" | "confirmed" | "revoked";
+  version: number;
+  dueDate?: string;
+  dueAt?: string;
+  confirmedAt?: string;
 };
 
 export type TaskProgress = {
@@ -14,6 +42,7 @@ export type TaskProgress = {
   accuracy: string;
   wrongNumbers: string;
   errorTags: string[];
+  note: string;
   reviewConfirmed: boolean;
   reviewConfirmedAt?: string;
   reviewSaved: boolean;
@@ -23,6 +52,10 @@ export type TaskProgress = {
   masteryConfirmed: boolean;
   schoolSubmitted: boolean;
   schoolSubmittedAt?: string;
+  workflowStage?: WorkflowState;
+  workflowVersion?: number;
+  actualSeconds?: number;
+  activeStartedAt?: string;
   updatedAt?: string;
 };
 
@@ -49,8 +82,29 @@ export type StoredWorkspace = {
   audit: AuditEntry[];
 };
 
+export type NotificationSummary = {
+  id: number;
+  type: string;
+  title: string;
+  body: string;
+  readAt?: string;
+  createdAt: string;
+};
+
+export type WeeklyReportSummary = {
+  id: string;
+  weekStart: string;
+  weekEnd: string;
+  metrics: Record<string, number>;
+  narrative: string;
+  generatedAt: string;
+};
+
 export type InitialWorkspace = StoredWorkspace & {
   tasks: WorkspaceTask[];
+  studentId?: string;
+  notifications?: NotificationSummary[];
+  weeklyReports?: WeeklyReportSummary[];
   role?: "parent" | "tutor" | "student";
   userId?: string;
   remoteEnabled?: boolean;
@@ -63,6 +117,7 @@ export function blankTaskProgress(): TaskProgress {
     accuracy: "70%—89%",
     wrongNumbers: "",
     errorTags: [],
+    note: "",
     reviewConfirmed: false,
     reviewSaved: false,
     correctionPassed: false,

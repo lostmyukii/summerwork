@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import scheduleLedger from "../data-sources/course-schedule-2026.json";
 import {
   ONTOLOGY_ISSUES,
   SUBJECT_REQUIREMENTS,
@@ -21,6 +22,12 @@ describe("2026 暑期真实计划数据", () => {
     });
   });
 
+  it("把173项作业本体与200个执行任务块分开计数", () => {
+    expect(new Set(SUMMER_TASKS.map((task) => task.homeworkKey)).size).toBe(173);
+    expect(SUMMER_TASKS.filter((task) => task.homeworkKey === "math-assignment-1")).toHaveLength(2);
+    expect(SUMMER_TASKS.filter((task) => task.homeworkKey === "biology-测试一")).toHaveLength(2);
+  });
+
   it("严格排除英语、政治、历史、地理和7月5日安排", () => {
     const serialized = JSON.stringify(SUMMER_TASKS);
     for (const subject of SUMMER_PLAN.meta.excludedSubjects) expect(serialized).not.toContain(subject);
@@ -40,7 +47,13 @@ describe("2026 暑期真实计划数据", () => {
 
   it("课程表保留原始7月19日数学和俄语，并无7月5日课程", () => {
     expect(SUMMER_PLAN.courseSchedule.find((item) => item.date === "2026-07-19")?.subjects).toEqual(["数学", "俄语"]);
+    expect(SUMMER_PLAN.courseSchedule.find((item) => item.date === "2026-07-19")?.labels).toEqual(["数学新课", "俄语"]);
+    expect(SUMMER_PLAN.courseSchedule).toHaveLength(23);
+    expect(SUMMER_PLAN.courseSchedule.every((item) => item.labels.every((label) => !/\d{1,2}:\d{2}/.test(label)))).toBe(true);
     expect(SUMMER_PLAN.courseSchedule.some((item) => item.date === "2026-07-05")).toBe(false);
+    expect(scheduleLedger.entries.filter((item) => item.disposition === "included")).toHaveLength(23);
+    expect(scheduleLedger.entries.find((item) => item.date === "2026-07-05")?.disposition).toBe("excluded_by_user");
+    expect(scheduleLedger.entries.filter((item) => item.disposition === "important_date").map((item) => item.date)).toEqual(["2026-07-13", "2026-07-14"]);
   });
 
   it("六科都有本体规则，且材料冲突不会被隐藏", () => {

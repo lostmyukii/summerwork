@@ -6,6 +6,7 @@ export type RequirementLevel = "required" | "optional" | "pending_confirmation";
 
 export type SummerTask = {
   id: string;
+  homeworkKey: string;
   date: string;
   weekday: string;
   slotType: string;
@@ -18,7 +19,7 @@ export type SummerTask = {
   submission: string;
   notes: string;
   kind: SummerTaskKind;
-  blockMinutes: 90;
+  blockMinutes: number;
   recommendedMinutes: number;
   requiresSubmission: boolean;
   courseIntegrated: boolean;

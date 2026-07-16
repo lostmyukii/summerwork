@@ -36,6 +36,7 @@
   "tasks": [
     {
       "id": "chinese-2026-07-16-01",
+      "homeworkKey": "chinese-paper-一",
       "date": "2026-07-16",
       "weekday": "四",
       "slotType": "考背自主单元",
@@ -76,6 +77,7 @@
     },
     {
       "id": "physics-2026-07-16-01",
+      "homeworkKey": "physics-2026-07-16-01",
       "date": "2026-07-16",
       "weekday": "四",
       "slotType": "自学",
@@ -114,6 +116,7 @@
     },
     {
       "id": "chinese-2026-07-17-01",
+      "homeworkKey": "chinese-paper-一",
       "date": "2026-07-17",
       "weekday": "五",
       "slotType": "考背自主单元",
@@ -152,6 +155,7 @@
     },
     {
       "id": "physics-2026-07-17-01",
+      "homeworkKey": "physics-2026-07-17-01",
       "date": "2026-07-17",
       "weekday": "五",
       "slotType": "自学",
@@ -190,6 +194,7 @@
     },
     {
       "id": "chemistry-2026-07-17-01",
+      "homeworkKey": "chemistry-2026-07-17-01",
       "date": "2026-07-17",
       "weekday": "五",
       "slotType": "自学",
@@ -228,6 +233,7 @@
     },
     {
       "id": "chinese-2026-07-18-01",
+      "homeworkKey": "chinese-2026-07-18-01",
       "date": "2026-07-18",
       "weekday": "六",
       "slotType": "考背自主单元",
@@ -259,6 +265,7 @@
     },
     {
       "id": "physics-2026-07-18-01",
+      "homeworkKey": "physics-2026-07-18-01",
       "date": "2026-07-18",
       "weekday": "六",
       "slotType": "自学",
@@ -297,6 +304,7 @@
     },
     {
       "id": "chemistry-2026-07-18-01",
+      "homeworkKey": "chemistry-2026-07-18-01",
       "date": "2026-07-18",
       "weekday": "六",
       "slotType": "自学",
@@ -335,6 +343,7 @@
     },
     {
       "id": "chinese-2026-07-19-01",
+      "homeworkKey": "chinese-honglou-1-20",
       "date": "2026-07-19",
       "weekday": "日",
       "slotType": "考背自主单元",
@@ -375,6 +384,7 @@
     },
     {
       "id": "math-2026-07-19-01",
+      "homeworkKey": "math-assignment-1",
       "date": "2026-07-19",
       "weekday": "日",
       "slotType": "家教课内",
@@ -414,6 +424,7 @@
     },
     {
       "id": "physics-2026-07-19-01",
+      "homeworkKey": "physics-2026-07-19-01",
       "date": "2026-07-19",
       "weekday": "日",
       "slotType": "周日批改（轻任务）",
@@ -451,6 +462,7 @@
     },
     {
       "id": "chinese-2026-07-20-01",
+      "homeworkKey": "chinese-paper-二",
       "date": "2026-07-20",
       "weekday": "一",
       "slotType": "考背自主单元",
@@ -491,6 +503,7 @@
     },
     {
       "id": "math-2026-07-20-01",
+      "homeworkKey": "math-assignment-1",
       "date": "2026-07-20",
       "weekday": "一",
       "slotType": "自学",
@@ -530,6 +543,7 @@
     },
     {
       "id": "russian-2026-07-20-01",
+      "homeworkKey": "russian-2026-07-20-01",
       "date": "2026-07-20",
       "weekday": "一",
       "slotType": "家教课内",
@@ -567,6 +581,7 @@
     },
     {
       "id": "physics-2026-07-20-01",
+      "homeworkKey": "physics-2026-07-20-01",
       "date": "2026-07-20",
       "weekday": "一",
       "slotType": "自学",
@@ -604,6 +619,7 @@
     },
     {
       "id": "chemistry-2026-07-20-01",
+      "homeworkKey": "chemistry-2026-07-20-01",
       "date": "2026-07-20",
       "weekday": "一",
       "slotType": "家教课内",
@@ -642,6 +658,7 @@
     },
     {
       "id": "chinese-2026-07-21-01",
+      "homeworkKey": "chinese-paper-二",
       "date": "2026-07-21",
       "weekday": "二",
       "slotType": "考背自主单元",
@@ -680,6 +697,7 @@
     },
     {
       "id": "math-2026-07-21-01",
+      "homeworkKey": "math-assignment-2",
       "date": "2026-07-21",
       "weekday": "二",
       "slotType": "家教课内",
@@ -718,6 +736,7 @@
     },
     {
       "id": "russian-2026-07-21-01",
+      "homeworkKey": "russian-2026-07-21-01",
       "date": "2026-07-21",
       "weekday": "二",
       "slotType": "自学",
@@ -755,6 +774,7 @@
     },
     {
       "id": "physics-2026-07-21-01",
+      "homeworkKey": "physics-2026-07-21-01",
       "date": "2026-07-21",
       "weekday": "二",
       "slotType": "家教课内",
@@ -792,6 +812,7 @@
     },
     {
       "id": "chinese-2026-07-22-01",
+      "homeworkKey": "chinese-honglou-21-30",
       "date": "2026-07-22",
       "weekday": "三",
       "slotType": "考背自主单元",
@@ -832,6 +853,7 @@
     },
     {
       "id": "russian-2026-07-22-01",
+      "homeworkKey": "russian-2026-07-22-01",
       "date": "2026-07-22",
       "weekday": "三",
       "slotType": "家教课内",
@@ -869,6 +891,7 @@
     },
     {
       "id": "physics-2026-07-22-01",
+      "homeworkKey": "physics-2026-07-22-01",
       "date": "2026-07-22",
       "weekday": "三",
       "slotType": "自学",
@@ -904,6 +927,7 @@
     },
     {
       "id": "chemistry-2026-07-22-01",
+      "homeworkKey": "chemistry-2026-07-22-01",
       "date": "2026-07-22",
       "weekday": "三",
       "slotType": "家教课内",
@@ -941,6 +965,7 @@
     },
     {
       "id": "chinese-2026-07-23-01",
+      "homeworkKey": "chinese-honglou-21-30",
       "date": "2026-07-23",
       "weekday": "四",
       "slotType": "考背自主单元",
@@ -978,6 +1003,7 @@
     },
     {
       "id": "math-2026-07-23-01",
+      "homeworkKey": "math-assignment-2",
       "date": "2026-07-23",
       "weekday": "四",
       "slotType": "家教课内",
@@ -1016,6 +1042,7 @@
     },
     {
       "id": "russian-2026-07-23-01",
+      "homeworkKey": "russian-2026-07-23-01",
       "date": "2026-07-23",
       "weekday": "四",
       "slotType": "自学",
@@ -1053,6 +1080,7 @@
     },
     {
       "id": "physics-2026-07-23-01",
+      "homeworkKey": "physics-2026-07-23-01",
       "date": "2026-07-23",
       "weekday": "四",
       "slotType": "家教课内",
@@ -1090,6 +1118,7 @@
     },
     {
       "id": "chinese-2026-07-24-01",
+      "homeworkKey": "chinese-2026-07-24-01",
       "date": "2026-07-24",
       "weekday": "五",
       "slotType": "考背机动单元",
@@ -1125,6 +1154,7 @@
     },
     {
       "id": "russian-2026-07-24-01",
+      "homeworkKey": "russian-2026-07-24-01",
       "date": "2026-07-24",
       "weekday": "五",
       "slotType": "家教课内",
@@ -1162,6 +1192,7 @@
     },
     {
       "id": "physics-2026-07-24-01",
+      "homeworkKey": "physics-2026-07-24-01",
       "date": "2026-07-24",
       "weekday": "五",
       "slotType": "自学",
@@ -1197,6 +1228,7 @@
     },
     {
       "id": "chemistry-2026-07-24-01",
+      "homeworkKey": "chemistry-2026-07-24-01",
       "date": "2026-07-24",
       "weekday": "五",
       "slotType": "家教课内",
@@ -1235,6 +1267,7 @@
     },
     {
       "id": "chinese-2026-07-25-01",
+      "homeworkKey": "chinese-2026-07-25-01",
       "date": "2026-07-25",
       "weekday": "六",
       "slotType": "考背自主单元",
@@ -1266,6 +1299,7 @@
     },
     {
       "id": "math-2026-07-25-01",
+      "homeworkKey": "math-assignment-3",
       "date": "2026-07-25",
       "weekday": "六",
       "slotType": "家教课内",
@@ -1303,6 +1337,7 @@
     },
     {
       "id": "russian-2026-07-25-01",
+      "homeworkKey": "russian-2026-07-25-01",
       "date": "2026-07-25",
       "weekday": "六",
       "slotType": "自学",
@@ -1340,6 +1375,7 @@
     },
     {
       "id": "physics-2026-07-25-01",
+      "homeworkKey": "physics-2026-07-25-01",
       "date": "2026-07-25",
       "weekday": "六",
       "slotType": "家教课内",
@@ -1374,6 +1410,7 @@
     },
     {
       "id": "chemistry-2026-07-25-01",
+      "homeworkKey": "chemistry-2026-07-25-01",
       "date": "2026-07-25",
       "weekday": "六",
       "slotType": "自学",
@@ -1411,6 +1448,7 @@
     },
     {
       "id": "chinese-2026-07-26-01",
+      "homeworkKey": "chinese-2026-07-26-01",
       "date": "2026-07-26",
       "weekday": "日",
       "slotType": "考背自主单元",
@@ -1449,6 +1487,7 @@
     },
     {
       "id": "math-2026-07-26-01",
+      "homeworkKey": "math-2026-07-26-01",
       "date": "2026-07-26",
       "weekday": "日",
       "slotType": "提交订正（轻）",
@@ -1482,6 +1521,7 @@
     },
     {
       "id": "russian-2026-07-26-01",
+      "homeworkKey": "russian-2026-07-26-01",
       "date": "2026-07-26",
       "weekday": "日",
       "slotType": "自学",
@@ -1519,6 +1559,7 @@
     },
     {
       "id": "physics-2026-07-26-01",
+      "homeworkKey": "physics-2026-07-26-01",
       "date": "2026-07-26",
       "weekday": "日",
       "slotType": "周日批改（轻任务）",
@@ -1556,6 +1597,7 @@
     },
     {
       "id": "chemistry-2026-07-26-01",
+      "homeworkKey": "chemistry-2026-07-26-01",
       "date": "2026-07-26",
       "weekday": "日",
       "slotType": "自学",
@@ -1587,6 +1629,7 @@
     },
     {
       "id": "chinese-2026-07-27-01",
+      "homeworkKey": "chinese-paper-三",
       "date": "2026-07-27",
       "weekday": "一",
       "slotType": "考背自主单元",
@@ -1626,6 +1669,7 @@
     },
     {
       "id": "math-2026-07-27-01",
+      "homeworkKey": "math-assignment-4",
       "date": "2026-07-27",
       "weekday": "一",
       "slotType": "自学",
@@ -1664,6 +1708,7 @@
     },
     {
       "id": "russian-2026-07-27-01",
+      "homeworkKey": "russian-2026-07-27-01",
       "date": "2026-07-27",
       "weekday": "一",
       "slotType": "自学",
@@ -1701,6 +1746,7 @@
     },
     {
       "id": "physics-2026-07-27-01",
+      "homeworkKey": "physics-2026-07-27-01",
       "date": "2026-07-27",
       "weekday": "一",
       "slotType": "自学",
@@ -1738,6 +1784,7 @@
     },
     {
       "id": "chemistry-2026-07-27-01",
+      "homeworkKey": "chemistry-2026-07-27-01",
       "date": "2026-07-27",
       "weekday": "一",
       "slotType": "自学",
@@ -1775,6 +1822,7 @@
     },
     {
       "id": "biology-2026-07-27-01",
+      "homeworkKey": "biology-测试一",
       "date": "2026-07-27",
       "weekday": "一",
       "slotType": "自学",
@@ -1814,6 +1862,7 @@
     },
     {
       "id": "chinese-2026-07-28-01",
+      "homeworkKey": "chinese-paper-三",
       "date": "2026-07-28",
       "weekday": "二",
       "slotType": "考背自主单元",
@@ -1852,6 +1901,7 @@
     },
     {
       "id": "russian-2026-07-28-01",
+      "homeworkKey": "russian-2026-07-28-01",
       "date": "2026-07-28",
       "weekday": "二",
       "slotType": "自学",
@@ -1889,6 +1939,7 @@
     },
     {
       "id": "physics-2026-07-28-01",
+      "homeworkKey": "physics-2026-07-28-01",
       "date": "2026-07-28",
       "weekday": "二",
       "slotType": "自学",
@@ -1926,6 +1977,7 @@
     },
     {
       "id": "chemistry-2026-07-28-01",
+      "homeworkKey": "chemistry-2026-07-28-01",
       "date": "2026-07-28",
       "weekday": "二",
       "slotType": "自学",
@@ -1963,6 +2015,7 @@
     },
     {
       "id": "biology-2026-07-28-01",
+      "homeworkKey": "biology-测试一",
       "date": "2026-07-28",
       "weekday": "二",
       "slotType": "自学",
@@ -2002,6 +2055,7 @@
     },
     {
       "id": "chinese-2026-07-29-01",
+      "homeworkKey": "chinese-honglou-31-40",
       "date": "2026-07-29",
       "weekday": "三",
       "slotType": "考背自主单元",
@@ -2041,6 +2095,7 @@
     },
     {
       "id": "math-2026-07-29-01",
+      "homeworkKey": "math-assignment-5",
       "date": "2026-07-29",
       "weekday": "三",
       "slotType": "自学",
@@ -2080,6 +2135,7 @@
     },
     {
       "id": "russian-2026-07-29-01",
+      "homeworkKey": "russian-2026-07-29-01",
       "date": "2026-07-29",
       "weekday": "三",
       "slotType": "自学",
@@ -2117,6 +2173,7 @@
     },
     {
       "id": "physics-2026-07-29-01",
+      "homeworkKey": "physics-2026-07-29-01",
       "date": "2026-07-29",
       "weekday": "三",
       "slotType": "自学",
@@ -2154,6 +2211,7 @@
     },
     {
       "id": "chemistry-2026-07-29-01",
+      "homeworkKey": "chemistry-2026-07-29-01",
       "date": "2026-07-29",
       "weekday": "三",
       "slotType": "自学",
@@ -2191,6 +2249,7 @@
     },
     {
       "id": "biology-2026-07-29-01",
+      "homeworkKey": "biology-测试二",
       "date": "2026-07-29",
       "weekday": "三",
       "slotType": "自学",
@@ -2230,6 +2289,7 @@
     },
     {
       "id": "chinese-2026-07-30-01",
+      "homeworkKey": "chinese-honglou-31-40",
       "date": "2026-07-30",
       "weekday": "四",
       "slotType": "考背自主单元",
@@ -2267,6 +2327,7 @@
     },
     {
       "id": "russian-2026-07-30-01",
+      "homeworkKey": "russian-2026-07-30-01",
       "date": "2026-07-30",
       "weekday": "四",
       "slotType": "自学",
@@ -2304,6 +2365,7 @@
     },
     {
       "id": "physics-2026-07-30-01",
+      "homeworkKey": "physics-2026-07-30-01",
       "date": "2026-07-30",
       "weekday": "四",
       "slotType": "自学",
@@ -2342,6 +2404,7 @@
     },
     {
       "id": "chemistry-2026-07-30-01",
+      "homeworkKey": "chemistry-2026-07-30-01",
       "date": "2026-07-30",
       "weekday": "四",
       "slotType": "自学",
@@ -2379,6 +2442,7 @@
     },
     {
       "id": "biology-2026-07-30-01",
+      "homeworkKey": "biology-测试二",
       "date": "2026-07-30",
       "weekday": "四",
       "slotType": "自学",
@@ -2417,6 +2481,7 @@
     },
     {
       "id": "chinese-2026-07-31-01",
+      "homeworkKey": "chinese-2026-07-31-01",
       "date": "2026-07-31",
       "weekday": "五",
       "slotType": "考背机动单元",
@@ -2452,6 +2517,7 @@
     },
     {
       "id": "math-2026-07-31-01",
+      "homeworkKey": "math-assignment-6",
       "date": "2026-07-31",
       "weekday": "五",
       "slotType": "自学",
@@ -2491,6 +2557,7 @@
     },
     {
       "id": "russian-2026-07-31-01",
+      "homeworkKey": "russian-2026-07-31-01",
       "date": "2026-07-31",
       "weekday": "五",
       "slotType": "自学",
@@ -2528,6 +2595,7 @@
     },
     {
       "id": "physics-2026-07-31-01",
+      "homeworkKey": "physics-2026-07-31-01",
       "date": "2026-07-31",
       "weekday": "五",
       "slotType": "自学",
@@ -2565,6 +2633,7 @@
     },
     {
       "id": "chemistry-2026-07-31-01",
+      "homeworkKey": "chemistry-2026-07-31-01",
       "date": "2026-07-31",
       "weekday": "五",
       "slotType": "自学",
@@ -2602,6 +2671,7 @@
     },
     {
       "id": "biology-2026-07-31-01",
+      "homeworkKey": "biology-测试三",
       "date": "2026-07-31",
       "weekday": "五",
       "slotType": "自学",
@@ -2641,6 +2711,7 @@
     },
     {
       "id": "chinese-2026-08-01-01",
+      "homeworkKey": "chinese-2026-08-01-01",
       "date": "2026-08-01",
       "weekday": "六",
       "slotType": "考背自主单元",
@@ -2672,6 +2743,7 @@
     },
     {
       "id": "russian-2026-08-01-01",
+      "homeworkKey": "russian-2026-08-01-01",
       "date": "2026-08-01",
       "weekday": "六",
       "slotType": "自学",
@@ -2709,6 +2781,7 @@
     },
     {
       "id": "physics-2026-08-01-01",
+      "homeworkKey": "physics-2026-08-01-01",
       "date": "2026-08-01",
       "weekday": "六",
       "slotType": "提交日（轻任务）",
@@ -2743,6 +2816,7 @@
     },
     {
       "id": "chemistry-2026-08-01-01",
+      "homeworkKey": "chemistry-2026-08-01-01",
       "date": "2026-08-01",
       "weekday": "六",
       "slotType": "自学",
@@ -2781,6 +2855,7 @@
     },
     {
       "id": "biology-2026-08-01-01",
+      "homeworkKey": "biology-测试三",
       "date": "2026-08-01",
       "weekday": "六",
       "slotType": "自学",
@@ -2819,6 +2894,7 @@
     },
     {
       "id": "chinese-2026-08-02-01",
+      "homeworkKey": "chinese-2026-08-02-01",
       "date": "2026-08-02",
       "weekday": "日",
       "slotType": "考背自主单元",
@@ -2856,6 +2932,7 @@
     },
     {
       "id": "math-2026-08-02-01",
+      "homeworkKey": "math-2026-08-02-01",
       "date": "2026-08-02",
       "weekday": "日",
       "slotType": "提交订正（轻）",
@@ -2889,6 +2966,7 @@
     },
     {
       "id": "russian-2026-08-02-01",
+      "homeworkKey": "russian-2026-08-02-01",
       "date": "2026-08-02",
       "weekday": "日",
       "slotType": "自学",
@@ -2926,6 +3004,7 @@
     },
     {
       "id": "physics-2026-08-02-01",
+      "homeworkKey": "physics-2026-08-02-01",
       "date": "2026-08-02",
       "weekday": "日",
       "slotType": "周日批改（轻任务）",
@@ -2963,6 +3042,7 @@
     },
     {
       "id": "chemistry-2026-08-02-01",
+      "homeworkKey": "chemistry-2026-08-02-01",
       "date": "2026-08-02",
       "weekday": "日",
       "slotType": "自学",
@@ -2994,6 +3074,7 @@
     },
     {
       "id": "biology-2026-08-02-01",
+      "homeworkKey": "biology-2026-08-02-01",
       "date": "2026-08-02",
       "weekday": "日",
       "slotType": "自学",
@@ -3032,6 +3113,7 @@
     },
     {
       "id": "chinese-2026-08-03-01",
+      "homeworkKey": "chinese-paper-四",
       "date": "2026-08-03",
       "weekday": "一",
       "slotType": "考背自主单元",
@@ -3072,6 +3154,7 @@
     },
     {
       "id": "math-2026-08-03-01",
+      "homeworkKey": "math-assignment-7",
       "date": "2026-08-03",
       "weekday": "一",
       "slotType": "自学",
@@ -3111,6 +3194,7 @@
     },
     {
       "id": "russian-2026-08-03-01",
+      "homeworkKey": "russian-2026-08-03-01",
       "date": "2026-08-03",
       "weekday": "一",
       "slotType": "自学",
@@ -3148,6 +3232,7 @@
     },
     {
       "id": "physics-2026-08-03-01",
+      "homeworkKey": "physics-2026-08-03-01",
       "date": "2026-08-03",
       "weekday": "一",
       "slotType": "自学",
@@ -3186,6 +3271,7 @@
     },
     {
       "id": "chemistry-2026-08-03-01",
+      "homeworkKey": "chemistry-2026-08-03-01",
       "date": "2026-08-03",
       "weekday": "一",
       "slotType": "自学",
@@ -3223,6 +3309,7 @@
     },
     {
       "id": "biology-2026-08-03-01",
+      "homeworkKey": "biology-测试四",
       "date": "2026-08-03",
       "weekday": "一",
       "slotType": "自学",
@@ -3262,6 +3349,7 @@
     },
     {
       "id": "chinese-2026-08-04-01",
+      "homeworkKey": "chinese-paper-四",
       "date": "2026-08-04",
       "weekday": "二",
       "slotType": "考背自主单元",
@@ -3299,6 +3387,7 @@
     },
     {
       "id": "russian-2026-08-04-01",
+      "homeworkKey": "russian-2026-08-04-01",
       "date": "2026-08-04",
       "weekday": "二",
       "slotType": "自学",
@@ -3336,6 +3425,7 @@
     },
     {
       "id": "physics-2026-08-04-01",
+      "homeworkKey": "physics-2026-08-04-01",
       "date": "2026-08-04",
       "weekday": "二",
       "slotType": "自学",
@@ -3374,6 +3464,7 @@
     },
     {
       "id": "chemistry-2026-08-04-01",
+      "homeworkKey": "chemistry-2026-08-04-01",
       "date": "2026-08-04",
       "weekday": "二",
       "slotType": "自学",
@@ -3412,6 +3503,7 @@
     },
     {
       "id": "biology-2026-08-04-01",
+      "homeworkKey": "biology-测试四",
       "date": "2026-08-04",
       "weekday": "二",
       "slotType": "自学",
@@ -3450,6 +3542,7 @@
     },
     {
       "id": "chinese-2026-08-05-01",
+      "homeworkKey": "chinese-honglou-41-50",
       "date": "2026-08-05",
       "weekday": "三",
       "slotType": "考背自主单元",
@@ -3489,6 +3582,7 @@
     },
     {
       "id": "math-2026-08-05-01",
+      "homeworkKey": "math-assignment-8",
       "date": "2026-08-05",
       "weekday": "三",
       "slotType": "自学",
@@ -3528,6 +3622,7 @@
     },
     {
       "id": "russian-2026-08-05-01",
+      "homeworkKey": "russian-2026-08-05-01",
       "date": "2026-08-05",
       "weekday": "三",
       "slotType": "自学",
@@ -3565,6 +3660,7 @@
     },
     {
       "id": "physics-2026-08-05-01",
+      "homeworkKey": "physics-2026-08-05-01",
       "date": "2026-08-05",
       "weekday": "三",
       "slotType": "自学",
@@ -3602,6 +3698,7 @@
     },
     {
       "id": "chemistry-2026-08-05-01",
+      "homeworkKey": "chemistry-2026-08-05-01",
       "date": "2026-08-05",
       "weekday": "三",
       "slotType": "自学",
@@ -3639,6 +3736,7 @@
     },
     {
       "id": "biology-2026-08-05-01",
+      "homeworkKey": "biology-测试五",
       "date": "2026-08-05",
       "weekday": "三",
       "slotType": "自学",
@@ -3678,6 +3776,7 @@
     },
     {
       "id": "chinese-2026-08-06-01",
+      "homeworkKey": "chinese-honglou-41-50",
       "date": "2026-08-06",
       "weekday": "四",
       "slotType": "考背自主单元",
@@ -3715,6 +3814,7 @@
     },
     {
       "id": "russian-2026-08-06-01",
+      "homeworkKey": "russian-2026-08-06-01",
       "date": "2026-08-06",
       "weekday": "四",
       "slotType": "自学",
@@ -3752,6 +3852,7 @@
     },
     {
       "id": "physics-2026-08-06-01",
+      "homeworkKey": "physics-2026-08-06-01",
       "date": "2026-08-06",
       "weekday": "四",
       "slotType": "自学",
@@ -3789,6 +3890,7 @@
     },
     {
       "id": "chemistry-2026-08-06-01",
+      "homeworkKey": "chemistry-2026-08-06-01",
       "date": "2026-08-06",
       "weekday": "四",
       "slotType": "自学",
@@ -3826,6 +3928,7 @@
     },
     {
       "id": "biology-2026-08-06-01",
+      "homeworkKey": "biology-测试五",
       "date": "2026-08-06",
       "weekday": "四",
       "slotType": "自学",
@@ -3864,6 +3967,7 @@
     },
     {
       "id": "chinese-2026-08-07-01",
+      "homeworkKey": "chinese-2026-08-07-01",
       "date": "2026-08-07",
       "weekday": "五",
       "slotType": "考背机动单元",
@@ -3899,6 +4003,7 @@
     },
     {
       "id": "math-2026-08-07-01",
+      "homeworkKey": "math-assignment-9",
       "date": "2026-08-07",
       "weekday": "五",
       "slotType": "自学",
@@ -3937,6 +4042,7 @@
     },
     {
       "id": "russian-2026-08-07-01",
+      "homeworkKey": "russian-2026-08-07-01",
       "date": "2026-08-07",
       "weekday": "五",
       "slotType": "自学",
@@ -3974,6 +4080,7 @@
     },
     {
       "id": "physics-2026-08-07-01",
+      "homeworkKey": "physics-2026-08-07-01",
       "date": "2026-08-07",
       "weekday": "五",
       "slotType": "自学",
@@ -4011,6 +4118,7 @@
     },
     {
       "id": "chemistry-2026-08-07-01",
+      "homeworkKey": "chemistry-2026-08-07-01",
       "date": "2026-08-07",
       "weekday": "五",
       "slotType": "自学",
@@ -4048,6 +4156,7 @@
     },
     {
       "id": "biology-2026-08-07-01",
+      "homeworkKey": "biology-测试六",
       "date": "2026-08-07",
       "weekday": "五",
       "slotType": "自学",
@@ -4086,6 +4195,7 @@
     },
     {
       "id": "chinese-2026-08-08-01",
+      "homeworkKey": "chinese-2026-08-08-01",
       "date": "2026-08-08",
       "weekday": "六",
       "slotType": "考背自主单元",
@@ -4117,6 +4227,7 @@
     },
     {
       "id": "math-2026-08-08-01",
+      "homeworkKey": "math-assignment-10",
       "date": "2026-08-08",
       "weekday": "六",
       "slotType": "自学",
@@ -4155,6 +4266,7 @@
     },
     {
       "id": "russian-2026-08-08-01",
+      "homeworkKey": "russian-2026-08-08-01",
       "date": "2026-08-08",
       "weekday": "六",
       "slotType": "自学",
@@ -4192,6 +4304,7 @@
     },
     {
       "id": "physics-2026-08-08-01",
+      "homeworkKey": "physics-2026-08-08-01",
       "date": "2026-08-08",
       "weekday": "六",
       "slotType": "提交日（轻任务）",
@@ -4226,6 +4339,7 @@
     },
     {
       "id": "chemistry-2026-08-08-01",
+      "homeworkKey": "chemistry-2026-08-08-01",
       "date": "2026-08-08",
       "weekday": "六",
       "slotType": "自学",
@@ -4263,6 +4377,7 @@
     },
     {
       "id": "biology-2026-08-08-01",
+      "homeworkKey": "biology-测试六",
       "date": "2026-08-08",
       "weekday": "六",
       "slotType": "自学",
@@ -4300,6 +4415,7 @@
     },
     {
       "id": "chinese-2026-08-09-01",
+      "homeworkKey": "chinese-2026-08-09-01",
       "date": "2026-08-09",
       "weekday": "日",
       "slotType": "考背自主单元",
@@ -4337,6 +4453,7 @@
     },
     {
       "id": "math-2026-08-09-01",
+      "homeworkKey": "math-2026-08-09-01",
       "date": "2026-08-09",
       "weekday": "日",
       "slotType": "提交订正（轻）",
@@ -4370,6 +4487,7 @@
     },
     {
       "id": "russian-2026-08-09-01",
+      "homeworkKey": "russian-2026-08-09-01",
       "date": "2026-08-09",
       "weekday": "日",
       "slotType": "自学",
@@ -4407,6 +4525,7 @@
     },
     {
       "id": "physics-2026-08-09-01",
+      "homeworkKey": "physics-2026-08-09-01",
       "date": "2026-08-09",
       "weekday": "日",
       "slotType": "周日批改（轻任务）",
@@ -4444,6 +4563,7 @@
     },
     {
       "id": "chemistry-2026-08-09-01",
+      "homeworkKey": "chemistry-2026-08-09-01",
       "date": "2026-08-09",
       "weekday": "日",
       "slotType": "自学",
@@ -4475,6 +4595,7 @@
     },
     {
       "id": "biology-2026-08-09-01",
+      "homeworkKey": "biology-2026-08-09-01",
       "date": "2026-08-09",
       "weekday": "日",
       "slotType": "自学",
@@ -4512,6 +4633,7 @@
     },
     {
       "id": "chinese-2026-08-10-01",
+      "homeworkKey": "chinese-paper-五",
       "date": "2026-08-10",
       "weekday": "一",
       "slotType": "考背自主单元",
@@ -4549,6 +4671,7 @@
     },
     {
       "id": "math-2026-08-10-01",
+      "homeworkKey": "math-assignment-10",
       "date": "2026-08-10",
       "weekday": "一",
       "slotType": "自学",
@@ -4587,6 +4710,7 @@
     },
     {
       "id": "russian-2026-08-10-01",
+      "homeworkKey": "russian-2026-08-10-01",
       "date": "2026-08-10",
       "weekday": "一",
       "slotType": "自学",
@@ -4624,6 +4748,7 @@
     },
     {
       "id": "physics-2026-08-10-01",
+      "homeworkKey": "physics-2026-08-10-01",
       "date": "2026-08-10",
       "weekday": "一",
       "slotType": "自学",
@@ -4662,6 +4787,7 @@
     },
     {
       "id": "biology-2026-08-10-01",
+      "homeworkKey": "biology-综合一",
       "date": "2026-08-10",
       "weekday": "一",
       "slotType": "自学",
@@ -4699,6 +4825,7 @@
     },
     {
       "id": "chinese-2026-08-11-01",
+      "homeworkKey": "chinese-paper-五",
       "date": "2026-08-11",
       "weekday": "二",
       "slotType": "考背自主单元",
@@ -4736,6 +4863,7 @@
     },
     {
       "id": "math-2026-08-11-01",
+      "homeworkKey": "math-assignment-10",
       "date": "2026-08-11",
       "weekday": "二",
       "slotType": "自学",
@@ -4773,6 +4901,7 @@
     },
     {
       "id": "russian-2026-08-11-01",
+      "homeworkKey": "russian-2026-08-11-01",
       "date": "2026-08-11",
       "weekday": "二",
       "slotType": "自学",
@@ -4810,6 +4939,7 @@
     },
     {
       "id": "physics-2026-08-11-01",
+      "homeworkKey": "physics-2026-08-11-01",
       "date": "2026-08-11",
       "weekday": "二",
       "slotType": "自学",
@@ -4847,6 +4977,7 @@
     },
     {
       "id": "biology-2026-08-11-01",
+      "homeworkKey": "biology-综合一",
       "date": "2026-08-11",
       "weekday": "二",
       "slotType": "自学",
@@ -4884,6 +5015,7 @@
     },
     {
       "id": "chinese-2026-08-12-01",
+      "homeworkKey": "chinese-2026-08-12-01",
       "date": "2026-08-12",
       "weekday": "三",
       "slotType": "考背课内",
@@ -4921,6 +5053,7 @@
     },
     {
       "id": "math-2026-08-12-01",
+      "homeworkKey": "math-assignment-11",
       "date": "2026-08-12",
       "weekday": "三",
       "slotType": "家教课内",
@@ -4959,6 +5092,7 @@
     },
     {
       "id": "russian-2026-08-12-01",
+      "homeworkKey": "russian-2026-08-12-01",
       "date": "2026-08-12",
       "weekday": "三",
       "slotType": "自学",
@@ -4996,6 +5130,7 @@
     },
     {
       "id": "physics-2026-08-12-01",
+      "homeworkKey": "physics-2026-08-12-01",
       "date": "2026-08-12",
       "weekday": "三",
       "slotType": "家教课内",
@@ -5033,6 +5168,7 @@
     },
     {
       "id": "biology-2026-08-12-01",
+      "homeworkKey": "biology-综合二",
       "date": "2026-08-12",
       "weekday": "三",
       "slotType": "自学",
@@ -5070,6 +5206,7 @@
     },
     {
       "id": "chinese-2026-08-13-01",
+      "homeworkKey": "chinese-honglou-51-70",
       "date": "2026-08-13",
       "weekday": "四",
       "slotType": "考背自主单元",
@@ -5107,6 +5244,7 @@
     },
     {
       "id": "russian-2026-08-13-01",
+      "homeworkKey": "russian-2026-08-13-01",
       "date": "2026-08-13",
       "weekday": "四",
       "slotType": "家教课内",
@@ -5144,6 +5282,7 @@
     },
     {
       "id": "physics-2026-08-13-01",
+      "homeworkKey": "physics-2026-08-13-01",
       "date": "2026-08-13",
       "weekday": "四",
       "slotType": "自学",
@@ -5179,6 +5318,7 @@
     },
     {
       "id": "chemistry-2026-08-13-01",
+      "homeworkKey": "chemistry-2026-08-13-01",
       "date": "2026-08-13",
       "weekday": "四",
       "slotType": "家教课内",
@@ -5216,6 +5356,7 @@
     },
     {
       "id": "biology-2026-08-13-01",
+      "homeworkKey": "biology-综合二",
       "date": "2026-08-13",
       "weekday": "四",
       "slotType": "家教课内",
@@ -5253,6 +5394,7 @@
     },
     {
       "id": "chinese-2026-08-14-01",
+      "homeworkKey": "chinese-2026-08-14-01",
       "date": "2026-08-14",
       "weekday": "五",
       "slotType": "考背课内",
@@ -5290,6 +5432,7 @@
     },
     {
       "id": "math-2026-08-14-01",
+      "homeworkKey": "math-assignment-12",
       "date": "2026-08-14",
       "weekday": "五",
       "slotType": "家教课内",
@@ -5328,6 +5471,7 @@
     },
     {
       "id": "russian-2026-08-14-01",
+      "homeworkKey": "russian-2026-08-14-01",
       "date": "2026-08-14",
       "weekday": "五",
       "slotType": "自学",
@@ -5365,6 +5509,7 @@
     },
     {
       "id": "physics-2026-08-14-01",
+      "homeworkKey": "physics-2026-08-14-01",
       "date": "2026-08-14",
       "weekday": "五",
       "slotType": "家教课内",
@@ -5403,6 +5548,7 @@
     },
     {
       "id": "biology-2026-08-14-01",
+      "homeworkKey": "biology-综合三",
       "date": "2026-08-14",
       "weekday": "五",
       "slotType": "自学",
@@ -5440,6 +5586,7 @@
     },
     {
       "id": "chinese-2026-08-15-01",
+      "homeworkKey": "chinese-2026-08-15-01",
       "date": "2026-08-15",
       "weekday": "六",
       "slotType": "考背自主单元",
@@ -5473,6 +5620,7 @@
     },
     {
       "id": "russian-2026-08-15-01",
+      "homeworkKey": "russian-2026-08-15-01",
       "date": "2026-08-15",
       "weekday": "六",
       "slotType": "家教课内",
@@ -5510,6 +5658,7 @@
     },
     {
       "id": "physics-2026-08-15-01",
+      "homeworkKey": "physics-2026-08-15-01",
       "date": "2026-08-15",
       "weekday": "六",
       "slotType": "提交日（轻任务）",
@@ -5544,6 +5693,7 @@
     },
     {
       "id": "chemistry-2026-08-15-01",
+      "homeworkKey": "chemistry-2026-08-15-01",
       "date": "2026-08-15",
       "weekday": "六",
       "slotType": "家教课内",
@@ -5581,6 +5731,7 @@
     },
     {
       "id": "biology-2026-08-15-01",
+      "homeworkKey": "biology-综合三",
       "date": "2026-08-15",
       "weekday": "六",
       "slotType": "家教课内",
@@ -5614,6 +5765,7 @@
     },
     {
       "id": "chinese-2026-08-16-01",
+      "homeworkKey": "chinese-2026-08-16-01",
       "date": "2026-08-16",
       "weekday": "日",
       "slotType": "考背自主单元",
@@ -5651,6 +5803,7 @@
     },
     {
       "id": "math-2026-08-16-01",
+      "homeworkKey": "math-2026-08-16-01",
       "date": "2026-08-16",
       "weekday": "日",
       "slotType": "提交订正（轻）",
@@ -5684,6 +5837,7 @@
     },
     {
       "id": "russian-2026-08-16-01",
+      "homeworkKey": "russian-2026-08-16-01",
       "date": "2026-08-16",
       "weekday": "日",
       "slotType": "自学",
@@ -5721,6 +5875,7 @@
     },
     {
       "id": "physics-2026-08-16-01",
+      "homeworkKey": "physics-2026-08-16-01",
       "date": "2026-08-16",
       "weekday": "日",
       "slotType": "周日批改（轻任务）",
@@ -5758,6 +5913,7 @@
     },
     {
       "id": "chemistry-2026-08-16-01",
+      "homeworkKey": "chemistry-2026-08-16-01",
       "date": "2026-08-16",
       "weekday": "日",
       "slotType": "自学",
@@ -5789,6 +5945,7 @@
     },
     {
       "id": "chinese-2026-08-17-01",
+      "homeworkKey": "chinese-paper-六",
       "date": "2026-08-17",
       "weekday": "一",
       "slotType": "考背自主单元",
@@ -5826,6 +5983,7 @@
     },
     {
       "id": "russian-2026-08-17-01",
+      "homeworkKey": "russian-2026-08-17-01",
       "date": "2026-08-17",
       "weekday": "一",
       "slotType": "家教课内",
@@ -5863,6 +6021,7 @@
     },
     {
       "id": "physics-2026-08-17-01",
+      "homeworkKey": "physics-2026-08-17-01",
       "date": "2026-08-17",
       "weekday": "一",
       "slotType": "自学",
@@ -5901,6 +6060,7 @@
     },
     {
       "id": "chemistry-2026-08-17-01",
+      "homeworkKey": "chemistry-2026-08-17-01",
       "date": "2026-08-17",
       "weekday": "一",
       "slotType": "家教课内",
@@ -5938,6 +6098,7 @@
     },
     {
       "id": "chinese-2026-08-18-01",
+      "homeworkKey": "chinese-paper-六",
       "date": "2026-08-18",
       "weekday": "二",
       "slotType": "考背课内",
@@ -5975,6 +6136,7 @@
     },
     {
       "id": "math-2026-08-18-01",
+      "homeworkKey": "math-assignment-13",
       "date": "2026-08-18",
       "weekday": "二",
       "slotType": "家教课内",
@@ -6014,6 +6176,7 @@
     },
     {
       "id": "russian-2026-08-18-01",
+      "homeworkKey": "russian-2026-08-18-01",
       "date": "2026-08-18",
       "weekday": "二",
       "slotType": "自学",
@@ -6051,6 +6214,7 @@
     },
     {
       "id": "physics-2026-08-18-01",
+      "homeworkKey": "physics-2026-08-18-01",
       "date": "2026-08-18",
       "weekday": "二",
       "slotType": "家教课内",
@@ -6088,6 +6252,7 @@
     },
     {
       "id": "chemistry-2026-08-18-01",
+      "homeworkKey": "chemistry-2026-08-18-01",
       "date": "2026-08-18",
       "weekday": "二",
       "slotType": "自学",
@@ -6125,6 +6290,7 @@
     },
     {
       "id": "chinese-2026-08-19-01",
+      "homeworkKey": "chinese-honglou-71-80",
       "date": "2026-08-19",
       "weekday": "三",
       "slotType": "考背自主单元",
@@ -6162,6 +6328,7 @@
     },
     {
       "id": "math-2026-08-19-01",
+      "homeworkKey": "math-assignment-14",
       "date": "2026-08-19",
       "weekday": "三",
       "slotType": "自学",
@@ -6199,6 +6366,7 @@
     },
     {
       "id": "physics-2026-08-19-01",
+      "homeworkKey": "physics-2026-08-19-01",
       "date": "2026-08-19",
       "weekday": "三",
       "slotType": "自学",
@@ -6236,6 +6404,7 @@
     },
     {
       "id": "chemistry-2026-08-19-01",
+      "homeworkKey": "chemistry-2026-08-19-01",
       "date": "2026-08-19",
       "weekday": "三",
       "slotType": "家教课内",
@@ -6273,6 +6442,7 @@
     },
     {
       "id": "chinese-2026-08-20-01",
+      "homeworkKey": "chinese-2026-08-20-01",
       "date": "2026-08-20",
       "weekday": "四",
       "slotType": "考背课内",
@@ -6310,6 +6480,7 @@
     },
     {
       "id": "math-2026-08-20-01",
+      "homeworkKey": "math-assignment-14",
       "date": "2026-08-20",
       "weekday": "四",
       "slotType": "家教课内",
@@ -6348,6 +6519,7 @@
     },
     {
       "id": "physics-2026-08-20-01",
+      "homeworkKey": "physics-2026-08-20-01",
       "date": "2026-08-20",
       "weekday": "四",
       "slotType": "家教课内",
@@ -6386,6 +6558,7 @@
     },
     {
       "id": "chemistry-2026-08-20-01",
+      "homeworkKey": "chemistry-2026-08-20-01",
       "date": "2026-08-20",
       "weekday": "四",
       "slotType": "自学",
@@ -6423,6 +6596,7 @@
     },
     {
       "id": "chinese-2026-08-21-01",
+      "homeworkKey": "chinese-honglou-71-80",
       "date": "2026-08-21",
       "weekday": "五",
       "slotType": "考背自主单元",
@@ -6460,6 +6634,7 @@
     },
     {
       "id": "physics-2026-08-21-01",
+      "homeworkKey": "physics-2026-08-21-01",
       "date": "2026-08-21",
       "weekday": "五",
       "slotType": "自学",
@@ -6495,6 +6670,7 @@
     },
     {
       "id": "chemistry-2026-08-21-01",
+      "homeworkKey": "chemistry-2026-08-21-01",
       "date": "2026-08-21",
       "weekday": "五",
       "slotType": "家教课内",
@@ -6533,6 +6709,7 @@
     },
     {
       "id": "biology-2026-08-21-01",
+      "homeworkKey": "biology-2026-08-21-01",
       "date": "2026-08-21",
       "weekday": "五",
       "slotType": "家教课内",
@@ -6570,6 +6747,7 @@
     },
     {
       "id": "chinese-2026-08-22-01",
+      "homeworkKey": "chinese-2026-08-22-01",
       "date": "2026-08-22",
       "weekday": "六",
       "slotType": "考背课内",
@@ -6603,6 +6781,7 @@
     },
     {
       "id": "math-2026-08-22-01",
+      "homeworkKey": "math-assignment-15",
       "date": "2026-08-22",
       "weekday": "六",
       "slotType": "家教课内",
@@ -6640,6 +6819,7 @@
     },
     {
       "id": "physics-2026-08-22-01",
+      "homeworkKey": "physics-2026-08-22-01",
       "date": "2026-08-22",
       "weekday": "六",
       "slotType": "家教课内",
@@ -6673,6 +6853,7 @@
     },
     {
       "id": "chinese-2026-08-23-01",
+      "homeworkKey": "chinese-2026-08-23-01",
       "date": "2026-08-23",
       "weekday": "日",
       "slotType": "考背自主单元",
@@ -6710,6 +6891,7 @@
     },
     {
       "id": "math-2026-08-23-01",
+      "homeworkKey": "math-2026-08-23-01",
       "date": "2026-08-23",
       "weekday": "日",
       "slotType": "错题复盘（轻）",
@@ -6749,6 +6931,7 @@
     },
     {
       "id": "physics-2026-08-23-01",
+      "homeworkKey": "physics-2026-08-23-01",
       "date": "2026-08-23",
       "weekday": "日",
       "slotType": "周日批改（轻任务）",
@@ -6786,6 +6969,7 @@
     },
     {
       "id": "chinese-2026-08-24-01",
+      "homeworkKey": "chinese-paper-七",
       "date": "2026-08-24",
       "weekday": "一",
       "slotType": "考背课内",
@@ -6823,6 +7007,7 @@
     },
     {
       "id": "math-2026-08-24-01",
+      "homeworkKey": "math-assignment-15",
       "date": "2026-08-24",
       "weekday": "一",
       "slotType": "家教课内",
@@ -6861,6 +7046,7 @@
     },
     {
       "id": "physics-2026-08-24-01",
+      "homeworkKey": "physics-2026-08-24-01",
       "date": "2026-08-24",
       "weekday": "一",
       "slotType": "家教课内",
@@ -6898,6 +7084,7 @@
     },
     {
       "id": "chinese-2026-08-25-01",
+      "homeworkKey": "chinese-paper-七",
       "date": "2026-08-25",
       "weekday": "二",
       "slotType": "考背自主单元",
@@ -6935,6 +7122,7 @@
     },
     {
       "id": "math-2026-08-25-01",
+      "homeworkKey": "math-2026-08-25-01",
       "date": "2026-08-25",
       "weekday": "二",
       "slotType": "提交订正（轻）",
@@ -6968,6 +7156,7 @@
     },
     {
       "id": "chemistry-2026-08-25-01",
+      "homeworkKey": "chemistry-2026-08-25-01",
       "date": "2026-08-25",
       "weekday": "二",
       "slotType": "家教课内",
@@ -7005,6 +7194,7 @@
     },
     {
       "id": "biology-2026-08-25-01",
+      "homeworkKey": "biology-2026-08-25-01",
       "date": "2026-08-25",
       "weekday": "二",
       "slotType": "家教课内",
@@ -7042,6 +7232,7 @@
     },
     {
       "id": "chinese-2026-08-26-01",
+      "homeworkKey": "chinese-paper-八",
       "date": "2026-08-26",
       "weekday": "三",
       "slotType": "考背课内",
@@ -7079,6 +7270,7 @@
     },
     {
       "id": "math-2026-08-26-01",
+      "homeworkKey": "math-2026-08-26-01",
       "date": "2026-08-26",
       "weekday": "三",
       "slotType": "家教课内",
@@ -7118,6 +7310,7 @@
     },
     {
       "id": "physics-2026-08-26-01",
+      "homeworkKey": "physics-2026-08-26-01",
       "date": "2026-08-26",
       "weekday": "三",
       "slotType": "家教课内",
@@ -7155,6 +7348,7 @@
     },
     {
       "id": "chinese-2026-08-27-01",
+      "homeworkKey": "chinese-paper-八",
       "date": "2026-08-27",
       "weekday": "四",
       "slotType": "考背自主单元",
@@ -7192,6 +7386,7 @@
     },
     {
       "id": "chemistry-2026-08-27-01",
+      "homeworkKey": "chemistry-2026-08-27-01",
       "date": "2026-08-27",
       "weekday": "四",
       "slotType": "家教课内",
@@ -7229,6 +7424,7 @@
     },
     {
       "id": "chinese-2026-08-28-01",
+      "homeworkKey": "chinese-2026-08-28-01",
       "date": "2026-08-28",
       "weekday": "五",
       "slotType": "考背课内",
@@ -7266,6 +7462,7 @@
     },
     {
       "id": "math-2026-08-28-01",
+      "homeworkKey": "math-2026-08-28-01",
       "date": "2026-08-28",
       "weekday": "五",
       "slotType": "家教课内",
@@ -7305,6 +7502,7 @@
     },
     {
       "id": "physics-2026-08-28-01",
+      "homeworkKey": "physics-2026-08-28-01",
       "date": "2026-08-28",
       "weekday": "五",
       "slotType": "家教课内",
@@ -7342,6 +7540,7 @@
     },
     {
       "id": "chinese-2026-08-29-01",
+      "homeworkKey": "chinese-2026-08-29-01",
       "date": "2026-08-29",
       "weekday": "六",
       "slotType": "考背自主单元",
@@ -7375,6 +7574,7 @@
     },
     {
       "id": "math-2026-08-29-01",
+      "homeworkKey": "math-2026-08-29-01",
       "date": "2026-08-29",
       "weekday": "六",
       "slotType": "自学",
@@ -7415,7 +7615,7 @@
     {
       "date": "2026-07-19",
       "labels": [
-        "数学新课 13:00-15:00",
+        "数学新课",
         "俄语"
       ],
       "subjects": [

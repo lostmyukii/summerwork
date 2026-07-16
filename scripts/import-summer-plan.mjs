@@ -4,7 +4,8 @@ import { fileURLToPath } from "node:url";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 const sourceDir = process.env.SUMMER_PLAN_SOURCE_DIR || path.resolve(projectRoot, "..", "系统搭建");
-const outputPath = path.join(projectRoot, "app", "data", "summer-2026.json");
+const outputPath = process.env.SUMMER_PLAN_OUTPUT_PATH || path.join(projectRoot, "app", "data", "summer-2026.json");
+const scheduleLedgerPath = path.join(projectRoot, "data-sources", "course-schedule-2026.json");
 
 const sourceFiles = ["语文.csv", "数学.csv", "物理.csv", "化学.csv", "生物俄语.csv"];
 const allowedSubjects = ["语文", "数学", "俄语", "物理", "化学", "生物"];
@@ -104,6 +105,24 @@ function requirementLevelFor(subject, title, notes) {
   return "required";
 }
 
+function inferHomeworkKey(subject, title, fallbackId) {
+  if (subject === "数学") {
+    const match = title.match(/^作业(\d+)(?:\(|\s|$)/);
+    if (match) return `math-assignment-${Number(match[1])}`;
+  }
+  if (subject === "生物") {
+    const match = title.match(/^(测试[一二三四五六七八九十]+|综合[一二三四五六七八九十]+)/);
+    if (match) return `biology-${match[1]}`;
+  }
+  if (subject === "语文") {
+    const paper = title.match(/套([一二三四五六七八])([①②])/);
+    if (paper) return `chinese-paper-${paper[1]}`;
+    const novel = title.match(/^红楼(\d+-\d+)回/);
+    if (novel) return `chinese-honglou-${novel[1]}`;
+  }
+  return fallbackId;
+}
+
 function formatDeadline(year, month, day, hour, minute) {
   return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00+08:00`;
 }
@@ -167,8 +186,10 @@ for (const sourceFile of sourceFiles) {
     const uncertainty = /【存疑】|需确认|若.*返校|学校通知.*返校/.test(`${title}${notes}`);
 
     const deadlineAt = inferExplicitDeadline(date, title, submission, notes);
+    const taskId = `${subjectSlugs[subject]}-${date}-${String(sequence).padStart(2, "0")}`;
     tasks.push({
-      id: `${subjectSlugs[subject]}-${date}-${String(sequence).padStart(2, "0")}`,
+      id: taskId,
+      homeworkKey: inferHomeworkKey(subject, title, taskId),
       date,
       weekday,
       slotType,
@@ -229,31 +250,21 @@ for (const subject of allowedSubjects) {
   }
 }
 
-const courseSchedule = [
-  { date: "2026-07-19", labels: ["数学新课 13:00-15:00", "俄语"], subjects: ["数学", "俄语"], source: "假期课表初排.xlsx/7月" },
-  { date: "2026-07-20", labels: ["生物2", "俄语3", "化学3"], subjects: ["生物", "俄语", "化学"], source: "假期课表初排.xlsx/7月" },
-  { date: "2026-07-21", labels: ["数学新课3", "物理3"], subjects: ["数学", "物理"], source: "假期课表初排.xlsx/7月" },
-  { date: "2026-07-22", labels: ["生物2", "俄语3", "化学3"], subjects: ["生物", "俄语", "化学"], source: "假期课表初排.xlsx/7月" },
-  { date: "2026-07-23", labels: ["数学新课3", "物理3"], subjects: ["数学", "物理"], source: "假期课表初排.xlsx/7月" },
-  { date: "2026-07-24", labels: ["生物2", "俄语3", "化学3"], subjects: ["生物", "俄语", "化学"], source: "假期课表初排.xlsx/7月" },
-  { date: "2026-07-25", labels: ["数学新课3", "物理3"], subjects: ["数学", "物理"], source: "假期课表初排.xlsx/7月" },
-  ...[12, 14, 18, 20, 22, 24, 26, 28].map((day) => ({
-    date: `2026-08-${String(day).padStart(2, "0")}`,
-    labels: ["物理3", "数学作业3", "考背"],
-    subjects: ["物理", "数学", "语文"],
-    source: "假期课表初排.xlsx/8月",
-  })),
-  ...[13, 15, 17, 19, 21, 25, 27, 29].map((day) => ({
-    date: `2026-08-${String(day).padStart(2, "0")}`,
-    labels: ["生物2", "俄语3", "化学3"],
-    subjects: ["生物", "俄语", "化学"],
-    source: "假期课表初排.xlsx/8月",
-  })),
-].sort((left, right) => left.date.localeCompare(right.date));
+const scheduleLedger = JSON.parse(await fs.readFile(scheduleLedgerPath, "utf8"));
+const courseSchedule = scheduleLedger.entries
+  .filter((entry) => entry.disposition === "included")
+  .map((entry) => ({
+    date: entry.date,
+    labels: entry.labels,
+    subjects: entry.subjects,
+    source: `${scheduleLedger.sourceFile}/${Number(entry.date.slice(5, 7))}月`,
+  }))
+  .sort((left, right) => left.date.localeCompare(right.date));
 
 const importantDates = [
-  { date: "2026-07-13", type: "travel", label: "上海出行" },
-  { date: "2026-07-14", type: "travel", label: "上海出行" },
+  ...scheduleLedger.entries
+    .filter((entry) => entry.disposition === "important_date")
+    .map((entry) => ({ date: entry.date, type: "travel", label: entry.labels.join("、") })),
   { date: "2026-08-20", type: "uncertain", label: "学校通知约此时返校，需确认后段计划" },
   { date: "2026-08-29", type: "plan-end", label: "当前暑期计划结束节点" },
 ];

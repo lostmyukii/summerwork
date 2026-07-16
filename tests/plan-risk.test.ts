@@ -4,7 +4,7 @@ import type { WorkspaceTask } from "../app/lib/workspace";
 
 function task(id: string, date: string, deadlineDate: string | null, subject: WorkspaceTask["subject"] = "数学"): WorkspaceTask {
   return {
-    id, date, weekday: "一", slotType: "自学", sourceSlotType: "自学", subject, title: id,
+    id, homeworkKey: id, date, weekday: "一", slotType: "自学", sourceSlotType: "自学", subject, title: id,
     knowledge: "知识点", knowledgeTags: ["知识点"], answerBasis: "首做后批改", submission: "学校平台",
     notes: "", kind: "practice", blockMinutes: 90, recommendedMinutes: 90, requiresSubmission: true,
     courseIntegrated: false, optional: false, uncertainty: false, priority: "standard",
@@ -32,7 +32,7 @@ describe("FR-005/FR-014 日期容量与截止风险", () => {
   it("学校提交确认只消除提交风险，不改变计划规则", () => {
     const base = task("m", "2026-07-17", "2026-07-18");
     const open = computePlanRisks([base], {}, {}, "2026-07-19");
-    const confirmed = computePlanRisks([base], {}, { m: { runState: "completed", unknown: "", accuracy: "100%", wrongNumbers: "", errorTags: [], reviewConfirmed: true, reviewSaved: true, correctionPassed: true, redoRequired: false, redoPassed: false, masteryConfirmed: true, schoolSubmitted: true } }, "2026-07-19");
+    const confirmed = computePlanRisks([base], {}, { m: { runState: "completed", unknown: "", accuracy: "100%", wrongNumbers: "", errorTags: [], note: "", reviewConfirmed: true, reviewSaved: true, correctionPassed: true, redoRequired: false, redoPassed: false, masteryConfirmed: true, schoolSubmitted: true } }, "2026-07-19");
     expect(open.some((risk) => risk.type === "overdue")).toBe(true);
     expect(confirmed.some((risk) => risk.type === "overdue")).toBe(false);
   });
