@@ -39,7 +39,7 @@ curl --fail --silent --show-error \
   -H "apikey: $SUPABASE_SECRET_KEY" \
   http://127.0.0.1:8180/rest/v1/ >/dev/null
 ${compose[@]} exec -T realtime \
-  sh -c 'curl -sSfL --head -o /dev/null -H "Authorization: Bearer $ANON_KEY_ASYMMETRIC" http://127.0.0.1:4000/api/tenants/realtime-dev/health'
+  sh -c 'curl -sSfL --head -o /dev/null -H "Authorization: Bearer $ANON_KEY" http://127.0.0.1:4000/api/tenants/realtime-dev/health'
 
 new_ports="$(ss -ltnH | awk '{print $4}' | grep -E '(^|:)(3180|8180)$' | sort -u)"
 if [[ "$new_ports" != *"127.0.0.1:3180"* || "$new_ports" != *"127.0.0.1:8180"* ]]; then

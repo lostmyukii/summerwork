@@ -35,6 +35,7 @@ test("Tencent compose is minimal, pinned and loopback-only", async () => {
   assert.match(compose, /name: \$\{SUMMERWORK_DB_CONFIG_VOLUME:-summerwork_db_config\}/);
   assert.match(compose, /roles-minimal\.sql/);
   assert.match(compose, /pg_get_userbyid\(p\.proowner\)='supabase_auth_admin'/);
+  assert.match(compose, /Authorization: Bearer \$\$\{ANON_KEY\}/);
   assert.match(compose, /version: "2\.4"/);
 
   const appBlock = servicesBlock.slice(servicesBlock.indexOf("\n  app:"));

@@ -132,7 +132,7 @@ services:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "curl -sSfL --head -o /dev/null -H 'Authorization: Bearer ${ANON_KEY_ASYMMETRIC}' http://localhost:4000/api/tenants/realtime-dev/health"]
+      test: ["CMD-SHELL", "curl -sSfL --head -o /dev/null -H \"Authorization: Bearer $${ANON_KEY}\" http://localhost:4000/api/tenants/realtime-dev/health"]
       interval: 15s
       timeout: 5s
       retries: 8
@@ -148,6 +148,7 @@ services:
       DB_ENC_KEY: ${REALTIME_DB_ENC_KEY}
       API_JWT_SECRET: ${JWT_SECRET}
       API_JWT_JWKS: ${JWT_JWKS}
+      ANON_KEY: ${ANON_KEY}
       SECRET_KEY_BASE: ${SECRET_KEY_BASE}
       METRICS_JWT_SECRET: ${JWT_SECRET}
       ERL_AFLAGS: -proto_dist inet_tcp
