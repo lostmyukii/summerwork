@@ -11,7 +11,8 @@ const ROLE_LABELS: Record<Role, { label: string; note: string }> = {
   student: { label: "孩子", note: "查看任务并独立完成" },
 };
 
-export function LoginForm({ configured }: { configured: boolean }) {
+export function LoginForm({ configured, nextPath = "/" }: { configured: boolean; nextPath?: string }) {
+  const [mode, setMode] = useState<"login" | "signup">("login");
   const [role, setRole] = useState<Role>("parent");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,14 +30,23 @@ export function LoginForm({ configured }: { configured: boolean }) {
     setStatus("loading");
     setMessage("");
     const supabase = getSupabaseBrowserClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const result = mode === "signup"
+      ? await supabase.auth.signUp({ email, password, options: { data: { display_name: email.split("@")[0] } } })
+      : await supabase.auth.signInWithPassword({ email, password });
+    const { error } = result;
     if (error) {
       setStatus("error");
-      setMessage("邮箱或密码不正确，请重新输入。");
+      setMessage(mode === "signup" ? "账号创建失败；邮箱可能已注册，或密码不符合要求。" : "邮箱或密码不正确，请重新输入。");
       return;
     }
 
-    window.location.assign("/");
+    if (mode === "signup" && !result.data.session) {
+      setStatus("idle");
+      setMessage("账号已创建。完成邮箱验证后，请返回此页面登录并接受邀请。");
+      return;
+    }
+
+    window.location.assign(nextPath);
   }
 
   return (
@@ -57,8 +67,8 @@ export function LoginForm({ configured }: { configured: boolean }) {
       <section className="login-form-panel">
         <div className="login-form-wrap">
           <p className="eyebrow">私有家庭空间</p>
-          <h2>登录</h2>
-          <p className="login-intro">请选择你的身份。系统权限仍以家长邀请和分科授权为准。</p>
+          <h2>{mode === "login" ? "登录" : "创建账号"}</h2>
+          <p className="login-intro">{mode === "login" ? "请选择你的身份。" : "使用家长邀请的同一邮箱创建账号。"}系统权限始终以家长邀请和分科授权为准。</p>
 
           <div className="login-role-grid" aria-label="选择登录身份">
             {(Object.keys(ROLE_LABELS) as Role[]).map((item) => (
@@ -72,8 +82,9 @@ export function LoginForm({ configured }: { configured: boolean }) {
             <label><span>邮箱</span><input type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="name@example.com" required /></label>
             <label><span>密码</span><input type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="输入密码" required /></label>
             {message ? <p className="login-message" role="alert">{message}</p> : null}
-            <button className="primary-button full" type="submit" disabled={status === "loading"}>{status === "loading" ? "正在登录…" : `以${ROLE_LABELS[role].label}身份登录`}</button>
+            <button className="primary-button full" type="submit" disabled={status === "loading"}>{status === "loading" ? mode === "login" ? "正在登录…" : "正在创建…" : mode === "login" ? `以${ROLE_LABELS[role].label}身份登录` : "创建账号并继续"}</button>
           </form>
+          {configured ? <button className="login-mode-switch" type="button" onClick={() => { setMode((current) => current === "login" ? "signup" : "login"); setMessage(""); }}>{mode === "login" ? "第一次使用？创建账号" : "已有账号？返回登录"}</button> : null}
 
           {!configured ? <div className="preview-note"><strong>当前是开发预览</strong><p>账号界面和认证边界已经接入；连接 Supabase 后启用真实登录。</p><Link href="/">返回三角色预览</Link></div> : null}
         </div>

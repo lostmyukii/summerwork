@@ -14,7 +14,9 @@
     "test:render": "node --test tests/rendered-html.test.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "plan:import": "node scripts/import-summer-plan.mjs",
     "supabase:push": "node --env-file-if-exists=.env.local scripts/push-supabase.mjs",
+    "supabase:sync-plan": "node --env-file-if-exists=.env.local scripts/sync-summer-plan.mjs",
     "supabase:verify": "node --env-file-if-exists=.env.local scripts/verify-supabase-permissions.mjs"
   },
   "dependencies": {

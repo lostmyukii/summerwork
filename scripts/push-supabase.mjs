@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 
 const databaseUrl = process.env.SUPABASE_DB_URL;
 
-if (!databaseUrl) {
+if (!databaseUrl || /your-|example|placeholder|填写/i.test(databaseUrl)) {
   console.error("缺少 SUPABASE_DB_URL。请先在 .env.local 中填写 Supabase 数据库连接 URI。");
   process.exit(1);
 }

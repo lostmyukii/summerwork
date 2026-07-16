@@ -6,7 +6,7 @@ const requiredEnvironment = [
   "NEXT_PUBLIC_SUPABASE_ANON_KEY",
   "SUPABASE_SERVICE_ROLE_KEY",
 ];
-const missingEnvironment = requiredEnvironment.filter((key) => !process.env[key]);
+const missingEnvironment = requiredEnvironment.filter((key) => !process.env[key] || /your-|example|placeholder|填写/i.test(process.env[key]));
 
 if (missingEnvironment.length > 0) {
   console.error(`缺少环境变量：${missingEnvironment.join("、")}。请先填写 .env.local。`);
@@ -21,6 +21,7 @@ const admin = createClient(url, serviceRoleKey, clientOptions);
 const createdUserIds = [];
 const checks = [];
 let familyId = null;
+const catalogId = "summer-2026-family-tutoring";
 
 function pass(label) {
   checks.push(label);
@@ -131,6 +132,10 @@ async function main() {
   if (schemaProbe.error || schemaProbe.data?.length !== 2) {
     throw new Error("数据库迁移尚未就绪。请先运行 npm run supabase:push。");
   }
+  const templateProbe = await admin.from("homework_task_templates").select("id", { count: "exact", head: true }).eq("catalog_id", catalogId);
+  if (templateProbe.error || templateProbe.count !== 200) {
+    throw new Error("暑期计划模板尚未同步。请先运行 npm run supabase:sync-plan。");
+  }
 
   const runId = `${Date.now()}-${randomBytes(3).toString("hex")}`;
   const parent = await createTestAccount("parent", runId);
@@ -160,6 +165,12 @@ async function main() {
   );
   pass("家长创建孩子档案");
 
+  const insertedTasks = requireData(
+    await parent.client.rpc("create_student_plan", { target_student_id: student.id, target_catalog_id: catalogId }),
+    "家长实例化暑期计划",
+  );
+  assert(insertedTasks === 200, "家长为孩子实例化200条真实任务");
+
   const mathToken = await createInvitation(parent, student.id, mathTutor, "tutor", "math");
   const physicsToken = await createInvitation(parent, student.id, physicsTutor, "tutor", "physics");
   const studentToken = await createInvitation(parent, student.id, studentAccount, "student");
@@ -185,11 +196,83 @@ async function main() {
   const physicsSubjects = await queryAssignmentSubjects(physicsTutor, student.id);
   assert(physicsSubjects.length === 1 && physicsSubjects[0] === "physics", "物理家教只能看到物理授权");
 
+  const mathTasks = requireData(
+    await mathTutor.client.from("homework_tasks").select("id,subject_id,planned_date").eq("student_id", student.id).order("planned_date"),
+    "数学家教读取本科任务",
+  );
+  assert(mathTasks.length === 30 && mathTasks.every((task) => task.subject_id === "math"), "数学家教只能读取30条数学任务");
+
+  const physicsTasks = requireData(
+    await physicsTutor.client.from("homework_tasks").select("id,subject_id").eq("student_id", student.id),
+    "物理家教读取本科任务",
+  );
+  assert(physicsTasks.length === 42 && physicsTasks.every((task) => task.subject_id === "physics"), "物理家教只能读取42条物理任务");
+
+  const movedDate = new Date(`${mathTasks[0].planned_date}T00:00:00Z`);
+  movedDate.setUTCDate(movedDate.getUTCDate() + 1);
+  const movedDateKey = movedDate.toISOString().slice(0, 10);
+  requireData(
+    await mathTutor.client.rpc("move_homework_task", { target_task_id: mathTasks[0].id, target_date: movedDateKey, change_reason: "权限验收" }),
+    "数学家教调整本科计划",
+  );
+  pass("数学家教可调整本科计划并自动留痕");
+
+  const crossSubjectMove = await physicsTutor.client.rpc("move_homework_task", {
+    target_task_id: mathTasks[0].id,
+    target_date: mathTasks[0].planned_date,
+    change_reason: "跨科权限验收",
+  });
+  assert(Boolean(crossSubjectMove.error), "物理家教不能调整数学计划");
+
+  requireData(
+    await mathTutor.client.from("task_reviews").insert({ task_id: mathTasks[0].id, reviewed_by: mathTutor.id, review_confirmed_at: new Date().toISOString() }),
+    "数学家教写入本科批改",
+  );
+  pass("数学家教可写入本科批改记录");
+
+  const crossSubjectReview = await physicsTutor.client.from("task_reviews").insert({
+    task_id: mathTasks[1].id,
+    reviewed_by: physicsTutor.id,
+    review_confirmed_at: new Date().toISOString(),
+  });
+  assert(Boolean(crossSubjectReview.error), "物理家教不能批改数学任务");
+
   const studentRows = requireData(
     await studentAccount.client.from("students").select("id").eq("id", student.id),
     "孩子读取本人档案",
   );
   assert(studentRows.length === 1, "孩子可查看本人档案");
+  const studentTasks = requireData(
+    await studentAccount.client.from("homework_tasks").select("id,subject_id").eq("student_id", student.id),
+    "孩子读取本人全部任务",
+  );
+  assert(studentTasks.length === 200, "孩子可查看本人六科200条任务");
+
+  requireData(
+    await studentAccount.client.from("student_task_activity").insert({
+      task_id: mathTasks[0].id,
+      student_id: student.id,
+      run_state: "completed",
+      unknown_numbers: ["7", "12(2)"],
+      started_at: new Date().toISOString(),
+      completed_at: new Date().toISOString(),
+    }),
+    "孩子记录开始完成与不会题号",
+  );
+  pass("孩子只能写本人任务活动");
+
+  const studentReview = await studentAccount.client.from("task_reviews").insert({
+    task_id: mathTasks[2].id,
+    reviewed_by: studentAccount.id,
+  });
+  assert(Boolean(studentReview.error), "孩子不能写批改或提交确认");
+
+  const tutorActivity = await physicsTutor.client.from("student_task_activity").insert({
+    task_id: physicsTasks[0].id,
+    student_id: student.id,
+    run_state: "completed",
+  });
+  assert(Boolean(tutorActivity.error), "家教不能代替孩子标记完成");
   assert(
     (await queryAssignmentSubjects(studentAccount, student.id)).length === 0,
     "孩子不能读取家教授权表",

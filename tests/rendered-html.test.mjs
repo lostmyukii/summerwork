@@ -28,6 +28,11 @@ test("server-renders the homework closed-loop platform", async () => {
   assert.match(html, /数学家教/);
   assert.match(html, /闭环状态/);
   assert.match(html, /学校提交/);
+  assert.match(html, /真实计划已导入/);
+  assert.match(html, /200条/);
+  assert.match(html, /本体已核对/);
+  assert.match(html, /作业1、2、10按子卷拆/);
+  assert.match(html, /提交后解锁答案/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
 });
 
@@ -43,15 +48,31 @@ test("server-renders the private account login boundary", async () => {
   assert.match(html, /当前是开发预览/);
 });
 
-test("removes all disposable starter preview artifacts", async () => {
-  const [page, layout, packageJson] = await Promise.all([
+test("server-renders parent setup and invitation boundaries", async () => {
+  const [setupResponse, inviteResponse] = await Promise.all([
+    render("/setup"),
+    render("/invite/test-token"),
+  ]);
+  assert.equal(setupResponse.status, 200);
+  assert.equal(inviteResponse.status, 200);
+  assert.match(await setupResponse.text(), /家庭、孩子与分科家教/);
+  assert.match(await inviteResponse.text(), /加入学业闭环/);
+});
+
+test("removes all disposable starter and fake homework artifacts", async () => {
+  const [page, layout, packageJson, platform, demoData] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
     readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../app/components/homework-platform.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/lib/demo-data.ts", import.meta.url), "utf8"),
   ]);
 
   assert.match(page, /HomeworkPlatform/);
   assert.match(layout, /lang="zh-CN"/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton|site-creator-vinext-starter/);
+  assert.match(platform, /Record<string, TaskProgress>/);
+  assert.match(platform, /planOverrides/);
+  assert.doesNotMatch(`${platform}\n${demoData}`, /TUTOR_TASKS|WEEK_DAYS|vector-review/);
   await assert.rejects(access(new URL("app/_sites-preview", projectRoot)));
 });

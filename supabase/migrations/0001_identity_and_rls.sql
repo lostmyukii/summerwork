@@ -318,6 +318,13 @@ revoke all on function public.can_access_student(uuid) from public;
 revoke all on function public.is_subject_tutor(uuid, text) from public;
 revoke all on function public.create_family_space(text) from public;
 revoke all on function public.accept_invitation(text) from public;
+
+grant execute on function public.is_family_member(uuid) to authenticated;
+grant execute on function public.is_family_parent(uuid) to authenticated;
+grant execute on function public.can_access_student(uuid) to authenticated;
+grant execute on function public.is_subject_tutor(uuid, text) to authenticated;
+grant execute on function public.create_family_space(text) to authenticated;
+grant execute on function public.accept_invitation(text) to authenticated;
 grant execute on function public.is_family_member(uuid) to authenticated;
 grant execute on function public.is_family_parent(uuid) to authenticated;
 grant execute on function public.can_access_student(uuid) to authenticated;

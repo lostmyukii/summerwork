@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   title: { absolute: "登录 · 学业闭环" },
 };
 
-export default function LoginPage() {
-  return <LoginForm configured={isSupabaseConfigured()} />;
+export default async function LoginPage({ searchParams }: { searchParams: Promise<{ next?: string }> }) {
+  const { next } = await searchParams;
+  const nextPath = next?.startsWith("/") && !next.startsWith("//") ? next : "/";
+  return <LoginForm configured={isSupabaseConfigured()} nextPath={nextPath} />;
 }
