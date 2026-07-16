@@ -39,6 +39,9 @@ type TaskRow = {
   requirement_level: RequirementLevel;
   evidence_required: string[];
   source_reference: string;
+  deadline_date: string | null;
+  deadline_at: string | null;
+  deadline_precision: SummerTask["deadlinePrecision"];
 };
 
 type ActivityRow = {
@@ -125,6 +128,9 @@ function toWorkspaceTask(row: TaskRow): WorkspaceTask {
     requirementLevel: row.requirement_level,
     evidenceRequired: row.evidence_required ?? [],
     source: row.source_reference,
+    deadlineDate: row.deadline_date,
+    deadlineAt: row.deadline_at,
+    deadlinePrecision: row.deadline_precision,
   };
 }
 
@@ -160,7 +166,7 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
   const taskRows = requireData(
     await client
       .from("homework_tasks")
-      .select("id,student_id,subject_id,title,planned_date,original_date,slot_type,knowledge,knowledge_tags,answer_basis,submission_requirement,notes,task_kind,block_minutes,recommended_minutes,requires_submission,course_integrated,optional,uncertainty,priority,answer_policy,requirement_level,evidence_required,source_reference")
+      .select("id,student_id,subject_id,title,planned_date,original_date,slot_type,knowledge,knowledge_tags,answer_basis,submission_requirement,notes,task_kind,block_minutes,recommended_minutes,requires_submission,course_integrated,optional,uncertainty,priority,answer_policy,requirement_level,evidence_required,source_reference,deadline_date,deadline_at,deadline_precision")
       .eq("student_id", studentId)
       .is("deleted_at", null)
       .order("planned_date"),

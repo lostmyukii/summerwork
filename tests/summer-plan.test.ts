@@ -66,4 +66,13 @@ describe("2026 暑期真实计划数据", () => {
       expect(task.evidenceRequired.length).toBeGreaterThan(0);
     }
   });
+
+  it("从提交计划提取可核验截止，不自行编造缺失时间", () => {
+    const chineseFirst = tasksForSubject("语文").find((task) => task.title.startsWith("套一①"));
+    expect(chineseFirst?.deadlineAt).toBe("2026-07-18T21:00:00+08:00");
+    const biologyFirst = tasksForSubject("生物")[0];
+    expect(biologyFirst.deadlineAt).toBe("2026-07-28T08:00:00+08:00");
+    expect(tasksForSubject("俄语").every((task) => task.deadlinePrecision === "date" && task.deadlineAt === null)).toBe(true);
+    expect(tasksForSubject("化学").filter((task) => task.requirementLevel === "pending_confirmation").some((task) => task.deadlineDate === null)).toBe(true);
+  });
 });

@@ -78,6 +78,9 @@ const templates = plan.tasks.map((task) => ({
   requirement_level: task.requirementLevel,
   evidence_required: task.evidenceRequired,
   source_reference: task.source,
+  deadline_date: task.deadlineDate,
+  deadline_at: task.deadlineAt,
+  deadline_precision: task.deadlinePrecision,
 }));
 
 for (let index = 0; index < templates.length; index += 100) {

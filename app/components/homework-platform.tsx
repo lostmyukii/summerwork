@@ -46,6 +46,7 @@ import {
 } from "../lib/workspace";
 import { persistPlanChange, persistStudentActivity, persistTaskReview } from "../lib/supabase/workspace-actions";
 import { getSupabaseBrowserClient } from "../lib/supabase/client";
+import { computePlanRisks, countRisksBySeverity, type PlanRisk } from "../lib/plan-risk";
 
 const STORAGE_KEY = "summerwork:workspace:v1";
 
@@ -165,7 +166,7 @@ function SummerPlanBrowser({
             <button
               key={date}
               type="button"
-              className={selectedDate === date ? "active" : totalCount > 3 ? "risk" : ""}
+              className={selectedDate === date ? "active" : totalCount > 2 ? "risk" : ""}
               onClick={() => setSelectedDate(date)}
               aria-pressed={selectedDate === date}
             >
@@ -179,7 +180,7 @@ function SummerPlanBrowser({
 
       <div className="selected-day-summary">
         <div><strong>{formatPlanDate(selectedDate, true)} · 周{weekdayFor(selectedDate)}</strong><span>{subject === "全部" ? `${allDayTasks.length}个90分钟任务块` : `${subject} ${tasks.length}个任务块`}</span></div>
-        {allDayTasks.length > 3 ? <StatusPill tone="red">全天重负荷 {allDayTasks.length}项</StatusPill> : <StatusPill tone="green">负荷可控</StatusPill>}
+        {allDayTasks.length > 2 ? <StatusPill tone="red">超过建议容量 · {allDayTasks.length}项</StatusPill> : <StatusPill tone="green">负荷可控</StatusPill>}
       </div>
 
       {course ? <div className="course-banner"><MiniIcon>课</MiniIcon><div><strong>当天课程</strong><p>{course.labels.join(" / ")}</p></div></div> : null}
@@ -198,6 +199,7 @@ function SummerPlanBrowser({
               <div><dt>知识点</dt><dd>{task.knowledge || "待补充"}</dd></div>
               <div><dt>批改依据</dt><dd>{task.answerBasis}</dd></div>
               <div><dt>提交标记</dt><dd>{task.submission}</dd></div>
+              <div><dt>学校截止</dt><dd>{task.deadlineAt ? task.deadlineAt.slice(0, 16).replace("T", " ") : task.deadlineDate ? `${task.deadlineDate}（时间未提供）` : "未提供正式截止"}</dd></div>
             </dl>
             <div className="task-policy-line">
               <span>{ANSWER_POLICY_COPY[task.answerPolicy]}</span>
@@ -244,6 +246,7 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
   const workflowState = deriveWorkflowState(evidence);
   const masteryLevel = deriveMasteryLevel(evidence);
   const closeLoopReady = canCloseLoop(evidence);
+  const planRisks = useMemo(() => computePlanRisks(planTasks, planOverrides, progress, PLAN_REFERENCE_DATE), [planOverrides, planTasks, progress]);
 
   useEffect(() => {
     if (remoteEnabled) return;
@@ -461,7 +464,7 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
           ))}
         </div>
 
-        {role === "parent" ? <ParentView auditEntries={auditEntries} overrides={planOverrides} planTasks={planTasks} progress={progress} showToast={showToast} /> : null}
+        {role === "parent" ? <ParentView auditEntries={auditEntries} overrides={planOverrides} planRisks={planRisks} planTasks={planTasks} progress={progress} showToast={showToast} /> : null}
         {role === "tutor" ? (
           <TutorView
             auditEntries={auditEntries}
@@ -470,6 +473,7 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
             masteryLevel={masteryLevel}
             overrides={planOverrides}
             planTasks={planTasks}
+            planRisks={planRisks}
             progress={activeProgress}
             remoteEnabled={remoteEnabled}
             setPlanOpen={openPlanChange}
@@ -540,11 +544,12 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
   );
 }
 
-function ParentView({ auditEntries, overrides, planTasks, progress, showToast }: { auditEntries: AuditEntry[]; overrides: Record<string, PlanOverride>; planTasks: WorkspaceTask[]; progress: Record<string, TaskProgress>; showToast: (message: string) => void }) {
+function ParentView({ auditEntries, overrides, planRisks, planTasks, progress, showToast }: { auditEntries: AuditEntry[]; overrides: Record<string, PlanOverride>; planRisks: PlanRisk[]; planTasks: WorkspaceTask[]; progress: Record<string, TaskProgress>; showToast: (message: string) => void }) {
   const subjectCounts = SUMMER_SUBJECTS.map((subject) => ({ subject, count: planTasks.filter((task) => task.subject === subject).length }));
   const availableSubjectCount = subjectCounts.filter((item) => item.count > 0).length;
   const submittedCount = Object.values(progress).filter((item) => item.schoolSubmitted).length;
   const completedCount = Object.values(progress).filter((item) => item.runState === "completed").length;
+  const riskCounts = countRisksBySeverity(planRisks);
   return (
     <div className="page-content parent-page">
       <AppHeader
@@ -556,7 +561,7 @@ function ParentView({ auditEntries, overrides, planTasks, progress, showToast }:
 
       <section className="metric-grid" aria-label="暑期计划概况">
         <article className="metric-card"><span>真实任务块</span><strong>{planTasks.length}</strong><small>已完成首做 {completedCount} 项</small></article>
-        <article className="metric-card risk"><span>本体核对</span><strong>{ONTOLOGY_ISSUES.length}</strong><small>不一致项已显式标记</small></article>
+        <article className="metric-card risk"><span>高风险</span><strong>{riskCounts.high}</strong><small>另有 {riskCounts.attention + ONTOLOGY_ISSUES.length} 项需关注</small></article>
         <article className="metric-card success"><span>科目范围</span><strong>{availableSubjectCount}</strong><small>英语、政史地已排除</small></article>
         <article className="metric-card"><span>提交确认</span><strong>{submittedCount}</strong><small>7月5日无安排</small></article>
       </section>
@@ -567,13 +572,20 @@ function ParentView({ auditEntries, overrides, planTasks, progress, showToast }:
         <section>
           <SectionHeading title="需要关注" action="查看全部" />
           <div className="attention-list">
-            {ONTOLOGY_ISSUES.slice(0, 3).map((item) => (
+            {planRisks.slice(0, 3).map((item) => (
+              <article className="attention-card" key={item.id}>
+                <MiniIcon>!</MiniIcon>
+                <div><div className="card-title-row"><h3>{item.title}</h3><StatusPill tone={item.severity === "high" ? "red" : "orange"}>{item.subject ?? "全科"}</StatusPill></div><p>{item.detail}</p></div>
+                <button type="button" aria-label={`查看${item.title}`}>›</button>
+              </article>
+            ))}
+            {planRisks.length < 3 ? ONTOLOGY_ISSUES.slice(0, 3 - planRisks.length).map((item) => (
               <article className="attention-card" key={item.id}>
                 <MiniIcon>{item.subject.slice(0, 1)}</MiniIcon>
                 <div><div className="card-title-row"><h3>{item.title}</h3><StatusPill tone={item.severity === "high" ? "red" : "orange"}>{item.subject}</StatusPill></div><p>{item.detail}</p></div>
                 <button type="button" aria-label={`查看${item.title}`}>›</button>
               </article>
-            ))}
+            )) : null}
           </div>
 
           <SectionHeading title="本周进度" />
@@ -608,6 +620,7 @@ type TutorViewProps = {
   masteryLevel: ReturnType<typeof deriveMasteryLevel>;
   overrides: Record<string, PlanOverride>;
   planTasks: WorkspaceTask[];
+  planRisks: PlanRisk[];
   progress: TaskProgress;
   remoteEnabled: boolean;
   setPlanOpen: (task: WorkspaceTask) => void;
@@ -628,6 +641,7 @@ function TutorView(props: TutorViewProps) {
     props.progress.masteryConfirmed,
     !props.workflowTask.requiresSubmission || props.progress.schoolSubmitted,
   ].filter(Boolean).length;
+  const taskRisk = props.planRisks.find((risk) => risk.taskIds.includes(props.workflowTask.id));
 
   return (
     <div className="page-content tutor-page">
@@ -684,7 +698,7 @@ function TutorView(props: TutorViewProps) {
           </article>
 
           <SectionHeading title="答案与风险" />
-          <article className="deadline-card"><span className="date-tile"><strong>{props.workflowTask.subject.slice(0, 1)}</strong><small>规则</small></span><div><strong>{ANSWER_POLICY_COPY[props.workflowTask.answerPolicy]}</strong><p>{props.workflowTask.notes || props.workflowTask.submission}</p></div></article>
+          <article className="deadline-card"><span className="date-tile"><strong>{taskRisk ? "!" : props.workflowTask.subject.slice(0, 1)}</strong><small>{taskRisk ? "风险" : "规则"}</small></span><div><strong>{taskRisk?.title ?? ANSWER_POLICY_COPY[props.workflowTask.answerPolicy]}</strong><p>{taskRisk?.detail ?? (props.workflowTask.notes || props.workflowTask.submission)}</p></div></article>
         </aside>
       </div>
     </div>
@@ -806,6 +820,7 @@ function PlanPanel({ onClose, onSave, overrides, planDate, planReason, setPlanDa
   const currentDate = overrides[task.id]?.date ?? task.date;
   const choices = [...new Set([-2, -1, 0, 1, 2, 4].map((amount) => clampPlanDate(addPlanDays(currentDate, amount))))];
   const targetCount = tasks.filter((candidate) => candidate.id !== task.id && (overrides[candidate.id]?.date ?? candidate.date) === planDate).length + 1;
+  const afterDeadline = Boolean(task.deadlineDate && planDate > task.deadlineDate);
   return (
     <div className="sheet-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
       <section className="mini-sheet" role="dialog" aria-modal="true" aria-labelledby="plan-title">
@@ -813,7 +828,7 @@ function PlanPanel({ onClose, onSave, overrides, planDate, planReason, setPlanDa
         <div className="plan-summary"><span>90分钟</span><p>原始日期：{formatPlanDate(task.date)}<br />当前日期：{formatPlanDate(currentDate)}</p></div>
         <fieldset><legend>移动到</legend><div className="date-choice-row">{choices.map((date) => { const [, month, day] = date.split("-").map(Number); return <label className={planDate === date ? "selected" : ""} key={date}><input type="radio" name="plan-date" checked={planDate === date} onChange={() => setPlanDate(date)} /><small>{month}月</small><strong>{day}</strong></label>; })}</div></fieldset>
         <fieldset><legend>变更原因</legend><select value={planReason} onChange={(event) => setPlanReason(event.target.value)}><option>课程冲突</option><option>孩子未完成</option><option>难度超预期</option><option>学校截止变化</option><option>其他</option></select></fieldset>
-        {isOverDailyCapacity(targetCount, 3) ? <div className="risk-notice compact"><MiniIcon>!</MiniIcon><div><strong>{formatPlanDate(planDate)}将有 {targetCount} 个任务块</strong><p>超过全天 3 个任务块的提醒线，可保留并记录原因。</p></div></div> : null}
+        {isOverDailyCapacity(targetCount, 2) || afterDeadline ? <div className="risk-notice compact"><MiniIcon>!</MiniIcon><div><strong>{afterDeadline ? "新日期晚于学校截止" : `${formatPlanDate(planDate)}将有 ${targetCount} 个任务块`}</strong><p>{afterDeadline ? `截止为 ${task.deadlineDate}；如仍需保存，必须保留变更原因。` : "超过家庭默认每日2块容量，可强制保留并记录原因。"}</p></div></div> : null}
         <button className="primary-button full" type="button" onClick={() => void onSave()}>确认调整</button>
       </section>
     </div>

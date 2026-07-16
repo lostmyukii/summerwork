@@ -104,6 +104,31 @@ function requirementLevelFor(subject, title, notes) {
   return "required";
 }
 
+function formatDeadline(year, month, day, hour, minute) {
+  return `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}:00+08:00`;
+}
+
+function inferExplicitDeadline(date, ...values) {
+  const text = values.join(" ");
+  const year = Number(date.slice(0, 4));
+  const explicit = text.match(/(\d{1,2})[./月](\d{1,2})(?:日)?\s*(?:早|晚)?\s*(\d{1,2}):?(\d{2})/);
+  if (explicit) return formatDeadline(year, Number(explicit[1]), Number(explicit[2]), Number(explicit[3]), Number(explicit[4]));
+
+  const nextDay = text.match(/次日\s*(?:早|晚)?\s*(\d{1,2}):?(\d{2})/);
+  if (nextDay) {
+    const base = new Date(`${date}T00:00:00Z`);
+    base.setUTCDate(base.getUTCDate() + 1);
+    return formatDeadline(base.getUTCFullYear(), base.getUTCMonth() + 1, base.getUTCDate(), Number(nextDay[1]), Number(nextDay[2]));
+  }
+
+  const sameDay = text.match(/(?:当日|当天|晚|早)?\s*(\d{1,2}):(\d{2})(?:前|截止)/);
+  if (sameDay && /提交|截止/.test(text)) {
+    const [, month, day] = date.split("-").map(Number);
+    return formatDeadline(year, month, day, Number(sameDay[1]), Number(sameDay[2]));
+  }
+  return null;
+}
+
 const tasks = [];
 const taskCounters = new Map();
 
@@ -141,6 +166,7 @@ for (const sourceFile of sourceFiles) {
     taskCounters.set(counterKey, sequence);
     const uncertainty = /【存疑】|需确认|若.*返校|学校通知.*返校/.test(`${title}${notes}`);
 
+    const deadlineAt = inferExplicitDeadline(date, title, submission, notes);
     tasks.push({
       id: `${subjectSlugs[subject]}-${date}-${String(sequence).padStart(2, "0")}`,
       date,
@@ -172,6 +198,9 @@ for (const sourceFile of sourceFiles) {
         ? ["school_submission_confirmation"]
         : ["first_attempt", "tutor_review", "correction", "independent_redo", "school_submission_confirmation"],
       source: `系统搭建/${sourceFile}#${rowIndex + 2}`,
+      deadlineDate: deadlineAt?.slice(0, 10) ?? (inferTaskKind(title) === "submission" ? date : null),
+      deadlineAt,
+      deadlinePrecision: deadlineAt ? "time" : inferTaskKind(title) === "submission" ? "date" : "unknown",
     });
   }
 }
@@ -182,6 +211,23 @@ tasks.sort((left, right) => {
   const subjectDifference = subjectOrder.get(left.subject) - subjectOrder.get(right.subject);
   return subjectDifference || left.id.localeCompare(right.id);
 });
+
+for (const subject of allowedSubjects) {
+  const subjectTasks = tasks.filter((task) => task.subject === subject);
+  const checkpoints = subjectTasks.filter((task) => task.kind === "submission" && task.deadlineDate);
+  for (const task of subjectTasks) {
+    if (!task.requiresSubmission || task.deadlineDate) continue;
+    const checkpoint = checkpoints.find((candidate) => candidate.date >= task.date);
+    if (checkpoint) {
+      task.deadlineDate = checkpoint.deadlineDate;
+      task.deadlineAt = checkpoint.deadlineAt;
+      task.deadlinePrecision = checkpoint.deadlinePrecision;
+    } else if (subject === "俄语") {
+      task.deadlineDate = task.date;
+      task.deadlinePrecision = "date";
+    }
+  }
+}
 
 const courseSchedule = [
   { date: "2026-07-19", labels: ["数学新课 13:00-15:00", "俄语"], subjects: ["数学", "俄语"], source: "假期课表初排.xlsx/7月" },

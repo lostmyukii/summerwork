@@ -29,6 +29,9 @@ export type SummerTask = {
   requirementLevel: RequirementLevel;
   evidenceRequired: string[];
   source: string;
+  deadlineDate: string | null;
+  deadlineAt: string | null;
+  deadlinePrecision: "time" | "date" | "unknown";
 };
 
 export type CourseDay = {

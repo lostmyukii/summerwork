@@ -51,6 +51,9 @@ create table if not exists public.homework_task_templates (
   requirement_level text not null check (requirement_level in ('required', 'optional', 'pending_confirmation')),
   evidence_required text[] not null default '{}',
   source_reference text not null,
+  deadline_date date,
+  deadline_at timestamptz,
+  deadline_precision text not null default 'unknown' check (deadline_precision in ('time', 'date', 'unknown')),
   created_at timestamptz not null default now()
 );
 
@@ -85,6 +88,9 @@ create table if not exists public.homework_tasks (
   requirement_level text not null,
   evidence_required text[] not null default '{}',
   source_reference text not null,
+  deadline_date date,
+  deadline_at timestamptz,
+  deadline_precision text not null default 'unknown' check (deadline_precision in ('time', 'date', 'unknown')),
   created_by uuid not null references public.profiles(id),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
@@ -242,7 +248,8 @@ begin
     planned_date, original_date, slot_type, knowledge, knowledge_tags,
     answer_basis, submission_requirement, notes, task_kind, block_minutes,
     recommended_minutes, requires_submission, course_integrated, optional, uncertainty, priority,
-    answer_policy, requirement_level, evidence_required, source_reference, created_by
+    answer_policy, requirement_level, evidence_required, source_reference,
+    deadline_date, deadline_at, deadline_precision, created_by
   )
   select
     target_family_id, target_student_id, template.catalog_id, template.id,
@@ -252,7 +259,8 @@ begin
     template.task_kind, template.block_minutes, template.recommended_minutes,
     template.requires_submission, template.course_integrated, template.optional, template.uncertainty, template.priority,
     template.answer_policy, template.requirement_level, template.evidence_required,
-    template.source_reference, auth.uid()
+    template.source_reference, template.deadline_date, template.deadline_at,
+    template.deadline_precision, auth.uid()
   from public.homework_task_templates template
   where template.catalog_id = target_catalog_id
   on conflict (student_id, template_id) do nothing;

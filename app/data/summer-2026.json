@@ -69,7 +69,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#2"
+      "source": "系统搭建/语文.csv#2",
+      "deadlineDate": "2026-07-18",
+      "deadlineAt": "2026-07-18T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "physics-2026-07-16-01",
@@ -104,7 +107,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#2"
+      "source": "系统搭建/物理.csv#2",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chinese-2026-07-17-01",
@@ -139,7 +145,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#3"
+      "source": "系统搭建/语文.csv#3",
+      "deadlineDate": "2026-07-18",
+      "deadlineAt": "2026-07-18T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "physics-2026-07-17-01",
@@ -174,7 +183,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#3"
+      "source": "系统搭建/物理.csv#3",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-17-01",
@@ -209,7 +221,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#2"
+      "source": "系统搭建/化学.csv#2",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chinese-2026-07-18-01",
@@ -237,7 +252,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#4"
+      "source": "系统搭建/语文.csv#4",
+      "deadlineDate": "2026-07-18",
+      "deadlineAt": "2026-07-18T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "physics-2026-07-18-01",
@@ -272,7 +290,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#4"
+      "source": "系统搭建/物理.csv#4",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-18-01",
@@ -307,7 +328,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#3"
+      "source": "系统搭建/化学.csv#3",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chinese-2026-07-19-01",
@@ -344,7 +368,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#5"
+      "source": "系统搭建/语文.csv#5",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": "2026-07-25T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-07-19-01",
@@ -380,7 +407,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#2"
+      "source": "系统搭建/数学.csv#2",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": "2026-07-26T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "physics-2026-07-19-01",
@@ -414,7 +444,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#5"
+      "source": "系统搭建/物理.csv#5",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chinese-2026-07-20-01",
@@ -451,7 +484,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#6"
+      "source": "系统搭建/语文.csv#6",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": "2026-07-25T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-07-20-01",
@@ -487,7 +523,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#3"
+      "source": "系统搭建/数学.csv#3",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": "2026-07-26T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-07-20-01",
@@ -521,7 +560,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#2"
+      "source": "系统搭建/生物俄语.csv#2",
+      "deadlineDate": "2026-07-20",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-07-20-01",
@@ -555,7 +597,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#6"
+      "source": "系统搭建/物理.csv#6",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-20-01",
@@ -590,7 +635,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#4"
+      "source": "系统搭建/化学.csv#4",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chinese-2026-07-21-01",
@@ -625,7 +673,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#7"
+      "source": "系统搭建/语文.csv#7",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": "2026-07-25T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-07-21-01",
@@ -660,7 +711,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#4"
+      "source": "系统搭建/数学.csv#4",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": "2026-07-26T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-07-21-01",
@@ -694,7 +748,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#3"
+      "source": "系统搭建/生物俄语.csv#3",
+      "deadlineDate": "2026-07-21",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-07-21-01",
@@ -728,7 +785,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#7"
+      "source": "系统搭建/物理.csv#7",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chinese-2026-07-22-01",
@@ -765,7 +825,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#8"
+      "source": "系统搭建/语文.csv#8",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": "2026-07-25T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-07-22-01",
@@ -799,7 +862,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#4"
+      "source": "系统搭建/生物俄语.csv#4",
+      "deadlineDate": "2026-07-22",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-07-22-01",
@@ -831,7 +897,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#8"
+      "source": "系统搭建/物理.csv#8",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chemistry-2026-07-22-01",
@@ -865,7 +934,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#5"
+      "source": "系统搭建/化学.csv#5",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chinese-2026-07-23-01",
@@ -899,7 +971,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#9"
+      "source": "系统搭建/语文.csv#9",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": "2026-07-25T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-07-23-01",
@@ -934,7 +1009,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#5"
+      "source": "系统搭建/数学.csv#5",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": "2026-07-26T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-07-23-01",
@@ -968,7 +1046,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#5"
+      "source": "系统搭建/生物俄语.csv#5",
+      "deadlineDate": "2026-07-23",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-07-23-01",
@@ -1002,7 +1083,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#9"
+      "source": "系统搭建/物理.csv#9",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chinese-2026-07-24-01",
@@ -1034,7 +1118,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#10"
+      "source": "系统搭建/语文.csv#10",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": "2026-07-25T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-07-24-01",
@@ -1068,7 +1155,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#6"
+      "source": "系统搭建/生物俄语.csv#6",
+      "deadlineDate": "2026-07-24",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-07-24-01",
@@ -1100,7 +1190,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#10"
+      "source": "系统搭建/物理.csv#10",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chemistry-2026-07-24-01",
@@ -1135,7 +1228,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#6"
+      "source": "系统搭建/化学.csv#6",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chinese-2026-07-25-01",
@@ -1163,7 +1259,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#11"
+      "source": "系统搭建/语文.csv#11",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": "2026-07-25T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-07-25-01",
@@ -1197,7 +1296,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#6"
+      "source": "系统搭建/数学.csv#6",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": "2026-07-26T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-07-25-01",
@@ -1231,7 +1333,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#7"
+      "source": "系统搭建/生物俄语.csv#7",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-07-25-01",
@@ -1262,7 +1367,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#11"
+      "source": "系统搭建/物理.csv#11",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-25-01",
@@ -1296,7 +1404,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#7"
+      "source": "系统搭建/化学.csv#7",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chinese-2026-07-26-01",
@@ -1331,7 +1442,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#12"
+      "source": "系统搭建/语文.csv#12",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": "2026-08-01T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-07-26-01",
@@ -1361,7 +1475,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#7"
+      "source": "系统搭建/数学.csv#7",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": "2026-07-26T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-07-26-01",
@@ -1395,7 +1512,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#8"
+      "source": "系统搭建/生物俄语.csv#8",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-07-26-01",
@@ -1429,7 +1549,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#12"
+      "source": "系统搭建/物理.csv#12",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-26-01",
@@ -1457,7 +1580,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#8"
+      "source": "系统搭建/化学.csv#8",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chinese-2026-07-27-01",
@@ -1493,7 +1619,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#13"
+      "source": "系统搭建/语文.csv#13",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": "2026-08-01T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-07-27-01",
@@ -1528,7 +1657,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#8"
+      "source": "系统搭建/数学.csv#8",
+      "deadlineDate": "2026-08-02",
+      "deadlineAt": "2026-08-02T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-07-27-01",
@@ -1562,7 +1694,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#10"
+      "source": "系统搭建/生物俄语.csv#10",
+      "deadlineDate": "2026-07-27",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-07-27-01",
@@ -1596,7 +1731,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#13"
+      "source": "系统搭建/物理.csv#13",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-27-01",
@@ -1630,7 +1768,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#9"
+      "source": "系统搭建/化学.csv#9",
+      "deadlineDate": "2026-08-02",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-07-27-01",
@@ -1666,7 +1807,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#9"
+      "source": "系统搭建/生物俄语.csv#9",
+      "deadlineDate": "2026-07-28",
+      "deadlineAt": "2026-07-28T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-07-28-01",
@@ -1701,7 +1845,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#14"
+      "source": "系统搭建/语文.csv#14",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": "2026-08-01T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-07-28-01",
@@ -1735,7 +1882,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#12"
+      "source": "系统搭建/生物俄语.csv#12",
+      "deadlineDate": "2026-07-28",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-07-28-01",
@@ -1769,7 +1919,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#14"
+      "source": "系统搭建/物理.csv#14",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-28-01",
@@ -1803,7 +1956,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#10"
+      "source": "系统搭建/化学.csv#10",
+      "deadlineDate": "2026-08-02",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-07-28-01",
@@ -1839,7 +1995,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#11"
+      "source": "系统搭建/生物俄语.csv#11",
+      "deadlineDate": "2026-07-29",
+      "deadlineAt": "2026-07-29T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-07-29-01",
@@ -1875,7 +2034,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#15"
+      "source": "系统搭建/语文.csv#15",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": "2026-08-01T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-07-29-01",
@@ -1911,7 +2073,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#9"
+      "source": "系统搭建/数学.csv#9",
+      "deadlineDate": "2026-08-02",
+      "deadlineAt": "2026-08-02T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-07-29-01",
@@ -1945,7 +2110,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#14"
+      "source": "系统搭建/生物俄语.csv#14",
+      "deadlineDate": "2026-07-29",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-07-29-01",
@@ -1979,7 +2147,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#15"
+      "source": "系统搭建/物理.csv#15",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-29-01",
@@ -2013,7 +2184,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#11"
+      "source": "系统搭建/化学.csv#11",
+      "deadlineDate": "2026-08-02",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-07-29-01",
@@ -2049,7 +2223,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#13"
+      "source": "系统搭建/生物俄语.csv#13",
+      "deadlineDate": "2026-07-30",
+      "deadlineAt": "2026-07-30T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-07-30-01",
@@ -2083,7 +2260,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#16"
+      "source": "系统搭建/语文.csv#16",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": "2026-08-01T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-07-30-01",
@@ -2117,7 +2297,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#16"
+      "source": "系统搭建/生物俄语.csv#16",
+      "deadlineDate": "2026-07-30",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-07-30-01",
@@ -2152,7 +2335,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#16"
+      "source": "系统搭建/物理.csv#16",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-30-01",
@@ -2186,7 +2372,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#12"
+      "source": "系统搭建/化学.csv#12",
+      "deadlineDate": "2026-08-02",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-07-30-01",
@@ -2221,7 +2410,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#15"
+      "source": "系统搭建/生物俄语.csv#15",
+      "deadlineDate": "2026-07-31",
+      "deadlineAt": "2026-07-31T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-07-31-01",
@@ -2253,7 +2445,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#17"
+      "source": "系统搭建/语文.csv#17",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": "2026-08-01T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-07-31-01",
@@ -2289,7 +2484,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#10"
+      "source": "系统搭建/数学.csv#10",
+      "deadlineDate": "2026-08-02",
+      "deadlineAt": "2026-08-02T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-07-31-01",
@@ -2323,7 +2521,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#18"
+      "source": "系统搭建/生物俄语.csv#18",
+      "deadlineDate": "2026-07-31",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-07-31-01",
@@ -2357,7 +2558,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#17"
+      "source": "系统搭建/物理.csv#17",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-31-01",
@@ -2391,7 +2595,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#13"
+      "source": "系统搭建/化学.csv#13",
+      "deadlineDate": "2026-08-02",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-07-31-01",
@@ -2427,7 +2634,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#17"
+      "source": "系统搭建/生物俄语.csv#17",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": "2026-08-01T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-01-01",
@@ -2455,7 +2665,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#18"
+      "source": "系统搭建/语文.csv#18",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": "2026-08-01T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-01-01",
@@ -2489,7 +2702,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#20"
+      "source": "系统搭建/生物俄语.csv#20",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-01-01",
@@ -2520,7 +2736,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#18"
+      "source": "系统搭建/物理.csv#18",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-01-01",
@@ -2555,7 +2774,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#14"
+      "source": "系统搭建/化学.csv#14",
+      "deadlineDate": "2026-08-02",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-01-01",
@@ -2590,7 +2812,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#19"
+      "source": "系统搭建/生物俄语.csv#19",
+      "deadlineDate": "2026-08-02",
+      "deadlineAt": "2026-08-02T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-02-01",
@@ -2624,7 +2849,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#19"
+      "source": "系统搭建/语文.csv#19",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": "2026-08-08T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-02-01",
@@ -2654,7 +2882,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#11"
+      "source": "系统搭建/数学.csv#11",
+      "deadlineDate": "2026-08-02",
+      "deadlineAt": "2026-08-02T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-02-01",
@@ -2688,7 +2919,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#22"
+      "source": "系统搭建/生物俄语.csv#22",
+      "deadlineDate": "2026-08-02",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-02-01",
@@ -2722,7 +2956,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#19"
+      "source": "系统搭建/物理.csv#19",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-02-01",
@@ -2750,7 +2987,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#15"
+      "source": "系统搭建/化学.csv#15",
+      "deadlineDate": "2026-08-02",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-02-01",
@@ -2785,7 +3025,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#21"
+      "source": "系统搭建/生物俄语.csv#21",
+      "deadlineDate": "2026-08-16",
+      "deadlineAt": "2026-08-16T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-03-01",
@@ -2822,7 +3065,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#20"
+      "source": "系统搭建/语文.csv#20",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": "2026-08-08T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-03-01",
@@ -2858,7 +3104,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#12"
+      "source": "系统搭建/数学.csv#12",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": "2026-08-09T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-03-01",
@@ -2892,7 +3141,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#24"
+      "source": "系统搭建/生物俄语.csv#24",
+      "deadlineDate": "2026-08-03",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-03-01",
@@ -2927,7 +3179,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#20"
+      "source": "系统搭建/物理.csv#20",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-03-01",
@@ -2961,7 +3216,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#16"
+      "source": "系统搭建/化学.csv#16",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-03-01",
@@ -2997,7 +3255,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#23"
+      "source": "系统搭建/生物俄语.csv#23",
+      "deadlineDate": "2026-08-04",
+      "deadlineAt": "2026-08-04T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-04-01",
@@ -3031,7 +3292,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#21"
+      "source": "系统搭建/语文.csv#21",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": "2026-08-08T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-04-01",
@@ -3065,7 +3329,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#26"
+      "source": "系统搭建/生物俄语.csv#26",
+      "deadlineDate": "2026-08-04",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-04-01",
@@ -3100,7 +3367,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#21"
+      "source": "系统搭建/物理.csv#21",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-04-01",
@@ -3135,7 +3405,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#17"
+      "source": "系统搭建/化学.csv#17",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-04-01",
@@ -3170,7 +3443,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#25"
+      "source": "系统搭建/生物俄语.csv#25",
+      "deadlineDate": "2026-08-05",
+      "deadlineAt": "2026-08-05T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-05-01",
@@ -3206,7 +3482,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#22"
+      "source": "系统搭建/语文.csv#22",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": "2026-08-08T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-05-01",
@@ -3242,7 +3521,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#13"
+      "source": "系统搭建/数学.csv#13",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": "2026-08-09T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-05-01",
@@ -3276,7 +3558,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#28"
+      "source": "系统搭建/生物俄语.csv#28",
+      "deadlineDate": "2026-08-05",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-05-01",
@@ -3310,7 +3595,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#22"
+      "source": "系统搭建/物理.csv#22",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-05-01",
@@ -3344,7 +3632,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#18"
+      "source": "系统搭建/化学.csv#18",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-05-01",
@@ -3380,7 +3671,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#27"
+      "source": "系统搭建/生物俄语.csv#27",
+      "deadlineDate": "2026-08-06",
+      "deadlineAt": "2026-08-06T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-06-01",
@@ -3414,7 +3708,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#23"
+      "source": "系统搭建/语文.csv#23",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": "2026-08-08T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-06-01",
@@ -3448,7 +3745,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#30"
+      "source": "系统搭建/生物俄语.csv#30",
+      "deadlineDate": "2026-08-06",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-06-01",
@@ -3482,7 +3782,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#23"
+      "source": "系统搭建/物理.csv#23",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-06-01",
@@ -3516,7 +3819,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#19"
+      "source": "系统搭建/化学.csv#19",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-06-01",
@@ -3551,7 +3857,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#29"
+      "source": "系统搭建/生物俄语.csv#29",
+      "deadlineDate": "2026-08-07",
+      "deadlineAt": "2026-08-07T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-07-01",
@@ -3583,7 +3892,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#24"
+      "source": "系统搭建/语文.csv#24",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": "2026-08-08T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-07-01",
@@ -3618,7 +3930,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#14"
+      "source": "系统搭建/数学.csv#14",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": "2026-08-09T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-07-01",
@@ -3652,7 +3967,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#32"
+      "source": "系统搭建/生物俄语.csv#32",
+      "deadlineDate": "2026-08-07",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-07-01",
@@ -3686,7 +4004,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#24"
+      "source": "系统搭建/物理.csv#24",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-07-01",
@@ -3720,7 +4041,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#20"
+      "source": "系统搭建/化学.csv#20",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-07-01",
@@ -3755,7 +4079,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#31"
+      "source": "系统搭建/生物俄语.csv#31",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": "2026-08-08T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-08-01",
@@ -3783,7 +4110,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#25"
+      "source": "系统搭建/语文.csv#25",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": "2026-08-08T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-08-01",
@@ -3818,7 +4148,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#15"
+      "source": "系统搭建/数学.csv#15",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": "2026-08-09T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-08-01",
@@ -3852,7 +4185,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#34"
+      "source": "系统搭建/生物俄语.csv#34",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-08-01",
@@ -3883,7 +4219,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#25"
+      "source": "系统搭建/物理.csv#25",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-08-01",
@@ -3917,7 +4256,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#21"
+      "source": "系统搭建/化学.csv#21",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-08-01",
@@ -3951,7 +4293,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#33"
+      "source": "系统搭建/生物俄语.csv#33",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": "2026-08-09T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-09-01",
@@ -3985,7 +4330,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#26"
+      "source": "系统搭建/语文.csv#26",
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": "2026-08-15T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-09-01",
@@ -4015,7 +4363,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#16"
+      "source": "系统搭建/数学.csv#16",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": "2026-08-09T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-09-01",
@@ -4049,7 +4400,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#36"
+      "source": "系统搭建/生物俄语.csv#36",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-09-01",
@@ -4083,7 +4437,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#26"
+      "source": "系统搭建/物理.csv#26",
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-09-01",
@@ -4111,7 +4468,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#22"
+      "source": "系统搭建/化学.csv#22",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-09-01",
@@ -4145,7 +4505,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#35"
+      "source": "系统搭建/生物俄语.csv#35",
+      "deadlineDate": "2026-08-16",
+      "deadlineAt": "2026-08-16T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-10-01",
@@ -4179,7 +4542,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#27"
+      "source": "系统搭建/语文.csv#27",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "math-2026-08-10-01",
@@ -4214,7 +4580,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#17"
+      "source": "系统搭建/数学.csv#17",
+      "deadlineDate": "2026-08-16",
+      "deadlineAt": "2026-08-16T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-10-01",
@@ -4248,7 +4617,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#38"
+      "source": "系统搭建/生物俄语.csv#38",
+      "deadlineDate": "2026-08-10",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-10-01",
@@ -4283,7 +4655,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#27"
+      "source": "系统搭建/物理.csv#27",
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-10-01",
@@ -4317,7 +4692,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#37"
+      "source": "系统搭建/生物俄语.csv#37",
+      "deadlineDate": "2026-08-11",
+      "deadlineAt": "2026-08-11T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-11-01",
@@ -4351,7 +4729,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#28"
+      "source": "系统搭建/语文.csv#28",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "math-2026-08-11-01",
@@ -4385,7 +4766,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#18"
+      "source": "系统搭建/数学.csv#18",
+      "deadlineDate": "2026-08-16",
+      "deadlineAt": "2026-08-16T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-11-01",
@@ -4419,7 +4803,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#40"
+      "source": "系统搭建/生物俄语.csv#40",
+      "deadlineDate": "2026-08-11",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-11-01",
@@ -4453,7 +4840,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#28"
+      "source": "系统搭建/物理.csv#28",
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-11-01",
@@ -4487,7 +4877,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#39"
+      "source": "系统搭建/生物俄语.csv#39",
+      "deadlineDate": "2026-08-12",
+      "deadlineAt": "2026-08-12T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-12-01",
@@ -4521,7 +4914,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#29"
+      "source": "系统搭建/语文.csv#29",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "math-2026-08-12-01",
@@ -4556,7 +4952,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#19"
+      "source": "系统搭建/数学.csv#19",
+      "deadlineDate": "2026-08-16",
+      "deadlineAt": "2026-08-16T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-12-01",
@@ -4590,7 +4989,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#42"
+      "source": "系统搭建/生物俄语.csv#42",
+      "deadlineDate": "2026-08-12",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-12-01",
@@ -4624,7 +5026,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#29"
+      "source": "系统搭建/物理.csv#29",
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-12-01",
@@ -4658,7 +5063,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#41"
+      "source": "系统搭建/生物俄语.csv#41",
+      "deadlineDate": "2026-08-13",
+      "deadlineAt": "2026-08-13T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-13-01",
@@ -4692,7 +5100,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#30"
+      "source": "系统搭建/语文.csv#30",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "russian-2026-08-13-01",
@@ -4726,7 +5137,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#44"
+      "source": "系统搭建/生物俄语.csv#44",
+      "deadlineDate": "2026-08-13",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-13-01",
@@ -4758,7 +5172,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#30"
+      "source": "系统搭建/物理.csv#30",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chemistry-2026-08-13-01",
@@ -4792,7 +5209,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#23"
+      "source": "系统搭建/化学.csv#23",
+      "deadlineDate": "2026-08-16",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-13-01",
@@ -4826,7 +5246,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#43"
+      "source": "系统搭建/生物俄语.csv#43",
+      "deadlineDate": "2026-08-14",
+      "deadlineAt": "2026-08-14T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-14-01",
@@ -4860,7 +5283,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#31"
+      "source": "系统搭建/语文.csv#31",
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": "2026-08-15T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-14-01",
@@ -4895,7 +5321,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#20"
+      "source": "系统搭建/数学.csv#20",
+      "deadlineDate": "2026-08-16",
+      "deadlineAt": "2026-08-16T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-14-01",
@@ -4929,7 +5358,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#46"
+      "source": "系统搭建/生物俄语.csv#46",
+      "deadlineDate": "2026-08-14",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-14-01",
@@ -4964,7 +5396,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#31"
+      "source": "系统搭建/物理.csv#31",
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-14-01",
@@ -4998,7 +5433,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#45"
+      "source": "系统搭建/生物俄语.csv#45",
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": "2026-08-15T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-15-01",
@@ -5028,7 +5466,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#32"
+      "source": "系统搭建/语文.csv#32",
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": "2026-08-15T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-15-01",
@@ -5062,7 +5503,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#48"
+      "source": "系统搭建/生物俄语.csv#48",
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-15-01",
@@ -5093,7 +5537,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#32"
+      "source": "系统搭建/物理.csv#32",
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-15-01",
@@ -5127,7 +5574,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#24"
+      "source": "系统搭建/化学.csv#24",
+      "deadlineDate": "2026-08-16",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "biology-2026-08-15-01",
@@ -5157,7 +5607,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#47"
+      "source": "系统搭建/生物俄语.csv#47",
+      "deadlineDate": "2026-08-16",
+      "deadlineAt": "2026-08-16T08:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chinese-2026-08-16-01",
@@ -5191,7 +5644,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#33"
+      "source": "系统搭建/语文.csv#33",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "math-2026-08-16-01",
@@ -5221,7 +5677,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#21"
+      "source": "系统搭建/数学.csv#21",
+      "deadlineDate": "2026-08-16",
+      "deadlineAt": "2026-08-16T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-16-01",
@@ -5255,7 +5714,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#49"
+      "source": "系统搭建/生物俄语.csv#49",
+      "deadlineDate": "2026-08-16",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-16-01",
@@ -5289,7 +5751,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#33"
+      "source": "系统搭建/物理.csv#33",
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-16-01",
@@ -5317,7 +5782,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#25"
+      "source": "系统搭建/化学.csv#25",
+      "deadlineDate": "2026-08-16",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chinese-2026-08-17-01",
@@ -5351,7 +5819,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#34"
+      "source": "系统搭建/语文.csv#34",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "russian-2026-08-17-01",
@@ -5385,7 +5856,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#50"
+      "source": "系统搭建/生物俄语.csv#50",
+      "deadlineDate": "2026-08-17",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-17-01",
@@ -5420,7 +5894,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#34"
+      "source": "系统搭建/物理.csv#34",
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-17-01",
@@ -5454,7 +5931,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#26"
+      "source": "系统搭建/化学.csv#26",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chinese-2026-08-18-01",
@@ -5488,7 +5968,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#35"
+      "source": "系统搭建/语文.csv#35",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "math-2026-08-18-01",
@@ -5524,7 +6007,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#22"
+      "source": "系统搭建/数学.csv#22",
+      "deadlineDate": "2026-08-25",
+      "deadlineAt": "2026-08-25T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-18-01",
@@ -5558,7 +6044,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#51"
+      "source": "系统搭建/生物俄语.csv#51",
+      "deadlineDate": "2026-08-18",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "physics-2026-08-18-01",
@@ -5592,7 +6081,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#35"
+      "source": "系统搭建/物理.csv#35",
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-18-01",
@@ -5626,7 +6118,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#27"
+      "source": "系统搭建/化学.csv#27",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chinese-2026-08-19-01",
@@ -5660,7 +6155,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#36"
+      "source": "系统搭建/语文.csv#36",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "math-2026-08-19-01",
@@ -5694,7 +6192,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#23"
+      "source": "系统搭建/数学.csv#23",
+      "deadlineDate": "2026-08-25",
+      "deadlineAt": "2026-08-25T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "physics-2026-08-19-01",
@@ -5728,7 +6229,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#36"
+      "source": "系统搭建/物理.csv#36",
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-19-01",
@@ -5762,7 +6266,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#28"
+      "source": "系统搭建/化学.csv#28",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chinese-2026-08-20-01",
@@ -5796,7 +6303,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#37"
+      "source": "系统搭建/语文.csv#37",
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": "2026-08-22T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-20-01",
@@ -5831,7 +6341,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#24"
+      "source": "系统搭建/数学.csv#24",
+      "deadlineDate": "2026-08-25",
+      "deadlineAt": "2026-08-25T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "physics-2026-08-20-01",
@@ -5866,7 +6379,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#37"
+      "source": "系统搭建/物理.csv#37",
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-20-01",
@@ -5900,7 +6416,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#29"
+      "source": "系统搭建/化学.csv#29",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chinese-2026-08-21-01",
@@ -5934,7 +6453,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#38"
+      "source": "系统搭建/语文.csv#38",
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": "2026-08-22T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "physics-2026-08-21-01",
@@ -5966,7 +6488,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#38"
+      "source": "系统搭建/物理.csv#38",
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-21-01",
@@ -6001,7 +6526,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#30"
+      "source": "系统搭建/化学.csv#30",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "biology-2026-08-21-01",
@@ -6035,7 +6563,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#52"
+      "source": "系统搭建/生物俄语.csv#52",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chinese-2026-08-22-01",
@@ -6065,7 +6596,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#39"
+      "source": "系统搭建/语文.csv#39",
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": "2026-08-22T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-22-01",
@@ -6099,7 +6633,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#25"
+      "source": "系统搭建/数学.csv#25",
+      "deadlineDate": "2026-08-25",
+      "deadlineAt": "2026-08-25T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "physics-2026-08-22-01",
@@ -6129,7 +6666,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#39"
+      "source": "系统搭建/物理.csv#39",
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
     },
     {
       "id": "chinese-2026-08-23-01",
@@ -6163,7 +6703,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#40"
+      "source": "系统搭建/语文.csv#40",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "math-2026-08-23-01",
@@ -6199,7 +6742,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#26"
+      "source": "系统搭建/数学.csv#26",
+      "deadlineDate": "2026-08-25",
+      "deadlineAt": "2026-08-25T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "physics-2026-08-23-01",
@@ -6233,7 +6779,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#40"
+      "source": "系统搭建/物理.csv#40",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chinese-2026-08-24-01",
@@ -6267,7 +6816,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#41"
+      "source": "系统搭建/语文.csv#41",
+      "deadlineDate": "2026-08-29",
+      "deadlineAt": "2026-08-29T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-24-01",
@@ -6302,7 +6854,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#27"
+      "source": "系统搭建/数学.csv#27",
+      "deadlineDate": "2026-08-25",
+      "deadlineAt": "2026-08-25T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "physics-2026-08-24-01",
@@ -6336,7 +6891,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#41"
+      "source": "系统搭建/物理.csv#41",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chinese-2026-08-25-01",
@@ -6370,7 +6928,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#42"
+      "source": "系统搭建/语文.csv#42",
+      "deadlineDate": "2026-08-29",
+      "deadlineAt": "2026-08-29T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-25-01",
@@ -6400,7 +6961,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#28"
+      "source": "系统搭建/数学.csv#28",
+      "deadlineDate": "2026-08-25",
+      "deadlineAt": "2026-08-25T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chemistry-2026-08-25-01",
@@ -6434,7 +6998,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#31"
+      "source": "系统搭建/化学.csv#31",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "biology-2026-08-25-01",
@@ -6468,7 +7035,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/生物俄语.csv#53"
+      "source": "系统搭建/生物俄语.csv#53",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chinese-2026-08-26-01",
@@ -6502,7 +7072,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#43"
+      "source": "系统搭建/语文.csv#43",
+      "deadlineDate": "2026-08-29",
+      "deadlineAt": "2026-08-29T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-26-01",
@@ -6538,7 +7111,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#29"
+      "source": "系统搭建/数学.csv#29",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "physics-2026-08-26-01",
@@ -6572,7 +7148,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#42"
+      "source": "系统搭建/物理.csv#42",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chinese-2026-08-27-01",
@@ -6606,7 +7185,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#44"
+      "source": "系统搭建/语文.csv#44",
+      "deadlineDate": "2026-08-29",
+      "deadlineAt": "2026-08-29T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "chemistry-2026-08-27-01",
@@ -6640,7 +7222,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/化学.csv#32"
+      "source": "系统搭建/化学.csv#32",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chinese-2026-08-28-01",
@@ -6674,7 +7259,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#45"
+      "source": "系统搭建/语文.csv#45",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "math-2026-08-28-01",
@@ -6710,7 +7298,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#30"
+      "source": "系统搭建/数学.csv#30",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "physics-2026-08-28-01",
@@ -6744,7 +7335,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#43"
+      "source": "系统搭建/物理.csv#43",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chinese-2026-08-29-01",
@@ -6774,7 +7368,10 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#46"
+      "source": "系统搭建/语文.csv#46",
+      "deadlineDate": "2026-08-29",
+      "deadlineAt": "2026-08-29T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-29-01",
@@ -6808,7 +7405,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#31"
+      "source": "系统搭建/数学.csv#31",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     }
   ],
   "courseSchedule": [
