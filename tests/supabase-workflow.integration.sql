@@ -141,6 +141,21 @@ select pg_temp.assert_true((select block_minutes = 90 and version = 4 from publi
 reset role;
 select pg_temp.assert_true((select deleted_at is not null from public.homework_tasks where id = :'second_task_id'), 'merged-away block must be soft deleted');
 
+select set_config('request.jwt.claim.sub', :'math_tutor_id', false);
+set role authenticated;
+select public.restore_plan_block(:'second_task_id', '恢复误合并任务块', 2, 'eeeeeeee-0000-4000-8000-000000000004');
+select pg_temp.assert_true((select deleted_at is null and version = 3 from public.homework_tasks where id = :'second_task_id'), 'tutor should restore a soft-deleted subject block');
+reset role;
+
+select set_config('request.jwt.claim.sub', :'parent_id', false);
+set role authenticated;
+select public.generate_weekly_report(:'student_record_id', '2026-07-13') as report_id \gset
+select pg_temp.assert_true((select (metrics ->> 'planned_blocks')::integer >= 2 from public.weekly_reports where id = :'report_id'), 'weekly report should aggregate the real plan');
+select pg_temp.assert_true((public.export_student_archive(:'student_record_id') ->> 'schema_version')::integer = 1, 'parent export should return a versioned archive');
+select public.create_backup_snapshot(:'student_record_id', '集成测试备份') as backup_id \gset
+select pg_temp.assert_true((select length(checksum) = 64 from public.backup_snapshots where id = :'backup_id'), 'backup should include a SHA-256 checksum');
+reset role;
+
 select set_config('request.jwt.claim.sub', :'physics_tutor_id', false);
 set role authenticated;
 select pg_temp.assert_true((select count(*) = 0 from public.homeworks), 'other-subject tutor must not see math homeworks');
