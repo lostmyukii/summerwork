@@ -1,0 +1,17 @@
+.git
+.github
+.env*
+!.env.example
+node_modules
+dist
+.next
+.vinext
+.wrangler
+coverage
+outputs
+work
+deploy/tencent/.env
+deploy/tencent/vendor/db/*.sql
+*.pem
+*.swp
+npm-debug.log*

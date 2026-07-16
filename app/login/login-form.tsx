@@ -42,7 +42,7 @@ export function LoginForm({ configured, nextPath = "/" }: { configured: boolean;
 
     if (mode === "signup" && !result.data.session) {
       setStatus("idle");
-      setMessage("账号已创建。完成邮箱验证后，请返回此页面登录并接受邀请。");
+      setMessage("账号已创建但尚未自动登录，请返回登录页继续；如反复出现请联系家长。");
       return;
     }
 
@@ -80,7 +80,7 @@ export function LoginForm({ configured, nextPath = "/" }: { configured: boolean;
 
           <form onSubmit={handleSubmit}>
             <label><span>邮箱</span><input type="email" autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="name@example.com" required /></label>
-            <label><span>密码</span><input type="password" autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="输入密码" required /></label>
+            <label><span>密码</span><input type="password" autoComplete={mode === "signup" ? "new-password" : "current-password"} minLength={12} value={password} onChange={(event) => setPassword(event.target.value)} placeholder={mode === "signup" ? "至少12位" : "输入密码"} required /></label>
             {message ? <p className="login-message" role="alert">{message}</p> : null}
             <button className="primary-button full" type="submit" disabled={status === "loading"}>{status === "loading" ? mode === "login" ? "正在登录…" : "正在创建…" : mode === "login" ? `以${ROLE_LABELS[role].label}身份登录` : "创建账号并继续"}</button>
           </form>

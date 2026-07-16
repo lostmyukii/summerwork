@@ -115,6 +115,9 @@ async function cleanup() {
     if (error) console.error(`清理测试家庭失败：${error.message}`);
   }
 
+  const bootstrapCleanup = await admin.from("platform_bootstrap").delete().eq("singleton", true);
+  if (bootstrapCleanup.error) console.error(`清理测试启动配置失败：${bootstrapCleanup.error.message}`);
+
   for (const userId of [...createdUserIds].reverse()) {
     const { error } = await admin.auth.admin.deleteUser(userId);
     if (error) console.error(`清理测试账号失败：${error.message}`);
@@ -136,6 +139,12 @@ async function main() {
   const mathTutor = await createTestAccount("math-tutor", runId);
   const physicsTutor = await createTestAccount("physics-tutor", runId);
   const studentAccount = await createTestAccount("student", runId);
+
+  requireData(
+    await admin.from("platform_bootstrap").upsert({ singleton: true, parent_email: parent.email }),
+    "配置唯一合成家长启动邮箱",
+  );
+  pass("仅服务端配置唯一合成家长启动邮箱");
 
   familyId = requireData(
     await parent.client.rpc("create_family_space", { family_name: `权限验收-${runId}` }),

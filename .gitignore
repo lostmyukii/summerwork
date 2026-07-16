@@ -42,3 +42,8 @@ next-env.d.ts
 /.wrangler/
 /outputs/
 /work/
+
+# Tencent deployment runtime material
+/deploy/tencent/.env
+/deploy/tencent/vendor/db/*.sql
+/deploy/tencent/vendor/db/*.tmp

@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 const migration = readFileSync(new URL("../supabase/migrations/0003_homework_closed_loop.sql", import.meta.url), "utf8");
 const invitationMigration = readFileSync(new URL("../supabase/migrations/0004_parent_invitation_rpc.sql", import.meta.url), "utf8");
 const identityMigration = readFileSync(new URL("../supabase/migrations/0001_identity_and_rls.sql", import.meta.url), "utf8");
+const bootstrapMigration = readFileSync(new URL("../supabase/migrations/0017_single_family_bootstrap.sql", import.meta.url), "utf8");
 const syncScript = readFileSync(new URL("../scripts/sync-summer-plan.mjs", import.meta.url), "utf8");
 
 describe("Supabase 作业闭环结构与分科权限", () => {
@@ -56,5 +57,13 @@ describe("Supabase 作业闭环结构与分科权限", () => {
       expect(identityMigration).toContain(`revoke all on function public.${signature} from public`);
       expect(identityMigration).toContain(`grant execute on function public.${signature} to authenticated`);
     }
+  });
+
+  it("私有部署只允许服务端配置的家长邮箱认领唯一家庭", () => {
+    expect(bootstrapMigration).toContain("public.platform_bootstrap");
+    expect(bootstrapMigration).toMatch(/revoke all on table public\.platform_bootstrap from anon, authenticated/);
+    expect(bootstrapMigration).toMatch(/current_email <> bootstrap_row\.parent_email/);
+    expect(bootstrapMigration).toMatch(/platform already initialized/);
+    expect(bootstrapMigration).toMatch(/for update/);
   });
 });

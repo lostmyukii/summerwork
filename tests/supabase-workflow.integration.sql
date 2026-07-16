@@ -26,16 +26,43 @@ $$;
 \set physics_tutor_id '44444444-4444-4444-8444-444444444444'
 \set student_record_id '55555555-5555-4555-8555-555555555555'
 \set import_student_id '66666666-6666-4666-8666-666666666666'
+\set outsider_id '77777777-7777-4777-8777-777777777777'
 
 insert into auth.users(id, email, raw_user_meta_data) values
   (:'parent_id', 'parent@example.test', '{"display_name":"家长"}'),
   (:'student_user_id', 'student@example.test', '{"display_name":"孩子"}'),
   (:'math_tutor_id', 'math@example.test', '{"display_name":"数学家教"}'),
-  (:'physics_tutor_id', 'physics@example.test', '{"display_name":"物理家教"}');
+  (:'physics_tutor_id', 'physics@example.test', '{"display_name":"物理家教"}'),
+  (:'outsider_id', 'outsider@example.test', '{"display_name":"未受邀账号"}');
+
+insert into public.platform_bootstrap(parent_email)
+values('parent@example.test');
+
+select set_config('request.jwt.claim.sub', :'outsider_id', false);
+set role authenticated;
+select pg_temp.expect_error(
+  'select public.create_family_space(''越权家庭'')',
+  'parent email not authorized'
+);
+select pg_temp.expect_error(
+  'insert into public.platform_bootstrap(parent_email) values (''attacker@example.test'')',
+  'permission denied'
+);
+reset role;
 
 select set_config('request.jwt.claim.sub', :'parent_id', false);
 set role authenticated;
 select public.create_family_space('暑期闭环测试家庭') as family_id \gset
+select pg_temp.assert_true(public.create_family_space('重复请求不得新建') = :'family_id', 'the authorized parent should safely receive the existing family on retry');
+reset role;
+select pg_temp.assert_true((select claimed_by = :'parent_id' and claimed_at is not null from public.platform_bootstrap where singleton), 'first family creation must atomically claim the configured bootstrap');
+
+select set_config('request.jwt.claim.sub', :'outsider_id', false);
+set role authenticated;
+select pg_temp.expect_error(
+  'select public.create_family_space(''第二家庭'')',
+  'platform already initialized'
+);
 reset role;
 
 insert into public.students(id, family_id, user_id, display_name, grade, school_year, created_by)
