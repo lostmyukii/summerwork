@@ -18,14 +18,14 @@ compose=("$SCRIPT_DIR/compose.sh" --project-name summerwork --env-file "$ENV_FIL
 drill_db="summerwork_restore_$(date -u +%Y%m%d%H%M%S)_$$"
 
 cleanup() {
-  ${compose[@]} exec -T db dropdb -U postgres --if-exists "$drill_db" >/dev/null 2>&1 || true
+  ${compose[@]} exec -T db dropdb -U supabase_admin --if-exists "$drill_db" >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
 
-${compose[@]} exec -T db createdb -U postgres -T template0 "$drill_db"
-${compose[@]} exec -T db pg_restore -U postgres -d "$drill_db" --exit-on-error < "$BACKUP_FILE"
+${compose[@]} exec -T db createdb -U supabase_admin -T template0 "$drill_db"
+${compose[@]} exec -T db pg_restore -U supabase_admin -d "$drill_db" --exit-on-error < "$BACKUP_FILE"
 
-result="$(${compose[@]} exec -T db psql -qAt -U postgres -d "$drill_db" -c \
+result="$(${compose[@]} exec -T db psql -qAt -U supabase_admin -d "$drill_db" -c \
   "select (to_regclass('public.homework_tasks') is not null)::int || ':' || (to_regclass('auth.users') is not null)::int")"
 if [[ "$result" != "1:1" ]]; then
   echo "恢复演练结构校验失败。" >&2

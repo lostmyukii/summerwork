@@ -84,6 +84,8 @@ test("secrets, upstream assets and rollback boundaries are fail-closed", async (
   assert.match(backup, /-maxdepth 1/);
   assert.match(backup, /summerwork-postgres-/);
   assert.match(restore, /summerwork_restore_/);
+  assert.match(restore, /pg_restore -U supabase_admin/);
+  assert.doesNotMatch(restore, /pg_restore -U postgres/);
 
   const operational = `${readme}\n${backup}\n${restore}`;
   assert.doesNotMatch(operational, /docker\s+(?:system|image|volume|container)?\s*prune/i);
