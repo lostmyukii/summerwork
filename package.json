@@ -12,6 +12,7 @@
     "test": "npm run build && npm run test:unit && npm run test:render",
     "test:unit": "vitest run --config vitest.config.ts",
     "test:render": "node --test tests/rendered-html.test.mjs",
+    "test:db:local": "bash scripts/verify-local-postgres.sh",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "plan:import": "node scripts/import-summer-plan.mjs",
