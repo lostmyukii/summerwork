@@ -5,6 +5,7 @@ const migration = readFileSync(new URL("../supabase/migrations/0003_homework_clo
 const invitationMigration = readFileSync(new URL("../supabase/migrations/0004_parent_invitation_rpc.sql", import.meta.url), "utf8");
 const identityMigration = readFileSync(new URL("../supabase/migrations/0001_identity_and_rls.sql", import.meta.url), "utf8");
 const bootstrapMigration = readFileSync(new URL("../supabase/migrations/0017_single_family_bootstrap.sql", import.meta.url), "utf8");
+const selfHostedMigration = readFileSync(new URL("../supabase/migrations/0018_self_hosted_crypto_and_verification_cleanup.sql", import.meta.url), "utf8");
 const syncScript = readFileSync(new URL("../scripts/sync-summer-plan.mjs", import.meta.url), "utf8");
 
 describe("Supabase 作业闭环结构与分科权限", () => {
@@ -65,5 +66,15 @@ describe("Supabase 作业闭环结构与分科权限", () => {
     expect(bootstrapMigration).toMatch(/current_email <> bootstrap_row\.parent_email/);
     expect(bootstrapMigration).toMatch(/platform already initialized/);
     expect(bootstrapMigration).toMatch(/for update/);
+  });
+
+  it("自建数据库显式使用 extensions 加密函数且合成清理仅向服务角色开放", () => {
+    expect(selfHostedMigration).toContain("extensions.gen_random_bytes(32)");
+    expect(selfHostedMigration).toContain("extensions.digest(raw_token, 'sha256')");
+    expect(selfHostedMigration).toContain("extensions.digest(generated_token, 'sha256')");
+    expect(selfHostedMigration).toContain("extensions.digest(archive_payload::text, 'sha256')");
+    expect(selfHostedMigration).toMatch(/target_name not like '权限验收-%'/);
+    expect(selfHostedMigration).toMatch(/revoke all on function public\.purge_verification_family\(uuid\) from public, anon, authenticated/);
+    expect(selfHostedMigration).toMatch(/grant execute on function public\.purge_verification_family\(uuid\) to service_role/);
   });
 });

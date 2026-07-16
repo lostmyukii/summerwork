@@ -111,8 +111,9 @@ async function isSubjectTutor(account, studentId, subjectId) {
 
 async function cleanup() {
   if (familyId) {
-    const { error } = await admin.from("family_spaces").delete().eq("id", familyId);
+    const { error } = await admin.rpc("purge_verification_family", { target_family_id: familyId });
     if (error) console.error(`清理测试家庭失败：${error.message}`);
+    else familyId = null;
   }
 
   const bootstrapCleanup = await admin.from("platform_bootstrap").delete().eq("singleton", true);
@@ -124,7 +125,35 @@ async function cleanup() {
   }
 }
 
+async function purgeSyntheticResidue() {
+  const families = requireData(
+    await admin.from("family_spaces").select("id,name").like("name", "权限验收-%"),
+    "扫描历史合成家庭",
+  );
+  for (const family of families) {
+    requireData(
+      await admin.rpc("purge_verification_family", { target_family_id: family.id }),
+      "清理历史合成家庭",
+    );
+  }
+
+  requireData(
+    await admin.from("platform_bootstrap").delete().like("parent_email", "summerwork-%@example.com"),
+    "清理历史合成启动配置",
+  );
+
+  const listed = requireData(
+    await admin.auth.admin.listUsers({ page: 1, perPage: 1000 }),
+    "扫描历史合成账号",
+  );
+  const syntheticUsers = listed.users.filter((user) => /^summerwork-.*@example\.com$/i.test(user.email ?? ""));
+  for (const user of syntheticUsers) {
+    requireData(await admin.auth.admin.deleteUser(user.id), "清理历史合成账号");
+  }
+}
+
 async function main() {
+  await purgeSyntheticResidue();
   const schemaProbe = await admin.from("subjects").select("id").in("id", ["math", "physics"]);
   if (schemaProbe.error || schemaProbe.data?.length !== 2) {
     throw new Error("数据库迁移尚未就绪。请先运行 npm run supabase:push。");

@@ -30,6 +30,9 @@ trap cleanup EXIT
    create role authenticated nologin;
    create role service_role nologin;
    grant usage on schema public to anon, authenticated, service_role;
+   create schema extensions;
+   create extension pgcrypto with schema extensions;
+   alter database summerwork set search_path = public, extensions;
    alter default privileges in schema public grant all on tables to anon, authenticated, service_role;
    alter default privileges in schema public grant all on sequences to anon, authenticated, service_role;
    alter default privileges in schema public grant execute on functions to anon, authenticated, service_role;

@@ -314,4 +314,18 @@ select pg_temp.assert_true((select count(*) = 0 from public.homeworks), 'revoked
 select pg_temp.assert_true(not public.is_subject_tutor(:'student_record_id', 'math'), 'revoked tutor must immediately lose subject authorization');
 reset role;
 
+set role service_role;
+select pg_temp.expect_error(
+  format('select public.purge_verification_family(%L::uuid)', :'family_id'),
+  'only synthetic verification families can be purged'
+);
+reset role;
+update public.family_spaces set name = '权限验收-本地集成' where id = :'family_id';
+set role service_role;
+select public.purge_verification_family(:'family_id');
+reset role;
+select pg_temp.assert_true((select count(*) = 0 from public.family_spaces where id = :'family_id'), 'synthetic verification family cleanup must remove the family');
+select pg_temp.assert_true((select count(*) = 0 from public.homeworks), 'synthetic verification cleanup must remove homework bodies');
+select pg_temp.assert_true((select count(*) = 0 from public.knowledge_nodes), 'synthetic verification cleanup must remove linked knowledge nodes');
+
 select 'WORKFLOW_INTEGRATION_OK' as result;
