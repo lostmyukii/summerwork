@@ -10,6 +10,8 @@
 - 数据卷为 `summerwork_db_data`、`summerwork_db_config`，备份目录为 `/srv/summerwork/backups`。
 - 禁止全局 Docker 清理、系统升级、服务器重启、UFW 变更和删除数据卷。
 
+精简栈使用 `db/roles-minimal.sql`，只设置 Auth 与 PostgREST 实际使用的数据库角色。官方通用角色脚本还依赖本部署明确排除的 Storage、Functions 和连接池角色，因此不直接执行。
+
 ## 1. 本地门禁
 
 ```bash

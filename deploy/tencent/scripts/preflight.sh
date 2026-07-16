@@ -33,12 +33,17 @@ if grep -Eqi 'CHANGE_ME|placeholder|example|your-' "$ENV_FILE"; then
   exit 1
 fi
 
-for file_name in realtime.sql roles.sql jwt.sql; do
+for file_name in realtime.sql jwt.sql; do
   if [[ ! -s "$DEPLOY_DIR/vendor/db/$file_name" ]]; then
     echo "缺少已校验数据库资产：$file_name" >&2
     exit 1
   fi
 done
+
+if [[ ! -s "$DEPLOY_DIR/db/roles-minimal.sql" ]]; then
+  echo "缺少精简角色初始化文件。" >&2
+  exit 1
+fi
 
 if ss -ltnH | awk '{print $4}' | grep -Eq '(^|:)(3180|8180)$'; then
   echo "停止：3180 或 8180 已被占用。" >&2

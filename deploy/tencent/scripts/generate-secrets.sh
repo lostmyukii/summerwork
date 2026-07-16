@@ -85,6 +85,8 @@ const values = {
   POSTGRES_PORT: "5432",
   POSTGRES_DB: "postgres",
   POSTGRES_PASSWORD: randomHex(32),
+  SUMMERWORK_DB_VOLUME: "summerwork_db_data",
+  SUMMERWORK_DB_CONFIG_VOLUME: "summerwork_db_config",
   JWT_SECRET: jwtSecret,
   JWT_EXPIRY: "3600",
   ANON_KEY: signLegacy("anon"),

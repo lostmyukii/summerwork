@@ -16,7 +16,7 @@ services:
     cpus: 0.50
     logging: *summerwork-logging
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres", "-h", "localhost"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -h localhost && test \"$$(psql -qAt -U postgres -d postgres -c \"select count(*) from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='auth' and p.proname in ('uid','role','email') and pg_get_userbyid(p.proowner)='supabase_auth_admin'\")\" = 3"]
       interval: 5s
       timeout: 5s
       retries: 12
@@ -41,7 +41,7 @@ services:
       - max_connections=100
     volumes:
       - ./vendor/db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:ro
-      - ./vendor/db/roles.sql:/docker-entrypoint-initdb.d/init-scripts/99-roles.sql:ro
+      - ./db/roles-minimal.sql:/docker-entrypoint-initdb.d/init-scripts/99-roles.sql:ro
       - ./vendor/db/jwt.sql:/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql:ro
       - summerwork_db_data:/var/lib/postgresql/data
       - summerwork_db_config:/etc/postgresql-custom
@@ -247,6 +247,6 @@ networks:
 
 volumes:
   summerwork_db_data:
-    name: summerwork_db_data
+    name: ${SUMMERWORK_DB_VOLUME:-summerwork_db_data}
   summerwork_db_config:
-    name: summerwork_db_config
+    name: ${SUMMERWORK_DB_CONFIG_VOLUME:-summerwork_db_config}

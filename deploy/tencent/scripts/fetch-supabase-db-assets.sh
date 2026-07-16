@@ -17,10 +17,9 @@ mkdir -p "$TARGET_DIR"
 tmp_dir="$(mktemp -d)"
 trap 'rm -rf "$tmp_dir"' EXIT
 
-for file_name in realtime.sql roles.sql jwt.sql; do
+for file_name in realtime.sql jwt.sql; do
   case "$file_name" in
     realtime.sql) expected_sha="7e9e442e7fc4dae05544c07b67bede37a00d84644304dfce4d937134cb4c8f88" ;;
-    roles.sql) expected_sha="3ad717b225daa38aa982da26750f35641eb404e1eb5e69a763c22236ab96c1b2" ;;
     jwt.sql) expected_sha="1cc94a4f16f6e2932b383cd68e211a96bcae298437ca4120d8a5106396c58465" ;;
     *) echo "未登记资产：$file_name" >&2; exit 1 ;;
   esac
@@ -34,4 +33,4 @@ for file_name in realtime.sql roles.sql jwt.sql; do
   install -m 0644 "$tmp_dir/$file_name" "$TARGET_DIR/$file_name"
 done
 
-echo "已校验并安装 3 个固定 Supabase 数据库资产（提交 ${UPSTREAM_COMMIT}）。"
+echo "已校验并安装 2 个固定 Supabase 数据库资产（提交 ${UPSTREAM_COMMIT}）。"

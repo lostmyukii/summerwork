@@ -31,7 +31,10 @@ test("Tencent compose is minimal, pinned and loopback-only", async () => {
   assert.equal((compose.match(/mem_limit:/g) ?? []).length, 6);
   assert.equal((compose.match(/cpus:/g) ?? []).length, 6);
   assert.match(compose, /name: summerwork_net/);
-  assert.match(compose, /name: summerwork_db_data/);
+  assert.match(compose, /name: \$\{SUMMERWORK_DB_VOLUME:-summerwork_db_data\}/);
+  assert.match(compose, /name: \$\{SUMMERWORK_DB_CONFIG_VOLUME:-summerwork_db_config\}/);
+  assert.match(compose, /roles-minimal\.sql/);
+  assert.match(compose, /pg_get_userbyid\(p\.proowner\)='supabase_auth_admin'/);
   assert.match(compose, /version: "2\.4"/);
 
   const appBlock = servicesBlock.slice(servicesBlock.indexOf("\n  app:"));
@@ -74,7 +77,6 @@ test("secrets, upstream assets and rollback boundaries are fail-closed", async (
   assert.doesNotMatch(generate, /console\.log\([^)]*(?:values|secret|password)/i);
   assert.match(fetch, /11fb71514905d73c006da32bdbcbcc0d3274ba31/);
   assert.match(fetch, /7e9e442e7fc4dae05544c07b67bede37a00d84644304dfce4d937134cb4c8f88/);
-  assert.match(fetch, /3ad717b225daa38aa982da26750f35641eb404e1eb5e69a763c22236ab96c1b2/);
   assert.match(fetch, /1cc94a4f16f6e2932b383cd68e211a96bcae298437ca4120d8a5106396c58465/);
   assert.match(backup, /BACKUP_DIR="\$\{SUMMERWORK_BACKUP_DIR:-\/srv\/summerwork\/backups\}"/);
   assert.match(backup, /-maxdepth 1/);
