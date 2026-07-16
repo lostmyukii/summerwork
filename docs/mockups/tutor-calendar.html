@@ -1,0 +1,61 @@
+<!-- 已确认视觉稿：家教端日期级日历首页 -->
+<style>
+  .stage{max-width:1120px;margin:18px auto;display:grid;grid-template-columns:390px 1fr;gap:26px;align-items:start}
+  .phone{background:#f2f2f7;border-radius:38px;padding:12px;box-shadow:0 18px 56px rgba(0,0,0,.16)}
+  .screen{background:#fff;border-radius:29px;min-height:700px;padding:20px 18px 12px;color:#111}
+  .status{display:flex;justify-content:space-between;font-size:11px;font-weight:700;margin-bottom:23px}
+  .topline{display:flex;justify-content:space-between;align-items:center}.title{font-size:31px;font-weight:800;letter-spacing:-1px}.avatar{width:34px;height:34px;border-radius:50%;background:#e8f3ff;color:#007aff;display:grid;place-items:center;font-weight:800}
+  .seg{display:grid;grid-template-columns:repeat(3,1fr);background:#f2f2f7;border-radius:11px;padding:2px;margin:16px 0}.seg span{text-align:center;padding:7px;font-size:12px;border-radius:9px}.seg .on{background:white;box-shadow:0 1px 4px rgba(0,0,0,.12);font-weight:700}
+  .week{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:15px 0 20px}.day{text-align:center;padding:8px 2px;border-radius:15px;color:#8e8e93;font-size:10px}.day b{display:block;color:#1c1c1e;font-size:16px;margin-top:7px}.day.on{background:#007aff;color:#d7ebff}.day.on b{color:white}.dots{height:5px;display:flex;gap:2px;justify-content:center;margin-top:5px}.dots i{width:4px;height:4px;border-radius:50%;background:#30d158}.dots i.warn{background:#ff453a}
+  .date-label{font-size:13px;color:#8e8e93;font-weight:600;margin-bottom:8px}
+  .task{background:#f7f7fa;border:1px solid #ededf2;border-radius:19px;padding:14px;margin:10px 0}.task-top{display:flex;justify-content:space-between;align-items:center}.badge{font-size:11px;font-weight:700;border-radius:999px;padding:5px 8px;background:#e7f2ff;color:#007aff}.badge.orange{background:#fff1dd;color:#c66a00}.duration{font-size:12px;color:#8e8e93;font-weight:700}.task h4{font-size:16px;margin:10px 0 5px}.meta{font-size:12px;color:#636366;line-height:1.55}.button{margin-top:11px;border-radius:12px;padding:9px;text-align:center;background:#007aff;color:white;font-size:13px;font-weight:700}.button.ghost{background:#e8f3ff;color:#007aff}
+  .notice{display:flex;gap:10px;background:#fff4e5;border-radius:16px;padding:12px;margin-top:13px}.notice strong{color:#c66a00}.notice p{margin:3px 0 0;font-size:12px;color:#6e5a3c}
+  .tabs{display:flex;justify-content:space-around;margin-top:19px;padding-top:12px;border-top:1px solid #e5e5ea;font-size:10px;color:#8e8e93}.tabs b{color:#007aff}
+  .explain{background:white;border:1px solid #e5e5ea;border-radius:24px;padding:26px;box-shadow:0 10px 35px rgba(0,0,0,.06)}.explain h3{font-size:23px;margin-top:0}.rule{display:grid;grid-template-columns:40px 1fr;gap:12px;margin:18px 0}.num{width:36px;height:36px;border-radius:12px;background:#e8f3ff;color:#007aff;display:grid;place-items:center;font-weight:800}.rule b{display:block;margin-bottom:3px}.rule p{margin:0;color:#6e6e73;line-height:1.55}.confirm{margin-top:24px;padding:13px 18px;border-radius:14px;background:#30d158;color:white;text-align:center;font-weight:800;cursor:pointer}
+  @media(max-width:850px){.stage{grid-template-columns:1fr}.phone{max-width:390px;margin:auto}}
+</style>
+
+<h2>日历首页 · 精简日期版</h2>
+<p class="subtitle">不填写具体钟点。每个计划块统一为90分钟；学校正式截止时间仍保留。</p>
+
+<div class="stage">
+  <div class="phone">
+    <div class="screen">
+      <div class="status"><span>9:41</span><span>●●● 100%</span></div>
+      <div class="topline"><div><div class="title">本周</div><div class="meta">数学家教 · 7月20日—26日</div></div><div class="avatar">数</div></div>
+      <div class="seg"><span class="on">周</span><span>月</span><span>变更</span></div>
+      <div class="week">
+        <div class="day">一<b>20</b><div class="dots"><i></i></div></div>
+        <div class="day on">二<b>21</b><div class="dots"><i></i><i></i></div></div>
+        <div class="day">三<b>22</b><div class="dots"><i></i></div></div>
+        <div class="day">四<b>23</b><div class="dots"><i></i><i></i><i class="warn"></i></div></div>
+        <div class="day">五<b>24</b><div class="dots"><i></i></div></div>
+        <div class="day">六<b>25</b><div class="dots"><i></i></div></div>
+        <div class="day">日<b>26</b></div>
+      </div>
+      <div class="date-label">7月21日 · 2个任务块</div>
+      <div class="task">
+        <div class="task-top"><span class="badge">待批改</span><span class="duration">90分钟</span></div>
+        <h4>平面向量 · 作业1（1）</h4>
+        <div class="meta">题号 1—20 · 孩子已完成<br>学校截止 7月25日 21:00</div>
+        <div class="button">开始批改</div>
+      </div>
+      <div class="task">
+        <div class="task-top"><span class="badge orange">待开始</span><span class="duration">90分钟</span></div>
+        <h4>平面向量 · 作业1（2）</h4>
+        <div class="meta">题号 1—19 · 首做任务</div>
+        <div class="button ghost">调整日期</div>
+      </div>
+      <div class="notice"><span>⚠️</span><div><strong>周四负荷偏高</strong><p>已安排3个任务块，建议移动1个。</p></div></div>
+      <div class="tabs"><span>今天</span><b>日历</b><span>知识</span><span>我的</span></div>
+    </div>
+  </div>
+  <div class="explain">
+    <h3>更新后的调度规则</h3>
+    <div class="rule"><div class="num">1</div><div><b>按日期，不按钟点</b><p>家教只选择哪一天完成，不需要安排到13:00或16:00。</p></div></div>
+    <div class="rule"><div class="num">2</div><div><b>统一90分钟任务块</b><p>重作业拆为多个90分钟块；批改、订正和复做也可以各自成为任务块。</p></div></div>
+    <div class="rule"><div class="num">3</div><div><b>正式截止单独保留</b><p>学校要求的21:00或次日8:00仍精确显示，避免漏交。</p></div></div>
+    <div class="rule"><div class="num">4</div><div><b>冲突按每日负荷判断</b><p>系统根据当天任务块数量和截止风险提示，不做小时级排程。</p></div></div>
+    <div class="confirm" data-choice="confirm-calendar-v2" onclick="toggleSelect(this)">确认这个日历方向</div>
+  </div>
+</div>
