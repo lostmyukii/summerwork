@@ -2,7 +2,7 @@
   "meta": {
     "id": "summer-2026-family-tutoring",
     "title": "2026 暑期家教作业闭环计划",
-    "version": 1,
+    "version": 2,
     "dateRange": {
       "start": "2026-07-16",
       "end": "2026-08-29"
@@ -51,12 +51,12 @@
         "默写《答司马谏议书》《谏太宗十思疏》"
       ],
       "answerBasis": "全书无纸质答案；平板提交该阶段后可见参考答案；客观题由家长/家教按高考口径复核",
-      "submission": "系统标记+拍照上传批改痕迹",
+      "submission": "学校指定平台拍照提交批改痕迹；本系统仅标记",
       "notes": "7.18晚21:00截止仅隔2天；今晚加40min碎片阅读红楼1-20回（上）不占正式时段",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -67,8 +67,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#2",
       "deadlineDate": "2026-07-18",
@@ -77,7 +76,7 @@
     },
     {
       "id": "physics-2026-07-16-01",
-      "homeworkKey": "physics-2026-07-16-01",
+      "homeworkKey": "physics-assignment-01",
       "date": "2026-07-16",
       "weekday": "四",
       "slotType": "自学",
@@ -90,9 +89,9 @@
         "向心力来源"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
-      "notes": "首日启动；流程：复习知识点10-15min→限时独立做题→红笔批改订正20-30min→系统标记+上传；错题旁写错因类别",
-      "kind": "review",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
+      "notes": "首日启动；流程：复习知识点10-15min→限时独立做题→红笔批改订正20-30min→学校平板App上传并在本系统标记；错题旁写错因类别",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -110,7 +109,7 @@
         "school_submission_confirmation"
       ],
       "source": "系统搭建/物理.csv#2",
-      "deadlineDate": "2026-07-25",
+      "deadlineDate": "2026-07-16",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -129,12 +128,12 @@
         "全卷错题归因（概念不清/审题漏条件/完全不会等五类）"
       ],
       "answerBasis": "同上（平台提交后可见答案核对）",
-      "submission": "系统标记+拍照上传",
+      "submission": "学校指定平台拍照提交；本系统仅标记",
       "notes": "晚间40min碎片阅读红楼1-20回（下）；明晚21:00平板提交",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -145,8 +144,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#3",
       "deadlineDate": "2026-07-18",
@@ -155,7 +153,7 @@
     },
     {
       "id": "physics-2026-07-17-01",
-      "homeworkKey": "physics-2026-07-17-01",
+      "homeworkKey": "physics-assignment-02",
       "date": "2026-07-17",
       "weekday": "五",
       "slotType": "自学",
@@ -168,9 +166,9 @@
         "竖直面圆周"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -188,13 +186,13 @@
         "school_submission_confirmation"
       ],
       "source": "系统搭建/物理.csv#3",
-      "deadlineDate": "2026-07-25",
+      "deadlineDate": "2026-07-17",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-17-01",
-      "homeworkKey": "chemistry-2026-07-17-01",
+      "homeworkKey": "chemistry-assignment-一",
       "date": "2026-07-17",
       "weekday": "五",
       "slotType": "自学",
@@ -207,12 +205,12 @@
         "物质转化关系"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "当天批改后拍照上传系统",
+      "submission": "当天批改后拍照提交学校指定平台；本系统仅标记",
       "notes": "题量偏少，余量做错题重做",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -223,8 +221,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#2",
       "deadlineDate": "2026-07-26",
@@ -233,7 +230,7 @@
     },
     {
       "id": "chinese-2026-07-18-01",
-      "homeworkKey": "chinese-2026-07-18-01",
+      "homeworkKey": "chinese-2026-07-18-01-batch",
       "date": "2026-07-18",
       "weekday": "六",
       "slotType": "考背自主单元",
@@ -243,7 +240,7 @@
       "knowledge": "—",
       "knowledgeTags": [],
       "answerBasis": "提交后平台解锁答案 对照补改",
-      "submission": "平板提交套一（21:00前）",
+      "submission": "平板提交套一（21:00前）；本系统仅标记",
       "notes": "截止日只提交不排新内容；红楼1-20回思考题顺延至7/19补做",
       "kind": "submission",
       "blockMinutes": 90,
@@ -265,7 +262,7 @@
     },
     {
       "id": "physics-2026-07-18-01",
-      "homeworkKey": "physics-2026-07-18-01",
+      "homeworkKey": "physics-assignment-03",
       "date": "2026-07-18",
       "weekday": "六",
       "slotType": "自学",
@@ -278,9 +275,9 @@
         "火车转弯"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -298,13 +295,13 @@
         "school_submission_confirmation"
       ],
       "source": "系统搭建/物理.csv#4",
-      "deadlineDate": "2026-07-25",
+      "deadlineDate": "2026-07-18",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-18-01",
-      "homeworkKey": "chemistry-2026-07-18-01",
+      "homeworkKey": "chemistry-assignment-二",
       "date": "2026-07-18",
       "weekday": "六",
       "slotType": "自学",
@@ -317,12 +314,12 @@
         "离子共存"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "当天批改后拍照上传系统",
+      "submission": "当天批改后拍照提交学校指定平台；本系统仅标记",
       "notes": "题量偏少，余量做错题重做",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -333,8 +330,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#3",
       "deadlineDate": "2026-07-26",
@@ -358,12 +354,12 @@
         "判词伏笔"
       ],
       "answerBasis": "无答案 家教依原著+阅读指导资料批改",
-      "submission": "系统标记+拍照上传",
+      "submission": "学校指定平台拍照提交；本系统仅标记",
       "notes": "需压缩/合并：原3次（阅读2次+做题1次）压缩为碎片阅读2次+本做题时段1次；本应随套一7.18提交 顺延至7.25批次 需与老师确认；当日另有数学课+俄语课 全天合计不超3段",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -374,8 +370,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#5",
       "deadlineDate": "2026-07-25",
@@ -398,7 +393,7 @@
         "夹角"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，课后1.5h家教现场组织红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "做前先在空白处整理知识点10-15min；当天另有俄语课",
       "kind": "practice",
       "blockMinutes": 90,
@@ -436,9 +431,9 @@
         "圆周运动"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "红笔批改后二次上传平板App",
+      "submission": "红笔批改后二次上传平板App；本系统仅标记",
       "notes": "周日轻任务：对照老师当天发的详细答案逐题红笔订正；不排新作业",
-      "kind": "practice",
+      "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -456,7 +451,7 @@
         "school_submission_confirmation"
       ],
       "source": "系统搭建/物理.csv#5",
-      "deadlineDate": "2026-07-25",
+      "deadlineDate": "2026-07-19",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -477,12 +472,12 @@
         "默写《侍坐》《登岳阳楼》"
       ],
       "answerBasis": "同套一（平台答案+家教复核）",
-      "submission": "系统标记+拍照上传",
+      "submission": "学校指定平台拍照提交；本系统仅标记",
       "notes": "当日有化学+生物+俄语课 全天或达4段：建议俄语每日一练并入课内或将本段与7/21对调",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -493,8 +488,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#6",
       "deadlineDate": "2026-07-25",
@@ -517,7 +511,7 @@
         "数量积综合"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，家长/家教晚间红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "当天有化学/生物/俄语课，建议晚间19:00-20:30完成；全天各科合计勿超3时段，必要时报批家长调整",
       "kind": "practice",
       "blockMinutes": 90,
@@ -555,7 +549,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（家长保管、做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "俄语家教课日；7/19已有课但强基7/20起",
       "kind": "practice",
       "blockMinutes": 90,
@@ -581,7 +575,7 @@
     },
     {
       "id": "physics-2026-07-20-01",
-      "homeworkKey": "physics-2026-07-20-01",
+      "homeworkKey": "physics-assignment-04",
       "date": "2026-07-20",
       "weekday": "一",
       "slotType": "自学",
@@ -593,9 +587,9 @@
         "万有引力：开普勒三定律"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "需压缩/合并：当天化学/生物/俄语有课（已3个课内时段），本时段为第4个时段——做题压缩至60min内、订正并入晚间；若状态不佳可与7/22（当天无物理任务）对调",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -613,13 +607,13 @@
         "school_submission_confirmation"
       ],
       "source": "系统搭建/物理.csv#6",
-      "deadlineDate": "2026-07-25",
+      "deadlineDate": "2026-07-20",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-20-01",
-      "homeworkKey": "chemistry-2026-07-20-01",
+      "homeworkKey": "chemistry-assignment-三",
       "date": "2026-07-20",
       "weekday": "一",
       "slotType": "家教课内",
@@ -632,12 +626,12 @@
         "双线桥"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "家教现场组织批改并上传",
+      "submission": "家教现场组织批改并上传；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": false,
@@ -648,8 +642,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#4",
       "deadlineDate": "2026-07-26",
@@ -671,12 +664,12 @@
         "错题归因"
       ],
       "answerBasis": "同上",
-      "submission": "系统标记+拍照上传",
+      "submission": "学校指定平台拍照提交；本系统仅标记",
       "notes": "当日有数学+物理课",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -687,8 +680,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#7",
       "deadlineDate": "2026-07-25",
@@ -703,14 +695,14 @@
       "slotType": "家教课内",
       "sourceSlotType": "家教课内",
       "subject": "数学",
-      "title": "作业2(1) 向量基本定理及坐标表示（1-24题，做+批改）",
-      "knowledge": "基底、坐标运算",
+      "title": "作业2(1) 平面向量基本定理·子卷一（11题，做+批改）",
+      "knowledge": "平面向量基本定理、基底",
       "knowledgeTags": [
-        "基底",
-        "坐标运算"
+        "平面向量基本定理",
+        "基底"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，课后1.5h家教现场组织红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "学校PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "当天另有物理课",
       "kind": "practice",
       "blockMinutes": 90,
@@ -748,7 +740,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -774,7 +766,7 @@
     },
     {
       "id": "physics-2026-07-21-01",
-      "homeworkKey": "physics-2026-07-21-01",
+      "homeworkKey": "physics-assignment-05",
       "date": "2026-07-21",
       "weekday": "二",
       "slotType": "家教课内",
@@ -786,7 +778,7 @@
         "万有引力：环绕模型比例"
       ],
       "answerBasis": "家教课内组织批改；周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "物理家教课日；家教现场组织限时做题与批改",
       "kind": "practice",
       "blockMinutes": 90,
@@ -806,7 +798,7 @@
         "school_submission_confirmation"
       ],
       "source": "系统搭建/物理.csv#7",
-      "deadlineDate": "2026-07-25",
+      "deadlineDate": "2026-07-21",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -827,12 +819,12 @@
         "情节与人物批注"
       ],
       "answerBasis": "阅读时段无书面批改 家教抽查批注",
-      "submission": "阅读批注拍照上传",
+      "submission": "阅读批注拍照提交学校指定平台；本系统仅标记",
       "notes": "当日有化学+生物+俄语课 注意全天总量",
       "kind": "reading",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -843,12 +835,11 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#8",
-      "deadlineDate": "2026-07-25",
-      "deadlineAt": "2026-07-25T21:00:00+08:00",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": "2026-08-01T21:00:00+08:00",
       "deadlinePrecision": "time"
     },
     {
@@ -865,7 +856,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "俄语家教课日",
       "kind": "practice",
       "blockMinutes": 90,
@@ -903,7 +894,7 @@
       "answerBasis": "周日老师发详细答案（选择题带解析）",
       "submission": "—",
       "notes": "当天化学/生物/俄语有课（3个课内时段）；留作缓冲/对调日",
-      "kind": "practice",
+      "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": false,
@@ -917,8 +908,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/物理.csv#8",
       "deadlineDate": null,
@@ -927,7 +917,7 @@
     },
     {
       "id": "chemistry-2026-07-22-01",
-      "homeworkKey": "chemistry-2026-07-22-01",
+      "homeworkKey": "chemistry-assignment-四",
       "date": "2026-07-22",
       "weekday": "三",
       "slotType": "家教课内",
@@ -939,12 +929,12 @@
         "必修一2.1 Na2CO3/NaHCO3对比"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "家教现场组织批改并上传",
+      "submission": "家教现场组织批改并上传；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": false,
@@ -955,8 +945,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#5",
       "deadlineDate": "2026-07-26",
@@ -977,12 +966,12 @@
         "21-30回人物与情节简答"
       ],
       "answerBasis": "无答案 家教依原著批改",
-      "submission": "系统标记+拍照上传",
+      "submission": "学校指定平台拍照提交；本系统仅标记",
       "notes": "当日有数学+物理课；7/24留机动缓冲",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -993,12 +982,11 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#9",
-      "deadlineDate": "2026-07-25",
-      "deadlineAt": "2026-07-25T21:00:00+08:00",
+      "deadlineDate": "2026-08-01",
+      "deadlineAt": "2026-08-01T21:00:00+08:00",
       "deadlinePrecision": "time"
     },
     {
@@ -1009,15 +997,17 @@
       "slotType": "家教课内",
       "sourceSlotType": "家教课内",
       "subject": "数学",
-      "title": "作业2(2) 向量应用（25-48题，做+批改）",
-      "knowledge": "动点最值、向量与三角综合",
+      "title": "作业2(2) 平面向量坐标表示·子卷二（22题，做+批改）",
+      "knowledge": "坐标运算、共线与垂直、投影、距离与夹角",
       "knowledgeTags": [
-        "动点最值",
-        "向量与三角综合"
+        "坐标运算",
+        "共线与垂直",
+        "投影",
+        "距离与夹角"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，课后1.5h家教现场组织红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
-      "notes": "重点盯：应用题；当天另有物理课",
+      "submission": "学校PAD提交图片+红笔改后回传；本系统仅标记",
+      "notes": "当天另有物理课",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
@@ -1025,7 +1015,7 @@
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": false,
-      "priority": "high",
+      "priority": "standard",
       "answerPolicy": "after_school_submission",
       "requirementLevel": "required",
       "evidenceRequired": [
@@ -1054,7 +1044,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -1080,7 +1070,7 @@
     },
     {
       "id": "physics-2026-07-23-01",
-      "homeworkKey": "physics-2026-07-23-01",
+      "homeworkKey": "physics-assignment-06",
       "date": "2026-07-23",
       "weekday": "四",
       "slotType": "家教课内",
@@ -1092,7 +1082,7 @@
         "万有引力：测天体质量"
       ],
       "answerBasis": "家教课内组织批改；周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "题量偏多：课内1.5h满负荷；选择限时、计算题可留至批改时段",
       "kind": "practice",
       "blockMinutes": 90,
@@ -1112,7 +1102,7 @@
         "school_submission_confirmation"
       ],
       "source": "系统搭建/物理.csv#9",
-      "deadlineDate": "2026-07-25",
+      "deadlineDate": "2026-07-23",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -1128,9 +1118,48 @@
       "knowledge": "—",
       "knowledgeTags": [],
       "answerBasis": "—",
-      "submission": "视情况上传",
+      "submission": "如学校要求则提交学校指定平台；本系统仅标记",
       "notes": "当日有化学+生物+俄语课 默认不排新任务",
       "kind": "review",
+      "blockMinutes": 90,
+      "recommendedMinutes": 90,
+      "requiresSubmission": false,
+      "courseIntegrated": false,
+      "optional": false,
+      "uncertainty": false,
+      "priority": "standard",
+      "answerPolicy": "after_school_submission",
+      "requirementLevel": "required",
+      "evidenceRequired": [
+        "first_attempt",
+        "tutor_review",
+        "correction",
+        "independent_redo"
+      ],
+      "source": "系统搭建/语文.csv#10",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
+    },
+    {
+      "id": "math-2026-07-24-01",
+      "homeworkKey": "math-assignment-2",
+      "date": "2026-07-24",
+      "weekday": "五",
+      "slotType": "自学",
+      "sourceSlotType": "自学",
+      "subject": "数学",
+      "title": "作业2(3) 平面向量应用·子卷三（15题，做+批改）",
+      "knowledge": "做功、动点最值、向量与三角综合",
+      "knowledgeTags": [
+        "做功",
+        "动点最值",
+        "向量与三角综合"
+      ],
+      "answerBasis": "无纸质答案；PAD提交后查看答案，家长/家教红笔批改",
+      "submission": "学校PAD提交图片+红笔改后回传；本系统仅标记",
+      "notes": "第三个真实子卷；7/24中语文和物理均为机动缓冲，优先保障本任务",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -1147,9 +1176,9 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#10",
-      "deadlineDate": "2026-07-25",
-      "deadlineAt": "2026-07-25T21:00:00+08:00",
+      "source": "系统搭建/数学.csv#6",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": "2026-07-26T21:00:00+08:00",
       "deadlinePrecision": "time"
     },
     {
@@ -1166,7 +1195,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "俄语家教课日",
       "kind": "practice",
       "blockMinutes": 90,
@@ -1218,8 +1247,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/物理.csv#10",
       "deadlineDate": null,
@@ -1228,7 +1256,7 @@
     },
     {
       "id": "chemistry-2026-07-24-01",
-      "homeworkKey": "chemistry-2026-07-24-01",
+      "homeworkKey": "chemistry-assignment-五",
       "date": "2026-07-24",
       "weekday": "五",
       "slotType": "家教课内",
@@ -1241,12 +1269,12 @@
         "制氯装置"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "家教现场组织批改并上传",
+      "submission": "家教现场组织批改并上传；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": false,
@@ -1257,8 +1285,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#6",
       "deadlineDate": "2026-07-26",
@@ -1267,18 +1294,18 @@
     },
     {
       "id": "chinese-2026-07-25-01",
-      "homeworkKey": "chinese-2026-07-25-01",
+      "homeworkKey": "chinese-2026-07-25-01-batch",
       "date": "2026-07-25",
       "weekday": "六",
       "slotType": "考背自主单元",
       "sourceSlotType": "自学",
       "subject": "语文",
-      "title": "套二+红楼21-30回 平板提交（21:00前）+答案核对",
+      "title": "套二+红楼1-20回 平板提交（21:00前）+答案核对",
       "knowledge": "—",
       "knowledgeTags": [],
       "answerBasis": "提交后平台解锁答案",
-      "submission": "平板提交（21:00前）",
-      "notes": "截止日只提交；红楼1-20回补做思考题随本批一并提交",
+      "submission": "学校平板提交（21:00前）；本系统仅标记",
+      "notes": "正式第二批截止日只提交",
       "kind": "submission",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
@@ -1311,7 +1338,7 @@
         "重心/外心/内心/垂心向量条件"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，课后1.5h家教现场组织红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "重点盯：全份；做前先补四心结论清单；当天另有物理课",
       "kind": "practice",
       "blockMinutes": 90,
@@ -1330,7 +1357,7 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#6",
+      "source": "系统搭建/数学.csv#7",
       "deadlineDate": "2026-07-26",
       "deadlineAt": "2026-07-26T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -1349,7 +1376,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -1378,23 +1405,23 @@
       "homeworkKey": "physics-2026-07-25-01",
       "date": "2026-07-25",
       "weekday": "六",
-      "slotType": "家教课内",
-      "sourceSlotType": "家教课内",
+      "slotType": "提交日（轻任务）",
+      "sourceSlotType": "提交日（轻任务）",
       "subject": "物理",
-      "title": "批次1（作业01-06）提交 + 作业07 万有引力（课内压缩做）",
-      "knowledge": "万有引力：变轨；多选题集中",
+      "title": "批次1（作业01-06）学校平台提交确认",
+      "knowledge": "圆周运动、万有引力与航天",
       "knowledgeTags": [
-        "万有引力：变轨",
-        "多选题集中"
+        "圆周运动",
+        "万有引力与航天"
       ],
-      "answerBasis": "家教课内组织批改；周日老师发详细答案（选择题带解析）",
-      "submission": "批次1课内提交；作业07当日拍照上传平板App",
-      "notes": "需压缩/合并：批次1截止日7.25，课内前30min提交订正批次1、后60min限时做作业07；07题量偏多，计算题可留至7/26批改时段完成",
+      "answerBasis": "已批改作业对照",
+      "submission": "学校平板App提交；本系统仅标记",
+      "notes": "正式批次1截止日7.25；与作业07首做分开记录",
       "kind": "submission",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
-      "courseIntegrated": true,
+      "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
       "priority": "high",
@@ -1404,6 +1431,45 @@
         "school_submission_confirmation"
       ],
       "source": "系统搭建/物理.csv#11",
+      "deadlineDate": "2026-07-25",
+      "deadlineAt": null,
+      "deadlinePrecision": "date"
+    },
+    {
+      "id": "physics-2026-07-25-02",
+      "homeworkKey": "physics-assignment-07",
+      "date": "2026-07-25",
+      "weekday": "六",
+      "slotType": "家教课内",
+      "sourceSlotType": "家教课内",
+      "subject": "物理",
+      "title": "作业07 万有引力（课内首做）",
+      "knowledge": "万有引力：变轨；多选题集中",
+      "knowledgeTags": [
+        "万有引力：变轨",
+        "多选题集中"
+      ],
+      "answerBasis": "家教课内组织批改；周日老师发详细答案（选择题带解析）",
+      "submission": "当日每页拍照提交学校平板App；本系统仅标记",
+      "notes": "属于批次2（7.25-8.1）；题量偏多，计算题可留至7/26批改时段完成",
+      "kind": "practice",
+      "blockMinutes": 90,
+      "recommendedMinutes": 90,
+      "requiresSubmission": true,
+      "courseIntegrated": true,
+      "optional": false,
+      "uncertainty": false,
+      "priority": "standard",
+      "answerPolicy": "weekly_teacher_release",
+      "requirementLevel": "required",
+      "evidenceRequired": [
+        "first_attempt",
+        "tutor_review",
+        "correction",
+        "independent_redo",
+        "school_submission_confirmation"
+      ],
+      "source": "系统搭建/物理.csv#12",
       "deadlineDate": "2026-07-25",
       "deadlineAt": null,
       "deadlinePrecision": "date"
@@ -1427,7 +1493,7 @@
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -1438,8 +1504,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#7",
       "deadlineDate": "2026-07-26",
@@ -1461,12 +1526,12 @@
         "错因归类复习"
       ],
       "answerBasis": "自查自纠+家长抽背",
-      "submission": "复盘记录上传",
+      "submission": "复盘记录提交学校指定平台；本系统仅标记",
       "notes": "周日轻任务日 控制在40min内 不占正式时段",
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -1477,13 +1542,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#12",
-      "deadlineDate": "2026-08-01",
-      "deadlineAt": "2026-08-01T21:00:00+08:00",
-      "deadlinePrecision": "time"
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "math-2026-07-26-01",
@@ -1499,7 +1563,7 @@
         "批次1（向量+四心）综合"
       ],
       "answerBasis": "PAD答案+已批改作业对照",
-      "submission": "PAD提交图片+红笔改后回传；数学群21:00前提交",
+      "submission": "PAD提交图片+红笔改后回传；数学群21:00前提交；本系统仅标记",
       "notes": "截止日只留提交/订正；内容已于7/25全部完成",
       "kind": "submission",
       "blockMinutes": 90,
@@ -1514,7 +1578,7 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#7",
+      "source": "系统搭建/数学.csv#8",
       "deadlineDate": "2026-07-26",
       "deadlineAt": "2026-07-26T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -1533,7 +1597,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "周日；每日一练为固定任务不可顺延",
       "kind": "practice",
       "blockMinutes": 90,
@@ -1571,9 +1635,9 @@
         "万有引力与航天"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "红笔批改后二次上传平板App",
+      "submission": "红笔批改后二次上传平板App；本系统仅标记",
       "notes": "周日轻任务；含批次1（01-06）全部订正收尾",
-      "kind": "practice",
+      "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -1590,8 +1654,8 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#12",
-      "deadlineDate": "2026-08-01",
+      "source": "系统搭建/物理.csv#13",
+      "deadlineDate": "2026-07-26",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -1607,7 +1671,7 @@
       "knowledge": "—",
       "knowledgeTags": [],
       "answerBasis": "—",
-      "submission": "系统标记+拍照上传批改痕迹",
+      "submission": "学校指定平台拍照提交批改痕迹；本系统仅标记",
       "notes": "截止日只提交/订正，不排新任务",
       "kind": "submission",
       "blockMinutes": 90,
@@ -1643,12 +1707,12 @@
         "默写《答司马谏议书》《永遇乐》"
       ],
       "answerBasis": "同套一",
-      "submission": "系统标记+拍照上传",
+      "submission": "学校指定平台拍照提交；本系统仅标记",
       "notes": "无课日",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -1659,8 +1723,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#13",
       "deadlineDate": "2026-08-01",
@@ -1682,7 +1745,7 @@
         "模的几何意义与轨迹最值"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，家长/家教晚间红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "重点盯：第19-25题",
       "kind": "practice",
       "blockMinutes": 90,
@@ -1701,7 +1764,7 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#8",
+      "source": "系统搭建/数学.csv#9",
       "deadlineDate": "2026-08-02",
       "deadlineAt": "2026-08-02T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -1720,7 +1783,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -1746,7 +1809,7 @@
     },
     {
       "id": "physics-2026-07-27-01",
-      "homeworkKey": "physics-2026-07-27-01",
+      "homeworkKey": "physics-assignment-08",
       "date": "2026-07-27",
       "weekday": "一",
       "slotType": "自学",
@@ -1758,9 +1821,9 @@
         "机械能：机车启动"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -1777,14 +1840,14 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#13",
-      "deadlineDate": "2026-08-01",
+      "source": "系统搭建/物理.csv#14",
+      "deadlineDate": "2026-07-27",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-27-01",
-      "homeworkKey": "chemistry-2026-07-27-01",
+      "homeworkKey": "chemistry-assignment-六",
       "date": "2026-07-27",
       "weekday": "一",
       "slotType": "自学",
@@ -1796,12 +1859,12 @@
         "必修一2.3 阿伏伽德罗常数陷阱"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "当天批改后拍照上传系统",
+      "submission": "当天批改后拍照提交学校指定平台；本系统仅标记",
       "notes": "题量偏少，余量做错题重做",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -1812,8 +1875,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#9",
       "deadlineDate": "2026-08-02",
@@ -1836,9 +1898,9 @@
         "致死效应"
       ],
       "answerBasis": "PDF第44-47页答案（选择给字母、无解析）",
-      "submission": "美师优课提交选项（7/28早8:00截止）",
+      "submission": "美师优课提交选项（7/28早8:00截止）；本系统仅标记",
       "notes": "官方美师优课节奏固定",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -1875,12 +1937,12 @@
         "错题归因"
       ],
       "answerBasis": "同上",
-      "submission": "系统标记+拍照上传",
+      "submission": "学校指定平台拍照提交；本系统仅标记",
       "notes": "无课日",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -1891,8 +1953,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#14",
       "deadlineDate": "2026-08-01",
@@ -1913,7 +1974,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -1939,7 +2000,7 @@
     },
     {
       "id": "physics-2026-07-28-01",
-      "homeworkKey": "physics-2026-07-28-01",
+      "homeworkKey": "physics-assignment-09",
       "date": "2026-07-28",
       "weekday": "二",
       "slotType": "自学",
@@ -1951,9 +2012,9 @@
         "机械能：动能定理"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -1970,14 +2031,14 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#14",
-      "deadlineDate": "2026-08-01",
+      "source": "系统搭建/物理.csv#15",
+      "deadlineDate": "2026-07-28",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-28-01",
-      "homeworkKey": "chemistry-2026-07-28-01",
+      "homeworkKey": "chemistry-assignment-七",
       "date": "2026-07-28",
       "weekday": "二",
       "slotType": "自学",
@@ -1989,12 +2050,12 @@
         "必修一3.1 Fe2+/Fe3+转化"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "当天批改后拍照上传系统",
+      "submission": "当天批改后拍照提交学校指定平台；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -2005,8 +2066,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#10",
       "deadlineDate": "2026-08-02",
@@ -2029,9 +2089,9 @@
         "实验设计"
       ],
       "answerBasis": "PDF第44-47页答案（非选给要点）",
-      "submission": "美师优课拍照提交图片（7/29早8:00截止）",
+      "submission": "美师优课拍照提交图片（7/29早8:00截止）；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -2069,12 +2129,12 @@
         "诗社缘起"
       ],
       "answerBasis": "家教抽查批注",
-      "submission": "阅读批注拍照上传",
+      "submission": "阅读批注拍照提交学校指定平台；本系统仅标记",
       "notes": "无课日",
       "kind": "reading",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -2085,12 +2145,11 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#15",
-      "deadlineDate": "2026-08-01",
-      "deadlineAt": "2026-08-01T21:00:00+08:00",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": "2026-08-08T21:00:00+08:00",
       "deadlinePrecision": "time"
     },
     {
@@ -2109,7 +2168,7 @@
         "外接球"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，家长/家教晚间红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -2128,7 +2187,7 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#9",
+      "source": "系统搭建/数学.csv#10",
       "deadlineDate": "2026-08-02",
       "deadlineAt": "2026-08-02T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -2147,7 +2206,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -2173,7 +2232,7 @@
     },
     {
       "id": "physics-2026-07-29-01",
-      "homeworkKey": "physics-2026-07-29-01",
+      "homeworkKey": "physics-assignment-10",
       "date": "2026-07-29",
       "weekday": "三",
       "slotType": "自学",
@@ -2185,9 +2244,9 @@
         "机械能：动能定理多过程"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "题量偏多（全书难点）：1.5h满负荷；选择限时、计算题可留至批改时段",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -2204,14 +2263,14 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#15",
-      "deadlineDate": "2026-08-01",
+      "source": "系统搭建/物理.csv#16",
+      "deadlineDate": "2026-07-29",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-29-01",
-      "homeworkKey": "chemistry-2026-07-29-01",
+      "homeworkKey": "chemistry-assignment-八",
       "date": "2026-07-29",
       "weekday": "三",
       "slotType": "自学",
@@ -2223,12 +2282,12 @@
         "必修一4 位-构-性推断"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "当天批改后拍照上传系统",
+      "submission": "当天批改后拍照提交学校指定平台；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -2239,8 +2298,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#11",
       "deadlineDate": "2026-08-02",
@@ -2263,9 +2321,9 @@
         "家系图概率"
       ],
       "answerBasis": "PDF第44-47页答案",
-      "submission": "美师优课提交选项（7/30早8:00截止）",
+      "submission": "美师优课提交选项（7/30早8:00截止）；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -2301,12 +2359,12 @@
         "31-40回情节与人物简答"
       ],
       "answerBasis": "无答案 家教依原著批改",
-      "submission": "系统标记+拍照上传",
+      "submission": "学校指定平台拍照提交；本系统仅标记",
       "notes": "无课日",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -2317,12 +2375,11 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#16",
-      "deadlineDate": "2026-08-01",
-      "deadlineAt": "2026-08-01T21:00:00+08:00",
+      "deadlineDate": "2026-08-08",
+      "deadlineAt": "2026-08-08T21:00:00+08:00",
       "deadlinePrecision": "time"
     },
     {
@@ -2339,7 +2396,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -2365,7 +2422,7 @@
     },
     {
       "id": "physics-2026-07-30-01",
-      "homeworkKey": "physics-2026-07-30-01",
+      "homeworkKey": "physics-assignment-11",
       "date": "2026-07-30",
       "weekday": "四",
       "slotType": "自学",
@@ -2378,9 +2435,9 @@
         "纸带实验"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "题量偏多（全书难点）；多选题集中，单独统计多选得分率",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -2397,14 +2454,14 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#16",
-      "deadlineDate": "2026-08-01",
+      "source": "系统搭建/物理.csv#17",
+      "deadlineDate": "2026-07-30",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-30-01",
-      "homeworkKey": "chemistry-2026-07-30-01",
+      "homeworkKey": "chemistry-assignment-九",
       "date": "2026-07-30",
       "weekday": "四",
       "slotType": "自学",
@@ -2416,12 +2473,12 @@
         "必修二5 化学方程式量大【重点盯】"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "当天批改后拍照上传系统",
+      "submission": "当天批改后拍照提交学校指定平台；本系统仅标记",
       "notes": "方程式默写量大，做前复习延长至15min",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -2432,8 +2489,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#12",
       "deadlineDate": "2026-08-02",
@@ -2455,9 +2511,9 @@
         "家系图概率计算"
       ],
       "answerBasis": "PDF第44-47页答案（非选给要点）",
-      "submission": "美师优课拍照提交图片（7/31早8:00截止）",
+      "submission": "美师优课拍照提交图片（7/31早8:00截止）；本系统仅标记",
       "notes": "非选强度高注意控时",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -2491,12 +2547,12 @@
       "knowledge": "—",
       "knowledgeTags": [],
       "answerBasis": "—",
-      "submission": "视情况上传",
+      "submission": "如学校要求则提交学校指定平台；本系统仅标记",
       "notes": "无课日",
-      "kind": "practice",
+      "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -2507,13 +2563,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#17",
-      "deadlineDate": "2026-08-01",
-      "deadlineAt": "2026-08-01T21:00:00+08:00",
-      "deadlinePrecision": "time"
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "math-2026-07-31-01",
@@ -2531,7 +2586,7 @@
         "截面"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，家长/家教晚间红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -2550,7 +2605,7 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#10",
+      "source": "系统搭建/数学.csv#11",
       "deadlineDate": "2026-08-02",
       "deadlineAt": "2026-08-02T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -2569,7 +2624,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -2595,7 +2650,7 @@
     },
     {
       "id": "physics-2026-07-31-01",
-      "homeworkKey": "physics-2026-07-31-01",
+      "homeworkKey": "physics-assignment-12",
       "date": "2026-07-31",
       "weekday": "五",
       "slotType": "自学",
@@ -2607,9 +2662,9 @@
         "机械能：综合"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -2626,14 +2681,14 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#17",
-      "deadlineDate": "2026-08-01",
+      "source": "系统搭建/物理.csv#18",
+      "deadlineDate": "2026-07-31",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-07-31-01",
-      "homeworkKey": "chemistry-2026-07-31-01",
+      "homeworkKey": "chemistry-assignment-十",
       "date": "2026-07-31",
       "weekday": "五",
       "slotType": "自学",
@@ -2645,12 +2700,12 @@
         "必修二5.3 高纯硅流程"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "当天批改后拍照上传系统",
+      "submission": "当天批改后拍照提交学校指定平台；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -2661,8 +2716,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#13",
       "deadlineDate": "2026-08-02",
@@ -2685,9 +2739,9 @@
         "¹⁵N离心推断"
       ],
       "answerBasis": "PDF第44-47页答案",
-      "submission": "美师优课提交选项（8/1早8:00截止）",
+      "submission": "美师优课提交选项（8/1早8:00截止）；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -2711,18 +2765,18 @@
     },
     {
       "id": "chinese-2026-08-01-01",
-      "homeworkKey": "chinese-2026-08-01-01",
+      "homeworkKey": "chinese-2026-08-01-01-batch",
       "date": "2026-08-01",
       "weekday": "六",
       "slotType": "考背自主单元",
       "sourceSlotType": "自学",
       "subject": "语文",
-      "title": "套三+红楼31-40回 平板提交（21:00前）+答案核对",
+      "title": "套三+红楼21-30回 平板提交（21:00前）+答案核对",
       "knowledge": "—",
       "knowledgeTags": [],
       "answerBasis": "提交后平台解锁答案",
-      "submission": "平板提交（21:00前）",
-      "notes": "截止日只提交",
+      "submission": "学校平板提交（21:00前）；本系统仅标记",
+      "notes": "正式第三批截止日只提交",
       "kind": "submission",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
@@ -2755,7 +2809,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -2794,7 +2848,7 @@
         "机械能"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "批次2打包提交平板App",
+      "submission": "批次2打包提交平板App；本系统仅标记",
       "notes": "截止日8.1只提交/订正，不排新作业；内容已于7/30前全部完成",
       "kind": "submission",
       "blockMinutes": 90,
@@ -2809,7 +2863,7 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#18",
+      "source": "系统搭建/物理.csv#19",
       "deadlineDate": "2026-08-01",
       "deadlineAt": null,
       "deadlinePrecision": "date"
@@ -2834,7 +2888,7 @@
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -2845,8 +2899,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#14",
       "deadlineDate": "2026-08-02",
@@ -2868,9 +2921,9 @@
         "¹⁵N离心推断"
       ],
       "answerBasis": "PDF第44-47页答案（非选给要点）",
-      "submission": "美师优课拍照提交图片（8/2早8:00截止）",
+      "submission": "美师优课拍照提交图片（8/2早8:00截止）；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -2906,12 +2959,12 @@
         "错因归类复习"
       ],
       "answerBasis": "自查自纠+家长抽背",
-      "submission": "复盘记录上传",
+      "submission": "复盘记录提交学校指定平台；本系统仅标记",
       "notes": "周日轻任务日 40min内",
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -2922,13 +2975,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#19",
-      "deadlineDate": "2026-08-08",
-      "deadlineAt": "2026-08-08T21:00:00+08:00",
-      "deadlinePrecision": "time"
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "math-2026-08-02-01",
@@ -2944,7 +2996,7 @@
         "批次2（复数+立体几何）综合"
       ],
       "answerBasis": "PAD答案+已批改作业对照",
-      "submission": "PAD提交图片+红笔改后回传；数学群21:00前提交",
+      "submission": "PAD提交图片+红笔改后回传；数学群21:00前提交；本系统仅标记",
       "notes": "截止日只留提交/订正；内容已于7/31全部完成",
       "kind": "submission",
       "blockMinutes": 90,
@@ -2959,7 +3011,7 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#11",
+      "source": "系统搭建/数学.csv#12",
       "deadlineDate": "2026-08-02",
       "deadlineAt": "2026-08-02T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -2978,7 +3030,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "周日；每日一练为固定任务",
       "kind": "practice",
       "blockMinutes": 90,
@@ -3016,9 +3068,9 @@
         "机械能"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "红笔批改后二次上传平板App",
+      "submission": "红笔批改后二次上传平板App；本系统仅标记",
       "notes": "周日轻任务",
-      "kind": "practice",
+      "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -3035,8 +3087,8 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#19",
-      "deadlineDate": "2026-08-08",
+      "source": "系统搭建/物理.csv#20",
+      "deadlineDate": "2026-08-02",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -3052,7 +3104,7 @@
       "knowledge": "—",
       "knowledgeTags": [],
       "answerBasis": "—",
-      "submission": "系统标记+拍照上传批改痕迹",
+      "submission": "学校指定平台拍照提交批改痕迹；本系统仅标记",
       "notes": "截止日只提交/订正，不排新任务",
       "kind": "submission",
       "blockMinutes": 90,
@@ -3087,12 +3139,12 @@
         "减数分裂与伴性遗传错题复盘"
       ],
       "answerBasis": "PDF第44-47页答案+填空答案老师发",
-      "submission": "填空拍照留存；错题记录在系统标记",
+      "submission": "填空拍照留存；本系统记录错题完成；本系统仅标记",
       "notes": "周日轻任务（错题复盘类）",
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -3103,13 +3155,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/生物俄语.csv#21",
-      "deadlineDate": "2026-08-16",
-      "deadlineAt": "2026-08-16T08:00:00+08:00",
-      "deadlinePrecision": "time"
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chinese-2026-08-03-01",
@@ -3128,12 +3179,12 @@
         "默写《阿房宫赋》《登岳阳楼》《念奴娇·过洞庭》"
       ],
       "answerBasis": "同套一",
-      "submission": "系统标记+拍照上传",
+      "submission": "学校指定平台拍照提交；本系统仅标记",
       "notes": "无课日",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -3144,8 +3195,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#20",
       "deadlineDate": "2026-08-08",
@@ -3168,7 +3218,7 @@
         "截面作图"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，家长/家教晚间红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "重点盯：解答题",
       "kind": "practice",
       "blockMinutes": 90,
@@ -3187,7 +3237,7 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#12",
+      "source": "系统搭建/数学.csv#13",
       "deadlineDate": "2026-08-09",
       "deadlineAt": "2026-08-09T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -3206,7 +3256,7 @@
         "俄语强基：变格/变位基础"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "强基阶段最后一天",
       "kind": "practice",
       "blockMinutes": 90,
@@ -3232,7 +3282,7 @@
     },
     {
       "id": "physics-2026-08-03-01",
-      "homeworkKey": "physics-2026-08-03-01",
+      "homeworkKey": "physics-assignment-13-14",
       "date": "2026-08-03",
       "weekday": "一",
       "slotType": "自学",
@@ -3245,7 +3295,7 @@
         "守恒条件"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "两份题量均偏少，合并为1个1.5h时段：各限时约35min做题+20min批改",
       "kind": "practice",
       "blockMinutes": 90,
@@ -3264,14 +3314,14 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#20",
-      "deadlineDate": "2026-08-08",
+      "source": "系统搭建/物理.csv#21",
+      "deadlineDate": "2026-08-03",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-03-01",
-      "homeworkKey": "chemistry-2026-08-03-01",
+      "homeworkKey": "chemistry-assignment-十一",
       "date": "2026-08-03",
       "weekday": "一",
       "slotType": "自学",
@@ -3283,12 +3333,12 @@
         "必修二6.1 原电池电极反应式【重点盯】"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "当天批改后拍照上传系统",
+      "submission": "当天批改后拍照提交学校指定平台；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -3299,8 +3349,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#16",
       "deadlineDate": "2026-08-09",
@@ -3323,9 +3372,9 @@
         "表观遗传"
       ],
       "answerBasis": "PDF第44-47页答案",
-      "submission": "美师优课提交选项（8/4早8:00截止）",
+      "submission": "美师优课提交选项（8/4早8:00截止）；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -3361,12 +3410,12 @@
         "二元思辨材料作文"
       ],
       "answerBasis": "同上",
-      "submission": "系统标记+拍照上传",
+      "submission": "学校指定平台拍照提交；本系统仅标记",
       "notes": "无课日",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -3377,8 +3426,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#21",
       "deadlineDate": "2026-08-08",
@@ -3399,7 +3447,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "进入巩固提升阶段",
       "kind": "practice",
       "blockMinutes": 90,
@@ -3425,7 +3473,7 @@
     },
     {
       "id": "physics-2026-08-04-01",
-      "homeworkKey": "physics-2026-08-04-01",
+      "homeworkKey": "physics-assignment-15",
       "date": "2026-08-04",
       "weekday": "二",
       "slotType": "自学",
@@ -3438,9 +3486,9 @@
         "多选题集中"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "题量偏少：余量用于重做批次2错题",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -3457,14 +3505,14 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#21",
-      "deadlineDate": "2026-08-08",
+      "source": "系统搭建/物理.csv#22",
+      "deadlineDate": "2026-08-04",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-04-01",
-      "homeworkKey": "chemistry-2026-08-04-01",
+      "homeworkKey": "chemistry-assignment-十二",
       "date": "2026-08-04",
       "weekday": "二",
       "slotType": "自学",
@@ -3477,12 +3525,12 @@
         "平衡标志"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "当天批改后拍照上传系统",
+      "submission": "当天批改后拍照提交学校指定平台；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -3493,8 +3541,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#17",
       "deadlineDate": "2026-08-09",
@@ -3516,9 +3563,9 @@
         "表观遗传"
       ],
       "answerBasis": "PDF第44-47页答案（非选给要点）",
-      "submission": "美师优课拍照提交图片（8/5早8:00截止）",
+      "submission": "美师优课拍照提交图片（8/5早8:00截止）；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -3556,12 +3603,12 @@
         "香菱学诗"
       ],
       "answerBasis": "家教抽查批注",
-      "submission": "阅读批注拍照上传",
+      "submission": "阅读批注拍照提交学校指定平台；本系统仅标记",
       "notes": "无课日",
       "kind": "reading",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -3572,12 +3619,11 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#22",
-      "deadlineDate": "2026-08-08",
-      "deadlineAt": "2026-08-08T21:00:00+08:00",
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": "2026-08-15T21:00:00+08:00",
       "deadlinePrecision": "time"
     },
     {
@@ -3596,7 +3642,7 @@
         "二面角"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，家长/家教晚间红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "重点盯：解答题",
       "kind": "practice",
       "blockMinutes": 90,
@@ -3615,7 +3661,7 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#13",
+      "source": "系统搭建/数学.csv#14",
       "deadlineDate": "2026-08-09",
       "deadlineAt": "2026-08-09T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -3634,7 +3680,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -3660,7 +3706,7 @@
     },
     {
       "id": "physics-2026-08-05-01",
-      "homeworkKey": "physics-2026-08-05-01",
+      "homeworkKey": "physics-assignment-16",
       "date": "2026-08-05",
       "weekday": "三",
       "slotType": "自学",
@@ -3672,9 +3718,9 @@
         "动量：人船模型"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "题量偏少；难度峰值，做前复习时间可增至15min",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -3691,14 +3737,14 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#22",
-      "deadlineDate": "2026-08-08",
+      "source": "系统搭建/物理.csv#23",
+      "deadlineDate": "2026-08-05",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-05-01",
-      "homeworkKey": "chemistry-2026-08-05-01",
+      "homeworkKey": "chemistry-assignment-十三",
       "date": "2026-08-05",
       "weekday": "三",
       "slotType": "自学",
@@ -3710,12 +3756,12 @@
         "必修二7.1 同分异构计数【重点盯】"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "当天批改后拍照上传系统",
+      "submission": "当天批改后拍照提交学校指定平台；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -3726,8 +3772,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#18",
       "deadlineDate": "2026-08-09",
@@ -3750,9 +3795,9 @@
         "育种"
       ],
       "answerBasis": "PDF第44-47页答案",
-      "submission": "美师优课提交选项（8/6早8:00截止）",
+      "submission": "美师优课提交选项（8/6早8:00截止）；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -3788,12 +3833,12 @@
         "41-50回简答"
       ],
       "answerBasis": "无答案 家教依原著批改",
-      "submission": "系统标记+拍照上传",
+      "submission": "学校指定平台拍照提交；本系统仅标记",
       "notes": "无课日",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -3804,12 +3849,11 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#23",
-      "deadlineDate": "2026-08-08",
-      "deadlineAt": "2026-08-08T21:00:00+08:00",
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": "2026-08-15T21:00:00+08:00",
       "deadlinePrecision": "time"
     },
     {
@@ -3826,7 +3870,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -3852,7 +3896,7 @@
     },
     {
       "id": "physics-2026-08-06-01",
-      "homeworkKey": "physics-2026-08-06-01",
+      "homeworkKey": "physics-assignment-17",
       "date": "2026-08-06",
       "weekday": "四",
       "slotType": "自学",
@@ -3864,9 +3908,9 @@
         "动量：子弹木块模型"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "题量偏少；难度峰值",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -3883,14 +3927,14 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#23",
-      "deadlineDate": "2026-08-08",
+      "source": "系统搭建/物理.csv#24",
+      "deadlineDate": "2026-08-06",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-06-01",
-      "homeworkKey": "chemistry-2026-08-06-01",
+      "homeworkKey": "chemistry-assignment-十四",
       "date": "2026-08-06",
       "weekday": "四",
       "slotType": "自学",
@@ -3902,12 +3946,12 @@
         "必修二7.2 加成反应vs取代反应"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "当天批改后拍照上传系统",
+      "submission": "当天批改后拍照提交学校指定平台；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -3918,8 +3962,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#19",
       "deadlineDate": "2026-08-09",
@@ -3941,9 +3984,9 @@
         "育种实验设计"
       ],
       "answerBasis": "PDF第44-47页答案（非选给要点、图解题对照原图）",
-      "submission": "美师优课拍照提交图片（8/7早8:00截止）",
+      "submission": "美师优课拍照提交图片（8/7早8:00截止）；本系统仅标记",
       "notes": "非选强度高注意控时",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -3977,29 +4020,28 @@
       "knowledge": "—",
       "knowledgeTags": [],
       "answerBasis": "—",
-      "submission": "视情况上传",
+      "submission": "如学校要求则提交学校指定平台；本系统仅标记",
       "notes": "无课日",
-      "kind": "practice",
+      "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
-      "optional": false,
+      "optional": true,
       "uncertainty": false,
       "priority": "standard",
       "answerPolicy": "after_school_submission",
-      "requirementLevel": "required",
+      "requirementLevel": "pending_confirmation",
       "evidenceRequired": [
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#24",
-      "deadlineDate": "2026-08-08",
-      "deadlineAt": "2026-08-08T21:00:00+08:00",
-      "deadlinePrecision": "time"
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "math-2026-08-07-01",
@@ -4016,7 +4058,7 @@
         "向量法求角与距离"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，家长/家教晚间红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -4035,7 +4077,7 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#14",
+      "source": "系统搭建/数学.csv#15",
       "deadlineDate": "2026-08-09",
       "deadlineAt": "2026-08-09T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -4054,7 +4096,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -4080,7 +4122,7 @@
     },
     {
       "id": "physics-2026-08-07-01",
-      "homeworkKey": "physics-2026-08-07-01",
+      "homeworkKey": "physics-assignment-18",
       "date": "2026-08-07",
       "weekday": "五",
       "slotType": "自学",
@@ -4092,9 +4134,9 @@
         "动量：综合应用"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "题量偏少：余量重做批次3前半错题",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -4111,14 +4153,14 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#24",
-      "deadlineDate": "2026-08-08",
+      "source": "系统搭建/物理.csv#25",
+      "deadlineDate": "2026-08-07",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-07-01",
-      "homeworkKey": "chemistry-2026-08-07-01",
+      "homeworkKey": "chemistry-assignment-十五",
       "date": "2026-08-07",
       "weekday": "五",
       "slotType": "自学",
@@ -4130,12 +4172,12 @@
         "必修二7.3 酯化反应断键机理"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "当天批改后拍照上传系统",
+      "submission": "当天批改后拍照提交学校指定平台；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -4146,8 +4188,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#20",
       "deadlineDate": "2026-08-09",
@@ -4169,9 +4210,9 @@
         "基因频率计算"
       ],
       "answerBasis": "PDF第44-47页答案",
-      "submission": "美师优课提交选项（8/8早8:00截止）",
+      "submission": "美师优课提交选项（8/8早8:00截止）；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -4195,18 +4236,18 @@
     },
     {
       "id": "chinese-2026-08-08-01",
-      "homeworkKey": "chinese-2026-08-08-01",
+      "homeworkKey": "chinese-2026-08-08-01-batch",
       "date": "2026-08-08",
       "weekday": "六",
       "slotType": "考背自主单元",
       "sourceSlotType": "自学",
       "subject": "语文",
-      "title": "套四+红楼41-50回 平板提交（21:00前）+答案核对",
+      "title": "套四+红楼31-40回 平板提交（21:00前）+答案核对",
       "knowledge": "—",
       "knowledgeTags": [],
       "answerBasis": "提交后平台解锁答案",
-      "submission": "平板提交（21:00前）",
-      "notes": "截止日只提交",
+      "submission": "学校平板提交（21:00前）；本系统仅标记",
+      "notes": "正式第四批截止日只提交",
       "kind": "submission",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
@@ -4240,7 +4281,7 @@
         "频率分布直方图"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，家长/家教晚间红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "提前启动批次4，避免8/10-8/14连排5天",
       "kind": "practice",
       "blockMinutes": 90,
@@ -4259,9 +4300,9 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#15",
-      "deadlineDate": "2026-08-09",
-      "deadlineAt": "2026-08-09T21:00:00+08:00",
+      "source": "系统搭建/数学.csv#16",
+      "deadlineDate": "2026-08-16",
+      "deadlineAt": "2026-08-16T21:00:00+08:00",
       "deadlinePrecision": "time"
     },
     {
@@ -4278,7 +4319,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -4317,7 +4358,7 @@
         "动量"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "批次3打包提交平板App",
+      "submission": "批次3打包提交平板App；本系统仅标记",
       "notes": "截止日8.8只提交/订正，不排新作业；内容已于8/5前全部完成",
       "kind": "submission",
       "blockMinutes": 90,
@@ -4332,7 +4373,7 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#25",
+      "source": "系统搭建/物理.csv#26",
       "deadlineDate": "2026-08-08",
       "deadlineAt": null,
       "deadlinePrecision": "date"
@@ -4356,7 +4397,7 @@
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -4367,8 +4408,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#21",
       "deadlineDate": "2026-08-09",
@@ -4389,9 +4429,9 @@
         "基因频率计算"
       ],
       "answerBasis": "PDF第44-47页答案（非选给要点）",
-      "submission": "美师优课拍照提交图片（8/9早8:00截止）",
+      "submission": "美师优课拍照提交图片（8/9早8:00截止）；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -4427,12 +4467,12 @@
         "错因归类复习"
       ],
       "answerBasis": "自查自纠+家长抽背",
-      "submission": "复盘记录上传",
+      "submission": "复盘记录提交学校指定平台；本系统仅标记",
       "notes": "周日轻任务日 40min内",
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -4443,13 +4483,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#26",
-      "deadlineDate": "2026-08-15",
-      "deadlineAt": "2026-08-15T21:00:00+08:00",
-      "deadlinePrecision": "time"
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "math-2026-08-09-01",
@@ -4465,7 +4504,7 @@
         "批次3（立体几何+空间向量）综合"
       ],
       "answerBasis": "PAD答案+已批改作业对照",
-      "submission": "PAD提交图片+红笔改后回传；数学群21:00前提交",
+      "submission": "PAD提交图片+红笔改后回传；数学群21:00前提交；本系统仅标记",
       "notes": "截止日只留提交/订正；内容已于8/7全部完成",
       "kind": "submission",
       "blockMinutes": 90,
@@ -4480,7 +4519,7 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#16",
+      "source": "系统搭建/数学.csv#17",
       "deadlineDate": "2026-08-09",
       "deadlineAt": "2026-08-09T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -4499,7 +4538,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "周日；每日一练为固定任务",
       "kind": "practice",
       "blockMinutes": 90,
@@ -4537,9 +4576,9 @@
         "动量"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "红笔批改后二次上传平板App",
+      "submission": "红笔批改后二次上传平板App；本系统仅标记",
       "notes": "周日轻任务",
-      "kind": "practice",
+      "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -4556,8 +4595,8 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#26",
-      "deadlineDate": "2026-08-15",
+      "source": "系统搭建/物理.csv#27",
+      "deadlineDate": "2026-08-09",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -4573,7 +4612,7 @@
       "knowledge": "—",
       "knowledgeTags": [],
       "answerBasis": "—",
-      "submission": "系统标记+拍照上传批改痕迹",
+      "submission": "学校指定平台拍照提交批改痕迹；本系统仅标记",
       "notes": "截止日只提交/订正，不排新任务",
       "kind": "submission",
       "blockMinutes": 90,
@@ -4607,12 +4646,12 @@
         "变异与进化错题复盘"
       ],
       "answerBasis": "PDF第44-47页答案+填空答案老师发",
-      "submission": "填空拍照留存；错题记录在系统标记",
+      "submission": "填空拍照留存；本系统记录错题完成；本系统仅标记",
       "notes": "周日轻任务（错题复盘类）",
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -4623,13 +4662,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/生物俄语.csv#35",
-      "deadlineDate": "2026-08-16",
-      "deadlineAt": "2026-08-16T08:00:00+08:00",
-      "deadlinePrecision": "time"
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chinese-2026-08-10-01",
@@ -4661,13 +4699,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#27",
-      "deadlineDate": null,
-      "deadlineAt": null,
-      "deadlinePrecision": "unknown"
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": "2026-08-15T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-10-01",
@@ -4684,7 +4721,7 @@
         "数字特征"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，家长/家教晚间红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -4703,7 +4740,7 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#17",
+      "source": "系统搭建/数学.csv#18",
       "deadlineDate": "2026-08-16",
       "deadlineAt": "2026-08-16T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -4722,7 +4759,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -4748,7 +4785,7 @@
     },
     {
       "id": "physics-2026-08-10-01",
-      "homeworkKey": "physics-2026-08-10-01",
+      "homeworkKey": "physics-assignment-19",
       "date": "2026-08-10",
       "weekday": "一",
       "slotType": "自学",
@@ -4761,9 +4798,9 @@
         "多选题集中"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -4780,8 +4817,8 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#27",
-      "deadlineDate": "2026-08-15",
+      "source": "系统搭建/物理.csv#28",
+      "deadlineDate": "2026-08-10",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -4799,9 +4836,9 @@
         "全册综合"
       ],
       "answerBasis": "PDF第44-47页答案",
-      "submission": "美师优课提交选项（8/11早8:00截止）",
+      "submission": "美师优课提交选项（8/11早8:00截止）；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -4839,7 +4876,7 @@
       "answerBasis": "学校答案+作文自评",
       "submission": "—",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": false,
@@ -4853,13 +4890,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#28",
-      "deadlineDate": null,
-      "deadlineAt": null,
-      "deadlinePrecision": "unknown"
+      "deadlineDate": "2026-08-15",
+      "deadlineAt": "2026-08-15T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-11-01",
@@ -4875,7 +4911,7 @@
         "统计综合应用"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，家长/家教晚间红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -4894,7 +4930,7 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#18",
+      "source": "系统搭建/数学.csv#19",
       "deadlineDate": "2026-08-16",
       "deadlineAt": "2026-08-16T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -4913,7 +4949,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -4939,7 +4975,7 @@
     },
     {
       "id": "physics-2026-08-11-01",
-      "homeworkKey": "physics-2026-08-11-01",
+      "homeworkKey": "physics-assignment-20",
       "date": "2026-08-11",
       "weekday": "二",
       "slotType": "自学",
@@ -4951,9 +4987,9 @@
         "静电场：库仑平衡"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "题量偏多：1.5h满负荷；选择限时、计算题可留至批改时段",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -4970,8 +5006,8 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#28",
-      "deadlineDate": "2026-08-15",
+      "source": "系统搭建/物理.csv#29",
+      "deadlineDate": "2026-08-11",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -4989,9 +5025,9 @@
         "全册综合+错题回炉"
       ],
       "answerBasis": "PDF第44-47页答案（非选给要点）",
-      "submission": "美师优课拍照提交图片（8/12早8:00截止）",
+      "submission": "美师优课拍照提交图片（8/12早8:00截止）；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -5043,13 +5079,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#29",
-      "deadlineDate": null,
-      "deadlineAt": null,
-      "deadlinePrecision": "unknown"
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": "2026-08-22T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-12-01",
@@ -5066,7 +5101,7 @@
         "古典概型"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，课后1.5h家教现场组织红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "当天另有物理课与考背",
       "kind": "practice",
       "blockMinutes": 90,
@@ -5085,7 +5120,7 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#19",
+      "source": "系统搭建/数学.csv#20",
       "deadlineDate": "2026-08-16",
       "deadlineAt": "2026-08-16T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -5104,7 +5139,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -5130,7 +5165,7 @@
     },
     {
       "id": "physics-2026-08-12-01",
-      "homeworkKey": "physics-2026-08-12-01",
+      "homeworkKey": "physics-assignment-21",
       "date": "2026-08-12",
       "weekday": "三",
       "slotType": "家教课内",
@@ -5142,7 +5177,7 @@
         "静电场：场强叠加"
       ],
       "answerBasis": "家教课内组织批改；周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "题量偏多：课内1.5h满负荷；当天另有数学课与考背，注意孩子体力分配",
       "kind": "practice",
       "blockMinutes": 90,
@@ -5161,8 +5196,8 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#29",
-      "deadlineDate": "2026-08-15",
+      "source": "系统搭建/物理.csv#30",
+      "deadlineDate": "2026-08-12",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -5180,9 +5215,9 @@
         "全册综合"
       ],
       "answerBasis": "PDF第44-47页答案",
-      "submission": "美师优课提交选项（8/13早8:00截止）",
+      "submission": "美师优课提交选项（8/13早8:00截止）；本系统仅标记",
       "notes": "当日另有考背安排注意协调",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -5234,13 +5269,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#30",
-      "deadlineDate": null,
-      "deadlineAt": null,
-      "deadlinePrecision": "unknown"
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": "2026-08-22T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-13-01",
@@ -5256,7 +5290,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "俄语家教课日",
       "kind": "practice",
       "blockMinutes": 90,
@@ -5308,17 +5342,16 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/物理.csv#30",
+      "source": "系统搭建/物理.csv#31",
       "deadlineDate": null,
       "deadlineAt": null,
       "deadlinePrecision": "unknown"
     },
     {
       "id": "chemistry-2026-08-13-01",
-      "homeworkKey": "chemistry-2026-08-13-01",
+      "homeworkKey": "chemistry-assignment-十六",
       "date": "2026-08-13",
       "weekday": "四",
       "slotType": "家教课内",
@@ -5330,12 +5363,12 @@
         "必修二7.4 糖的检验"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "家教现场组织批改并上传",
+      "submission": "家教现场组织批改并上传；本系统仅标记",
       "notes": "题量偏少，余量做错题重做",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": false,
@@ -5346,8 +5379,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#23",
       "deadlineDate": "2026-08-16",
@@ -5368,9 +5400,9 @@
         "全册综合"
       ],
       "answerBasis": "PDF第44-47页答案（非选给要点）",
-      "submission": "美师优课拍照提交图片（8/14早8:00截止）",
+      "submission": "美师优课拍照提交图片（8/14早8:00截止）；本系统仅标记",
       "notes": "生物家教课日课内完成",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -5406,12 +5438,12 @@
         "红楼51-70"
       ],
       "answerBasis": "参考答案红笔批改",
-      "submission": "随8/15批次提交",
+      "submission": "随8/22正式第六批在学校平台提交；本系统仅标记",
       "notes": "考背时段",
-      "kind": "reading",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": false,
@@ -5422,12 +5454,11 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#31",
-      "deadlineDate": "2026-08-15",
-      "deadlineAt": "2026-08-15T21:00:00+08:00",
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": "2026-08-22T21:00:00+08:00",
       "deadlinePrecision": "time"
     },
     {
@@ -5445,7 +5476,7 @@
         "系统可靠性"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，课后1.5h家教现场组织红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "当天另有物理课与考背",
       "kind": "practice",
       "blockMinutes": 90,
@@ -5464,7 +5495,7 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#20",
+      "source": "系统搭建/数学.csv#21",
       "deadlineDate": "2026-08-16",
       "deadlineAt": "2026-08-16T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -5483,7 +5514,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
@@ -5509,7 +5540,7 @@
     },
     {
       "id": "physics-2026-08-14-01",
-      "homeworkKey": "physics-2026-08-14-01",
+      "homeworkKey": "physics-assignment-22",
       "date": "2026-08-14",
       "weekday": "五",
       "slotType": "家教课内",
@@ -5522,7 +5553,7 @@
         "多选题集中"
       ],
       "answerBasis": "家教课内组织批改；周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "当天另有数学课与考背",
       "kind": "practice",
       "blockMinutes": 90,
@@ -5541,8 +5572,8 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#31",
-      "deadlineDate": "2026-08-15",
+      "source": "系统搭建/物理.csv#32",
+      "deadlineDate": "2026-08-14",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -5560,9 +5591,9 @@
         "全册综合"
       ],
       "answerBasis": "PDF第44-47页答案",
-      "submission": "美师优课提交选项（8/15早8:00截止）",
+      "submission": "美师优课提交选项（8/15早8:00截止）；本系统仅标记",
       "notes": "当日另有考背安排注意协调",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -5586,20 +5617,20 @@
     },
     {
       "id": "chinese-2026-08-15-01",
-      "homeworkKey": "chinese-2026-08-15-01",
+      "homeworkKey": "chinese-2026-08-15-01-batch",
       "date": "2026-08-15",
       "weekday": "六",
       "slotType": "考背自主单元",
       "sourceSlotType": "自学（轻任务）",
       "subject": "语文",
-      "title": "套五+红楼51-70回 平板提交（21:00前）+答案核对",
+      "title": "套五+红楼41-50回 平板提交（21:00前）+答案核对",
       "knowledge": "套卷综合",
       "knowledgeTags": [
         "套卷综合"
       ],
       "answerBasis": "学校答案",
-      "submission": "8/15 21:00 平板提交",
-      "notes": "提交节点不变",
+      "submission": "8/15 21:00在学校平板提交；本系统仅标记",
+      "notes": "正式第五批提交节点",
       "kind": "submission",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
@@ -5632,7 +5663,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "俄语家教课日",
       "kind": "practice",
       "blockMinutes": 90,
@@ -5671,7 +5702,7 @@
         "静电场"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "批次4打包提交平板App",
+      "submission": "批次4打包提交平板App；本系统仅标记",
       "notes": "截止日8.15只提交/订正；内容已于8/12前全部完成；当天化/生/俄有课，本项为约15min轻量上传",
       "kind": "submission",
       "blockMinutes": 90,
@@ -5686,14 +5717,14 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#32",
+      "source": "系统搭建/物理.csv#33",
       "deadlineDate": "2026-08-15",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
     {
       "id": "chemistry-2026-08-15-01",
-      "homeworkKey": "chemistry-2026-08-15-01",
+      "homeworkKey": "chemistry-assignment-十七",
       "date": "2026-08-15",
       "weekday": "六",
       "slotType": "家教课内",
@@ -5705,12 +5736,12 @@
         "必修二8 海水提镁/提溴流程"
       ],
       "answerBasis": "PDF第63-79页（选择带逐项解析）",
-      "submission": "家教现场组织批改并上传",
+      "submission": "家教现场组织批改并上传；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": false,
@@ -5721,8 +5752,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#24",
       "deadlineDate": "2026-08-16",
@@ -5743,9 +5773,9 @@
         "全册综合"
       ],
       "answerBasis": "PDF第44-47页答案（非选给要点）",
-      "submission": "美师优课拍照提交图片（8/16早8:00截止）",
+      "submission": "美师优课拍照提交图片（8/16早8:00截止）；本系统仅标记",
       "notes": "生物家教课日课内完成；美师优课全部截止节点",
-      "kind": "submission",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -5756,6 +5786,10 @@
       "answerPolicy": "locked_until_first_attempt",
       "requirementLevel": "required",
       "evidenceRequired": [
+        "first_attempt",
+        "tutor_review",
+        "correction",
+        "independent_redo",
         "school_submission_confirmation"
       ],
       "source": "系统搭建/生物俄语.csv#47",
@@ -5771,30 +5805,29 @@
       "slotType": "考背自主单元",
       "sourceSlotType": "自学",
       "subject": "语文",
-      "title": "暑期征文① 第1篇（审题构思+限时成文+自改）",
+      "title": "暑期征文① 第1篇【待通知】（收到题目后审题构思+限时成文+自改）",
       "knowledge": "征文写作",
       "knowledgeTags": [
         "征文写作"
       ],
       "answerBasis": "自改+家教点评",
       "submission": "—",
-      "notes": "",
+      "notes": "可选建议任务；题目、字数和截止均待学校通知，不生成强制提交节点",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": false,
       "courseIntegrated": false,
-      "optional": false,
-      "uncertainty": false,
-      "priority": "standard",
+      "optional": true,
+      "uncertainty": true,
+      "priority": "high",
       "answerPolicy": "after_school_submission",
-      "requirementLevel": "required",
+      "requirementLevel": "pending_confirmation",
       "evidenceRequired": [
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#33",
       "deadlineDate": null,
@@ -5815,7 +5848,7 @@
         "批次4（统计+概率）综合"
       ],
       "answerBasis": "PAD答案+已批改作业对照",
-      "submission": "PAD提交图片+红笔改后回传；数学群21:00前提交",
+      "submission": "PAD提交图片+红笔改后回传；数学群21:00前提交；本系统仅标记",
       "notes": "截止日只留提交/订正；内容已于8/14全部完成",
       "kind": "submission",
       "blockMinutes": 90,
@@ -5830,7 +5863,7 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#21",
+      "source": "系统搭建/数学.csv#22",
       "deadlineDate": "2026-08-16",
       "deadlineAt": "2026-08-16T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -5849,7 +5882,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "周日；每日一练为固定任务",
       "kind": "practice",
       "blockMinutes": 90,
@@ -5887,9 +5920,9 @@
         "静电场"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "红笔批改后二次上传平板App",
+      "submission": "红笔批改后二次上传平板App；本系统仅标记",
       "notes": "周日轻任务",
-      "kind": "practice",
+      "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -5906,8 +5939,8 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#33",
-      "deadlineDate": "2026-08-22",
+      "source": "系统搭建/物理.csv#34",
+      "deadlineDate": "2026-08-16",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -5923,7 +5956,7 @@
       "knowledge": "—",
       "knowledgeTags": [],
       "answerBasis": "—",
-      "submission": "系统标记+拍照上传批改痕迹",
+      "submission": "学校指定平台拍照提交批改痕迹；本系统仅标记",
       "notes": "截止日只提交/订正，不排新任务",
       "kind": "submission",
       "blockMinutes": 90,
@@ -5973,13 +6006,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#34",
-      "deadlineDate": null,
-      "deadlineAt": null,
-      "deadlinePrecision": "unknown"
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": "2026-08-22T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "russian-2026-08-17-01",
@@ -5995,7 +6027,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "俄语家教课日",
       "kind": "practice",
       "blockMinutes": 90,
@@ -6021,7 +6053,7 @@
     },
     {
       "id": "physics-2026-08-17-01",
-      "homeworkKey": "physics-2026-08-17-01",
+      "homeworkKey": "physics-assignment-23",
       "date": "2026-08-17",
       "weekday": "一",
       "slotType": "自学",
@@ -6034,9 +6066,9 @@
         "等势面"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "需压缩/合并：当天化学/生物/俄语有课（已3个课内时段），本时段为第4个——选择题当晚限时30min完成，计算题留到8/18物理课内收尾；若执行困难可整体顺延至8/21缓冲日",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -6053,8 +6085,8 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#34",
-      "deadlineDate": "2026-08-22",
+      "source": "系统搭建/物理.csv#35",
+      "deadlineDate": "2026-08-17",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -6072,14 +6104,14 @@
         "选必一第一章第1课时"
       ],
       "answerBasis": "PDF第80-82页",
-      "submission": "家教现场组织批改并上传",
+      "submission": "家教现场组织批改并上传；本系统仅标记",
       "notes": "【存疑】方案写预习选必一第二三章，书内实际为第一章+第二章第1课时，需与老师确认",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
-      "optional": false,
+      "optional": true,
       "uncertainty": true,
       "priority": "attention",
       "answerPolicy": "locked_until_first_attempt",
@@ -6088,8 +6120,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#26",
       "deadlineDate": null,
@@ -6112,7 +6143,7 @@
       "answerBasis": "家教现场讲评",
       "submission": "—",
       "notes": "考背时段",
-      "kind": "reading",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": false,
@@ -6126,13 +6157,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#35",
-      "deadlineDate": null,
-      "deadlineAt": null,
-      "deadlinePrecision": "unknown"
+      "deadlineDate": "2026-08-22",
+      "deadlineAt": "2026-08-22T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-18-01",
@@ -6150,7 +6180,7 @@
         "隔板法"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，课后1.5h家教现场组织红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "当天另有物理课与考背",
       "kind": "practice",
       "blockMinutes": 90,
@@ -6169,7 +6199,7 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#22",
+      "source": "系统搭建/数学.csv#23",
       "deadlineDate": "2026-08-25",
       "deadlineAt": "2026-08-25T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -6188,7 +6218,7 @@
         "俄语巩固：变格/变位应用"
       ],
       "answerBasis": "家长群答案（做完再给）",
-      "submission": "当天平板提交",
+      "submission": "当天平板提交；本系统仅标记",
       "notes": "俄语暑假作业全部完成",
       "kind": "practice",
       "blockMinutes": 90,
@@ -6214,7 +6244,7 @@
     },
     {
       "id": "physics-2026-08-18-01",
-      "homeworkKey": "physics-2026-08-18-01",
+      "homeworkKey": "physics-assignment-24",
       "date": "2026-08-18",
       "weekday": "二",
       "slotType": "家教课内",
@@ -6226,7 +6256,7 @@
         "静电场：U=Ed"
       ],
       "answerBasis": "家教课内组织批改；周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "题量偏多：课内1.5h满负荷；课内先收尾作业23计算题（如需）",
       "kind": "practice",
       "blockMinutes": 90,
@@ -6245,8 +6275,8 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#35",
-      "deadlineDate": "2026-08-22",
+      "source": "系统搭建/物理.csv#36",
+      "deadlineDate": "2026-08-18",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -6264,14 +6294,14 @@
         "选必一第一章第2课时"
       ],
       "answerBasis": "PDF第80-82页",
-      "submission": "当天批改后拍照上传系统",
+      "submission": "当天批改后拍照提交学校指定平台；本系统仅标记",
       "notes": "先读讲解再做题",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
-      "optional": false,
+      "optional": true,
       "uncertainty": false,
       "priority": "standard",
       "answerPolicy": "locked_until_first_attempt",
@@ -6280,8 +6310,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#27",
       "deadlineDate": null,
@@ -6318,13 +6347,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#36",
-      "deadlineDate": null,
-      "deadlineAt": null,
-      "deadlinePrecision": "unknown"
+      "deadlineDate": "2026-08-29",
+      "deadlineAt": "2026-08-29T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "math-2026-08-19-01",
@@ -6340,7 +6368,7 @@
         "全年综合（选填）"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，家长/家教晚间红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "当天有化学/生物/俄语课，建议晚间完成；全天各科合计勿超3时段",
       "kind": "practice",
       "blockMinutes": 90,
@@ -6359,14 +6387,14 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#23",
+      "source": "系统搭建/数学.csv#24",
       "deadlineDate": "2026-08-25",
       "deadlineAt": "2026-08-25T21:00:00+08:00",
       "deadlinePrecision": "time"
     },
     {
       "id": "physics-2026-08-19-01",
-      "homeworkKey": "physics-2026-08-19-01",
+      "homeworkKey": "physics-assignment-25",
       "date": "2026-08-19",
       "weekday": "三",
       "slotType": "自学",
@@ -6378,9 +6406,9 @@
         "静电场：电容器动态分析"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "需压缩/合并：当天化学/生物/俄语有课（已3个课内时段），本时段为第4个——选择题限时30min、计算题留到8/20物理课内收尾；若顺延只能去8/21（8/21最多承接1个顺延作业，优先8/17的顺延）",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -6397,8 +6425,8 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#36",
-      "deadlineDate": "2026-08-22",
+      "source": "系统搭建/物理.csv#37",
+      "deadlineDate": "2026-08-19",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -6416,14 +6444,14 @@
         "选必一第一章第3课时"
       ],
       "answerBasis": "PDF第80-82页",
-      "submission": "家教现场组织批改并上传",
+      "submission": "家教现场组织批改并上传；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
-      "optional": false,
+      "optional": true,
       "uncertainty": false,
       "priority": "standard",
       "answerPolicy": "locked_until_first_attempt",
@@ -6432,8 +6460,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#28",
       "deadlineDate": null,
@@ -6454,12 +6481,12 @@
         "古诗文背诵/红楼71-80"
       ],
       "answerBasis": "现场考查+红笔批改",
-      "submission": "随8/22批次提交",
+      "submission": "随8/29正式第七批在学校平台提交；本系统仅标记",
       "notes": "考背时段",
-      "kind": "reading",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": false,
@@ -6470,13 +6497,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#37",
-      "deadlineDate": "2026-08-22",
-      "deadlineAt": "2026-08-22T21:00:00+08:00",
-      "deadlinePrecision": "time"
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "math-2026-08-20-01",
@@ -6493,7 +6519,7 @@
         "17/18题禁用空间向量"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，课后1.5h家教现场组织红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "【需确认】学校通知8.20左右返校，请家长确认当天家教课是否照常；当天另有物理课与考背",
       "kind": "practice",
       "blockMinutes": 90,
@@ -6512,14 +6538,14 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#24",
+      "source": "系统搭建/数学.csv#25",
       "deadlineDate": "2026-08-25",
       "deadlineAt": "2026-08-25T21:00:00+08:00",
       "deadlinePrecision": "time"
     },
     {
       "id": "physics-2026-08-20-01",
-      "homeworkKey": "physics-2026-08-20-01",
+      "homeworkKey": "physics-assignment-26",
       "date": "2026-08-20",
       "weekday": "四",
       "slotType": "家教课内",
@@ -6532,7 +6558,7 @@
         "多选题集中"
       ],
       "answerBasis": "家教课内组织批改；周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "【存疑】学校通知8.20左右返校，需家长确认当天课表是否照常；课内先收尾作业25计算题（如需）",
       "kind": "practice",
       "blockMinutes": 90,
@@ -6551,8 +6577,8 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#37",
-      "deadlineDate": "2026-08-22",
+      "source": "系统搭建/物理.csv#38",
+      "deadlineDate": "2026-08-20",
       "deadlineAt": null,
       "deadlinePrecision": "date"
     },
@@ -6570,14 +6596,14 @@
         "选必一第二章第1课时"
       ],
       "answerBasis": "PDF第80-82页",
-      "submission": "当天批改后拍照上传系统",
+      "submission": "当天批改后拍照提交学校指定平台；本系统仅标记",
       "notes": "【存疑】学校通知8.20左右返校，若当天返校则本任务顺延至8/22完成",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
-      "optional": false,
+      "optional": true,
       "uncertainty": true,
       "priority": "attention",
       "answerPolicy": "locked_until_first_attempt",
@@ -6586,8 +6612,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#29",
       "deadlineDate": null,
@@ -6608,12 +6633,12 @@
         "红楼71-80"
       ],
       "answerBasis": "参考答案",
-      "submission": "随8/22批次提交",
+      "submission": "随8/29正式第七批在学校平台提交；本系统仅标记",
       "notes": "",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -6624,12 +6649,11 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/语文.csv#38",
-      "deadlineDate": "2026-08-22",
-      "deadlineAt": "2026-08-22T21:00:00+08:00",
+      "deadlineDate": "2026-08-29",
+      "deadlineAt": "2026-08-29T21:00:00+08:00",
       "deadlinePrecision": "time"
     },
     {
@@ -6644,12 +6668,12 @@
       "knowledge": "—",
       "knowledgeTags": [],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "当日每页拍照上传平板App",
+      "submission": "当日每页拍照上传平板App；本系统仅标记",
       "notes": "批次5内容已于8/20课内全部完成；当天化/生/俄有课，本日仅作缓冲",
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -6660,13 +6684,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/物理.csv#38",
-      "deadlineDate": "2026-08-22",
+      "source": "系统搭建/物理.csv#39",
+      "deadlineDate": null,
       "deadlineAt": null,
-      "deadlinePrecision": "date"
+      "deadlinePrecision": "unknown"
     },
     {
       "id": "chemistry-2026-08-21-01",
@@ -6683,14 +6706,14 @@
         "第二章第1课时"
       ],
       "answerBasis": "对照PDF第80-82页",
-      "submission": "系统标记+上传",
+      "submission": "学校指定平台提交；本系统仅标记",
       "notes": "预习窗口收尾，巩固新课错题",
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
-      "optional": false,
+      "optional": true,
       "uncertainty": false,
       "priority": "standard",
       "answerPolicy": "locked_until_first_attempt",
@@ -6699,8 +6722,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#30",
       "deadlineDate": null,
@@ -6737,8 +6759,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/生物俄语.csv#52",
       "deadlineDate": null,
@@ -6753,14 +6774,49 @@
       "slotType": "考背课内",
       "sourceSlotType": "考背课内",
       "subject": "语文",
-      "title": "考背⑤ 暑期征文② 第2篇（限时成文+现场讲评）；套六+红楼71-80 平板提交（21:00前）",
+      "title": "考背⑤ 暑期征文② 第2篇【待通知】（收到题目后限时成文+现场讲评）",
       "knowledge": "征文写作",
       "knowledgeTags": [
         "征文写作"
       ],
       "answerBasis": "家教现场讲评",
-      "submission": "8/22 21:00 平板提交",
-      "notes": "考背时段+提交日",
+      "submission": "—",
+      "notes": "可选建议任务；题目、字数和截止均待学校通知，不生成强制提交节点",
+      "kind": "practice",
+      "blockMinutes": 90,
+      "recommendedMinutes": 90,
+      "requiresSubmission": false,
+      "courseIntegrated": true,
+      "optional": true,
+      "uncertainty": true,
+      "priority": "high",
+      "answerPolicy": "after_school_submission",
+      "requirementLevel": "pending_confirmation",
+      "evidenceRequired": [
+        "first_attempt",
+        "tutor_review",
+        "correction",
+        "independent_redo"
+      ],
+      "source": "系统搭建/语文.csv#39",
+      "deadlineDate": null,
+      "deadlineAt": null,
+      "deadlinePrecision": "unknown"
+    },
+    {
+      "id": "chinese-2026-08-22-02",
+      "homeworkKey": "chinese-2026-08-22-02-batch",
+      "date": "2026-08-22",
+      "weekday": "六",
+      "slotType": "考背课内",
+      "sourceSlotType": "考背课内",
+      "subject": "语文",
+      "title": "套六+红楼51-70回 平板提交（21:00前）+答案核对",
+      "knowledge": "—",
+      "knowledgeTags": [],
+      "answerBasis": "提交后平台解锁答案",
+      "submission": "8/22 21:00在学校平板提交；本系统仅标记",
+      "notes": "正式第六批提交日",
       "kind": "submission",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
@@ -6774,7 +6830,7 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#39",
+      "source": "系统搭建/语文.csv#40",
       "deadlineDate": "2026-08-22",
       "deadlineAt": "2026-08-22T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -6793,7 +6849,7 @@
         "全年综合（选填）"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，课后1.5h家教现场组织红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "当天另有物理课与考背",
       "kind": "practice",
       "blockMinutes": 90,
@@ -6812,7 +6868,7 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#25",
+      "source": "系统搭建/数学.csv#26",
       "deadlineDate": "2026-08-25",
       "deadlineAt": "2026-08-25T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -6831,7 +6887,7 @@
         "静电场"
       ],
       "answerBasis": "家教课内组织批改；周日老师发详细答案（选择题带解析）",
-      "submission": "批次5课内打包提交平板App",
+      "submission": "批次5课内打包提交平板App；本系统仅标记",
       "notes": "截止日8.22；课内组织提交与订正，不排新作业",
       "kind": "submission",
       "blockMinutes": 90,
@@ -6846,7 +6902,7 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#39",
+      "source": "系统搭建/物理.csv#40",
       "deadlineDate": "2026-08-22",
       "deadlineAt": null,
       "deadlinePrecision": "date"
@@ -6881,10 +6937,9 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/语文.csv#40",
+      "source": "系统搭建/语文.csv#41",
       "deadlineDate": null,
       "deadlineAt": null,
       "deadlinePrecision": "unknown"
@@ -6905,12 +6960,12 @@
         "计数原理错题"
       ],
       "answerBasis": "已批改作业+PAD答案",
-      "submission": "不回传，错题本备查",
+      "submission": "不回传，错题本备查；本系统仅标记",
       "notes": "周日轻任务；为8/26复盘课做准备",
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 40,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -6921,12 +6976,11 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/数学.csv#26",
-      "deadlineDate": "2026-08-25",
-      "deadlineAt": "2026-08-25T21:00:00+08:00",
+      "source": "系统搭建/数学.csv#27",
+      "deadlineDate": "2026-08-09",
+      "deadlineAt": "2026-08-09T21:00:00+08:00",
       "deadlinePrecision": "time"
     },
     {
@@ -6943,9 +6997,9 @@
         "静电场"
       ],
       "answerBasis": "周日老师发详细答案（选择题带解析）",
-      "submission": "红笔批改后二次上传平板App",
+      "submission": "红笔批改后二次上传平板App；本系统仅标记",
       "notes": "周日轻任务；26个作业全部批改闭环",
-      "kind": "practice",
+      "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
       "requiresSubmission": true,
@@ -6962,10 +7016,10 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/物理.csv#40",
-      "deadlineDate": null,
+      "source": "系统搭建/物理.csv#41",
+      "deadlineDate": "2026-08-23",
       "deadlineAt": null,
-      "deadlinePrecision": "unknown"
+      "deadlinePrecision": "date"
     },
     {
       "id": "chinese-2026-08-24-01",
@@ -6981,12 +7035,12 @@
         "套卷综合"
       ],
       "answerBasis": "学校答案现场批改",
-      "submission": "随8/29批次提交",
+      "submission": "随8/29批次提交；本系统仅标记",
       "notes": "考背时段",
-      "kind": "reading",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": false,
@@ -6997,10 +7051,9 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/语文.csv#41",
+      "source": "系统搭建/语文.csv#42",
       "deadlineDate": "2026-08-29",
       "deadlineAt": "2026-08-29T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -7020,7 +7073,7 @@
         "解三角形压轴"
       ],
       "answerBasis": "无纸质答案；PAD提交后查看答案，课后1.5h家教现场组织红笔批改",
-      "submission": "PAD提交图片+红笔改后回传",
+      "submission": "PAD提交图片+红笔改后回传；本系统仅标记",
       "notes": "当天另有物理课与考背",
       "kind": "practice",
       "blockMinutes": 90,
@@ -7039,7 +7092,7 @@
         "independent_redo",
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#27",
+      "source": "系统搭建/数学.csv#28",
       "deadlineDate": "2026-08-25",
       "deadlineAt": "2026-08-25T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -7058,12 +7111,12 @@
         "全书高频错点"
       ],
       "answerBasis": "家教课内组织批改",
-      "submission": "拍照上传平板App",
+      "submission": "拍照上传平板App；本系统仅标记",
       "notes": "利用剩余物理课做总复习；多选题（07/11/15/19/22/26）专项重做",
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": false,
@@ -7074,10 +7127,9 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/物理.csv#41",
+      "source": "系统搭建/物理.csv#42",
       "deadlineDate": null,
       "deadlineAt": null,
       "deadlinePrecision": "unknown"
@@ -7096,12 +7148,12 @@
         "套卷综合·作文"
       ],
       "answerBasis": "学校答案",
-      "submission": "随8/29批次提交",
+      "submission": "随8/29批次提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -7112,10 +7164,9 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/语文.csv#42",
+      "source": "系统搭建/语文.csv#43",
       "deadlineDate": "2026-08-29",
       "deadlineAt": "2026-08-29T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -7134,7 +7185,7 @@
         "批次5（计数+综合复习）综合"
       ],
       "answerBasis": "PAD答案+已批改作业对照",
-      "submission": "PAD提交图片+红笔改后回传；数学群21:00前提交",
+      "submission": "PAD提交图片+红笔改后回传；数学群21:00前提交；本系统仅标记",
       "notes": "截止日只留提交/订正；内容已于8/24全部完成；当天有化学/生物/俄语课",
       "kind": "submission",
       "blockMinutes": 90,
@@ -7149,7 +7200,7 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/数学.csv#28",
+      "source": "系统搭建/数学.csv#29",
       "deadlineDate": "2026-08-25",
       "deadlineAt": "2026-08-25T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -7168,14 +7219,14 @@
         "选必一第四章 电化学综合（12选择+4大题）"
       ],
       "answerBasis": "PDF第83-84页",
-      "submission": "家教现场组织批改并上传",
+      "submission": "家教现场组织批改并上传；本系统仅标记",
       "notes": "90分钟限时+批改约需2小时，本次时段需延长；【存疑】方案未明确归属，需与老师确认；内容为第四章电化学，建议做前由家教带读要点",
-      "kind": "review",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 120,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
-      "optional": false,
+      "optional": true,
       "uncertainty": true,
       "priority": "attention",
       "answerPolicy": "locked_until_first_attempt",
@@ -7184,8 +7235,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#31",
       "deadlineDate": null,
@@ -7222,8 +7272,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/生物俄语.csv#53",
       "deadlineDate": null,
@@ -7244,12 +7293,12 @@
         "套卷综合"
       ],
       "answerBasis": "学校答案现场批改",
-      "submission": "随8/29批次提交",
+      "submission": "随8/29批次提交；本系统仅标记",
       "notes": "考背时段",
-      "kind": "reading",
+      "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": false,
@@ -7260,10 +7309,9 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/语文.csv#43",
+      "source": "系统搭建/语文.csv#44",
       "deadlineDate": "2026-08-29",
       "deadlineAt": "2026-08-29T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -7284,12 +7332,12 @@
         "立体几何高频错题"
       ],
       "answerBasis": "错题本+PAD答案",
-      "submission": "错题重做痕迹PAD拍照回传",
+      "submission": "错题重做痕迹PAD拍照回传；本系统仅标记",
       "notes": "开学模拟考90%为作业原题，错题重做是提分关键；当天另有物理课与考背",
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": false,
@@ -7300,13 +7348,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/数学.csv#29",
-      "deadlineDate": null,
-      "deadlineAt": null,
-      "deadlinePrecision": "unknown"
+      "source": "系统搭建/数学.csv#30",
+      "deadlineDate": "2026-07-26",
+      "deadlineAt": "2026-07-26T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "physics-2026-08-26-01",
@@ -7322,12 +7369,12 @@
         "全书高频错点"
       ],
       "answerBasis": "家教课内组织批改",
-      "submission": "拍照上传平板App",
+      "submission": "拍照上传平板App；本系统仅标记",
       "notes": "【存疑】学校通知8.20左右返校但课表排到8/29，请家长与老师确认8月下旬安排",
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": true,
@@ -7338,10 +7385,9 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/物理.csv#42",
+      "source": "系统搭建/物理.csv#43",
       "deadlineDate": null,
       "deadlineAt": null,
       "deadlinePrecision": "unknown"
@@ -7360,12 +7406,12 @@
         "套卷综合·作文"
       ],
       "answerBasis": "学校答案",
-      "submission": "随8/29批次提交",
+      "submission": "随8/29批次提交；本系统仅标记",
       "notes": "",
       "kind": "practice",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": false,
       "optional": false,
       "uncertainty": false,
@@ -7376,10 +7422,9 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/语文.csv#44",
+      "source": "系统搭建/语文.csv#45",
       "deadlineDate": "2026-08-29",
       "deadlineAt": "2026-08-29T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -7398,12 +7443,12 @@
         "必修一二+选必一错题"
       ],
       "answerBasis": "按系统错题记录+PDF第63-84页",
-      "submission": "系统标记+上传",
+      "submission": "学校指定平台提交；本系统仅标记",
       "notes": "机动缓冲日：若前期任务延期用本日补上，不延期则做错题重做",
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": false,
@@ -7414,8 +7459,7 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
       "source": "系统搭建/化学.csv#32",
       "deadlineDate": null,
@@ -7452,10 +7496,9 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/语文.csv#45",
+      "source": "系统搭建/语文.csv#46",
       "deadlineDate": null,
       "deadlineAt": null,
       "deadlinePrecision": "unknown"
@@ -7476,12 +7519,12 @@
         "解三角形高频错题"
       ],
       "answerBasis": "错题本+PAD答案",
-      "submission": "错题重做痕迹PAD拍照回传",
+      "submission": "错题重做痕迹PAD拍照回传；本系统仅标记",
       "notes": "当天另有物理课与考背",
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": false,
@@ -7492,13 +7535,12 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/数学.csv#30",
-      "deadlineDate": null,
-      "deadlineAt": null,
-      "deadlinePrecision": "unknown"
+      "source": "系统搭建/数学.csv#31",
+      "deadlineDate": "2026-08-16",
+      "deadlineAt": "2026-08-16T21:00:00+08:00",
+      "deadlinePrecision": "time"
     },
     {
       "id": "physics-2026-08-28-01",
@@ -7514,12 +7556,12 @@
         "全书综合"
       ],
       "answerBasis": "家教课内组织批改",
-      "submission": "拍照上传平板App",
+      "submission": "拍照上传平板App；本系统仅标记",
       "notes": "模拟开学考节奏限时自测；【存疑】返校时间需确认",
       "kind": "review",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
-      "requiresSubmission": true,
+      "requiresSubmission": false,
       "courseIntegrated": true,
       "optional": false,
       "uncertainty": true,
@@ -7530,30 +7572,29 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/物理.csv#43",
+      "source": "系统搭建/物理.csv#44",
       "deadlineDate": null,
       "deadlineAt": null,
       "deadlinePrecision": "unknown"
     },
     {
       "id": "chinese-2026-08-29-01",
-      "homeworkKey": "chinese-2026-08-29-01",
+      "homeworkKey": "chinese-2026-08-29-01-batch",
       "date": "2026-08-29",
       "weekday": "六",
       "slotType": "考背自主单元",
       "sourceSlotType": "自学（轻任务）",
       "subject": "语文",
-      "title": "套七+套八 平板提交（21:00前）+全卷答案核对",
+      "title": "套七+套八+红楼71-80回 平板提交（21:00前）+全卷答案核对",
       "knowledge": "套卷综合",
       "knowledgeTags": [
         "套卷综合"
       ],
       "answerBasis": "学校答案",
-      "submission": "8/29 21:00 平板提交",
-      "notes": "暑期最后截止",
+      "submission": "8/29 21:00在学校平板提交；本系统仅标记",
+      "notes": "暑期正式第七批最后截止",
       "kind": "submission",
       "blockMinutes": 90,
       "recommendedMinutes": 90,
@@ -7567,7 +7608,7 @@
       "evidenceRequired": [
         "school_submission_confirmation"
       ],
-      "source": "系统搭建/语文.csv#46",
+      "source": "系统搭建/语文.csv#47",
       "deadlineDate": "2026-08-29",
       "deadlineAt": "2026-08-29T21:00:00+08:00",
       "deadlinePrecision": "time"
@@ -7602,10 +7643,9 @@
         "first_attempt",
         "tutor_review",
         "correction",
-        "independent_redo",
-        "school_submission_confirmation"
+        "independent_redo"
       ],
-      "source": "系统搭建/数学.csv#31",
+      "source": "系统搭建/数学.csv#32",
       "deadlineDate": null,
       "deadlineAt": null,
       "deadlinePrecision": "unknown"
@@ -7939,6 +7979,11 @@
       "label": "上海出行"
     },
     {
+      "date": "2026-07-30",
+      "type": "school-admin",
+      "label": "综评证书扫描件提交班主任（校/市三好、优干、优秀团员等）"
+    },
+    {
       "date": "2026-08-20",
       "type": "uncertain",
       "label": "学校通知约此时返校，需确认后段计划"
@@ -7955,6 +8000,12 @@
       "workBody": "8套综合卷（184道编号题、8篇作文）＋《红楼梦》1—80回导读与思考题",
       "answerSource": "提交对应批次后由学校平台开放",
       "splitRule": "每套至少拆现代文、古诗文与语用、作文、答案开放后订正四类动作；原著阅读进度与导读题分开记录",
+      "executionRules": [
+        "黑笔独立作答、红笔订正，不得空题、挑题或抄答案",
+        "纸质练习册与全部批改痕迹保留备查",
+        "《乡土中国》未读者补读；高一上下册背诵篇目重温，学有余力逐句笔译",
+        "两篇征文题目、字数和截止待学校通知，不生成强制节点"
+      ],
       "answerPolicy": "after_school_submission",
       "source": "暑期作业本体分析（用于规划系统）.md#语文作业分析"
     },
@@ -7963,6 +8014,12 @@
       "workBody": "15个文件、19个子卷、351道编号题",
       "answerSource": "PAD提交后开放详解或家长群答案",
       "splitRule": "作业1、2、10按子卷拆；其余按1—11题、12—末题、订正复做与上传拆；错题必须合上答案独立复做",
+      "executionRules": [
+        "先复习并在空白处整理知识点，再独立做题",
+        "PAD提交后看详解，红笔订正后回传，再合上答案独立复做",
+        "开学交纸质作业，模拟考约90%来自原题",
+        "完成核心作业后按解析几何、数列、概率顺序预习教材、例题与课后练习"
+      ],
       "answerPolicy": "after_school_submission",
       "source": "暑期作业本体分析（用于规划系统）.md#数学作业分析"
     },
@@ -7971,6 +8028,11 @@
       "workBody": "26份作业、383道编号题，部分含多问计算题",
       "answerSource": "老师按周发布详细答案",
       "splitRule": "一份作业首做最多占一个90分钟单元；17—19题或多问作业预设续做；周日集中批改、订正、独立复做再上传",
+      "executionRules": [
+        "周一至周六每日首做并逐页提交学校平板App，周日等老师答案后红笔批改再提交",
+        "禁止拍题搜答案；看答案后必须合上独立复做",
+        "保留物理专用本、目录和全部纸质批改痕迹"
+      ],
       "answerPolicy": "weekly_teacher_release",
       "source": "暑期作业本体分析（用于规划系统）.md#物理作业分析"
     },
@@ -7979,6 +8041,11 @@
       "workBody": "必刷题1—17＋选必一预习材料＋目录外电化学检测",
       "answerSource": "PDF第63—84页",
       "splitRule": "答案在首做提交前锁定；选做题分开；第45—62页在老师确认前标记待确认/拓展",
+      "executionRules": [
+        "基础知识反复看、独立刷题、错题改会",
+        "《高中化学基础知识》材料尚未提供，不能虚构页内任务",
+        "各班提交渠道按任课教师通知；纸质册保留备查"
+      ],
       "answerPolicy": "locked_until_first_attempt",
       "source": "暑期作业本体分析（用于规划系统）.md#化学作业分析"
     },
@@ -7987,6 +8054,11 @@
       "workBody": "9套测试、每套25题，共225道编号题",
       "answerSource": "PDF第44—47页",
       "splitRule": "每套拆1—20题选择单元和21—25题非选择单元；答案在首次作答提交后解锁",
+      "executionRules": [
+        "当日任务次日08:00前在美师优课提交",
+        "必修一二知识点填空建议全做；三套提升卷选做，材料未提供前只保留待确认",
+        "选必一《稳态与调节》仅通读浏览，不虚构练习"
+      ],
       "answerPolicy": "locked_until_first_attempt",
       "source": "暑期作业本体分析（用于规划系统）.md#生物作业分析"
     },
@@ -7995,18 +8067,16 @@
       "workBody": "强基训练1—15＋巩固提升1—15，每日一练",
       "answerSource": "家长群答案，家长保管、做完再给",
       "splitRule": "当前只建每日提交与批改壳；正文材料补齐后再做题目—知识点映射",
+      "executionRules": [
+        "7月20日至8月18日每日一练、当天提交，不攒堆",
+        "答案由家长保管，完成当题后再给",
+        "变格、变位结合课文句子会应用；期末不及格者补齐初中三册"
+      ],
       "answerPolicy": "guardian_held_until_attempt",
       "source": "暑期作业本体分析（用于规划系统）.md#目前无法完成题目级分析的材料"
     }
   ],
   "ontologyIssues": [
-    {
-      "id": "math-under-split",
-      "severity": "high",
-      "subject": "数学",
-      "title": "当前日期计划仍低估部分单卷负荷",
-      "detail": "本体要求作业2至少3个首做单元、作业10至少3—4个；其余单卷原则上还需拆首做两段与订正复做。系统先保留现有日期，并标记后续自动拆分。"
-    },
     {
       "id": "chinese-early-deadlines",
       "severity": "high",

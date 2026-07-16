@@ -5,26 +5,28 @@ import {
   SUBJECT_REQUIREMENTS,
   SUMMER_PLAN,
   SUMMER_TASKS,
+  currentPlanDate,
   tasksForDate,
   tasksForSubject,
 } from "../app/lib/summer-plan";
 
 describe("2026 暑期真实计划数据", () => {
-  it("完整导入五份CSV中的200条任务", () => {
-    expect(SUMMER_TASKS).toHaveLength(200);
+  it("完整导入五份CSV中的203条真实任务", () => {
+    expect(SUMMER_TASKS).toHaveLength(203);
     expect(Object.fromEntries(SUMMER_PLAN.meta.allowedSubjects.map((subject) => [subject, tasksForSubject(subject).length]))).toEqual({
-      语文: 45,
-      数学: 30,
+      语文: 46,
+      数学: 31,
       俄语: 30,
-      物理: 42,
+      物理: 43,
       化学: 31,
       生物: 22,
     });
   });
 
-  it("把173项作业本体与200个执行任务块分开计数", () => {
-    expect(new Set(SUMMER_TASKS.map((task) => task.homeworkKey)).size).toBe(173);
+  it("把175项作业本体与203个执行任务块分开计数", () => {
+    expect(new Set(SUMMER_TASKS.map((task) => task.homeworkKey)).size).toBe(175);
     expect(SUMMER_TASKS.filter((task) => task.homeworkKey === "math-assignment-1")).toHaveLength(2);
+    expect(SUMMER_TASKS.filter((task) => task.homeworkKey === "math-assignment-2")).toHaveLength(3);
     expect(SUMMER_TASKS.filter((task) => task.homeworkKey === "biology-测试一")).toHaveLength(2);
   });
 
@@ -39,9 +41,17 @@ describe("2026 暑期真实计划数据", () => {
     expect(SUMMER_TASKS.some((task) => task.recommendedMinutes === 120)).toBe(true);
   });
 
+  it("今天按上海时区动态计算并限制在暑期计划区间", () => {
+    expect(currentPlanDate(new Date("2026-07-16T15:59:59Z"), "")).toBe("2026-07-16");
+    expect(currentPlanDate(new Date("2026-07-16T16:00:00Z"), "")).toBe("2026-07-17");
+    expect(currentPlanDate(new Date("2026-01-01T00:00:00Z"), "")).toBe("2026-07-16");
+    expect(currentPlanDate(new Date("2026-12-01T00:00:00Z"), "")).toBe("2026-08-29");
+    expect(currentPlanDate(new Date("2026-07-20T00:00:00Z"), "2026-08-08")).toBe("2026-08-08");
+  });
+
   it("语文任务全部归入考背课内、自主或机动单元", () => {
     expect(tasksForSubject("语文").every((task) => task.slotType.includes("考背"))).toBe(true);
-    const courseDates = tasksForSubject("语文").filter((task) => task.slotType === "考背课内").map((task) => task.date);
+    const courseDates = [...new Set(tasksForSubject("语文").filter((task) => task.slotType === "考背课内").map((task) => task.date))];
     expect(courseDates).toEqual(["2026-08-12", "2026-08-14", "2026-08-18", "2026-08-20", "2026-08-22", "2026-08-24", "2026-08-26", "2026-08-28"]);
   });
 
@@ -58,14 +68,25 @@ describe("2026 暑期真实计划数据", () => {
 
   it("六科都有本体规则，且材料冲突不会被隐藏", () => {
     expect(SUBJECT_REQUIREMENTS).toHaveLength(6);
+    expect(SUBJECT_REQUIREMENTS.every((item) => item.executionRules.length >= 3)).toBe(true);
     expect(ONTOLOGY_ISSUES.map((item) => item.id)).toEqual(expect.arrayContaining([
-      "math-under-split",
       "chinese-early-deadlines",
       "chemistry-material-conflict",
       "missing-materials",
       "return-date-conflict",
     ]));
+    expect(ONTOLOGY_ISSUES.map((item) => item.id)).not.toContain("math-under-split");
     expect(tasksForSubject("化学").filter((task) => task.requirementLevel === "pending_confirmation")).toHaveLength(6);
+  });
+
+  it("暑期实践与行政节点不会混入学科任务", () => {
+    expect(SUMMER_PLAN.importantDates).toEqual(expect.arrayContaining([
+      expect.objectContaining({ date: "2026-07-13", type: "travel" }),
+      expect.objectContaining({ date: "2026-07-14", type: "travel" }),
+      expect.objectContaining({ date: "2026-07-30", type: "school-admin" }),
+      expect.objectContaining({ date: "2026-08-20", type: "uncertain" }),
+    ]));
+    expect(JSON.stringify(SUMMER_TASKS)).not.toContain("综评证书扫描件提交班主任");
   });
 
   it("每条任务都有知识、批改、提交和溯源字段", () => {
@@ -87,5 +108,43 @@ describe("2026 暑期真实计划数据", () => {
     expect(biologyFirst.deadlineAt).toBe("2026-07-28T08:00:00+08:00");
     expect(tasksForSubject("俄语").every((task) => task.deadlinePrecision === "date" && task.deadlineAt === null)).toBe(true);
     expect(tasksForSubject("化学").filter((task) => task.requirementLevel === "pending_confirmation").some((task) => task.deadlineDate === null)).toBe(true);
+  });
+
+  it("按正式方案锁定语文七个批次与红楼梦回目", () => {
+    expect(tasksForSubject("语文").filter((task) => task.kind === "submission").map((task) => [task.deadlineAt, task.title])).toEqual([
+      ["2026-07-18T21:00:00+08:00", "套一 平板提交（21:00前）+答案核对+错题标记"],
+      ["2026-07-25T21:00:00+08:00", "套二+红楼1-20回 平板提交（21:00前）+答案核对"],
+      ["2026-08-01T21:00:00+08:00", "套三+红楼21-30回 平板提交（21:00前）+答案核对"],
+      ["2026-08-08T21:00:00+08:00", "套四+红楼31-40回 平板提交（21:00前）+答案核对"],
+      ["2026-08-15T21:00:00+08:00", "套五+红楼41-50回 平板提交（21:00前）+答案核对"],
+      ["2026-08-22T21:00:00+08:00", "套六+红楼51-70回 平板提交（21:00前）+答案核对"],
+      ["2026-08-29T21:00:00+08:00", "套七+套八+红楼71-80回 平板提交（21:00前）+全卷答案核对"],
+    ]);
+  });
+
+  it("征文只保留待通知建议壳，不生成学校提交节点", () => {
+    const essays = tasksForSubject("语文").filter((task) => /征文[①②]/.test(task.title));
+    expect(essays).toHaveLength(2);
+    expect(essays.every((task) => task.requirementLevel === "pending_confirmation" && task.optional && task.uncertainty)).toBe(true);
+    expect(essays.every((task) => !task.requiresSubmission && task.deadlineDate === null)).toBe(true);
+  });
+
+  it("数学作业2按11、22、15题三个子卷拆分且不会误归前一批", () => {
+    const assignment2 = SUMMER_TASKS.filter((task) => task.homeworkKey === "math-assignment-2");
+    expect(assignment2.map((task) => task.title.match(/（(\d+)题/)?.[1])).toEqual(["11", "22", "15"]);
+    expect(assignment2.every((task) => task.deadlineAt === "2026-07-26T21:00:00+08:00")).toBe(true);
+    expect(SUMMER_TASKS.filter((task) => task.homeworkKey === "math-assignment-10").every((task) => task.deadlineAt === "2026-08-16T21:00:00+08:00")).toBe(true);
+  });
+
+  it("显式阶段不会把首做批改误判为复盘或提交", () => {
+    expect(tasksForSubject("俄语").every((task) => task.kind === "practice")).toBe(true);
+    expect(tasksForSubject("物理").filter((task) => /^作业\d+/.test(task.title)).every((task) => task.kind === "practice")).toBe(true);
+    const biologyLast = tasksForSubject("生物").find((task) => task.title.startsWith("综合三非选日"));
+    expect(biologyLast?.kind).toBe("practice");
+    expect(biologyLast?.deadlineAt).toBe("2026-08-16T08:00:00+08:00");
+  });
+
+  it("学校提交渠道与本系统标记边界清楚", () => {
+    expect(SUMMER_TASKS.filter((task) => task.requiresSubmission).every((task) => task.submission.includes("本系统仅标记"))).toBe(true);
   });
 });

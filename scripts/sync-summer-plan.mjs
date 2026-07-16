@@ -34,6 +34,10 @@ function requireSuccess(result, label) {
 }
 
 const catalogId = plan.meta.id;
+const existingTemplates = requireSuccess(
+  await admin.from("homework_task_templates").select("id").eq("catalog_id", catalogId),
+  "读取现有任务模板",
+);
 requireSuccess(await admin.from("plan_catalogs").upsert({
   id: catalogId,
   title: plan.meta.title,
@@ -91,6 +95,18 @@ for (let index = 0; index < templates.length; index += 100) {
   );
 }
 
+const expectedTemplateIds = new Set(templates.map((template) => template.id));
+const staleTemplateIds = existingTemplates.map((template) => template.id).filter((id) => !expectedTemplateIds.has(id));
+for (let index = 0; index < staleTemplateIds.length; index += 100) {
+  const batch = staleTemplateIds.slice(index, index + 100);
+  const used = requireSuccess(
+    await admin.from("homework_tasks").select("template_id").in("template_id", batch).limit(1),
+    "检查旧模板是否已实例化",
+  );
+  if (used.length > 0) throw new Error(`拒绝删除已实例化模板：${used[0].template_id}。请先建立计划版本迁移。`);
+  requireSuccess(await admin.from("homework_task_templates").delete().in("id", batch), "删除未实例化的旧模板");
+}
+
 const rows = requireSuccess(
   await admin.from("homework_task_templates").select("id,subject_id,planned_date").eq("catalog_id", catalogId),
   "复核任务模板",
@@ -104,4 +120,12 @@ const remoteIds = new Set(rows.map((row) => row.id));
 const missingIds = templates.filter((item) => !remoteIds.has(item.id)).map((item) => item.id);
 if (missingIds.length > 0) throw new Error(`Supabase 缺少任务：${missingIds.join("、")}`);
 
-console.log(`Supabase 暑期计划同步完成：${templates.length} 个真实任务，目录 ${catalogId}，摘要 ${sourceDigest.slice(0, 12)}。`);
+const remoteCatalog = requireSuccess(
+  await admin.from("plan_catalogs").select("version,source_digest").eq("id", catalogId).single(),
+  "复核计划目录版本",
+);
+if (remoteCatalog.version !== plan.meta.version || remoteCatalog.source_digest !== sourceDigest) {
+  throw new Error(`目录版本或摘要不一致：本地 v${plan.meta.version}/${sourceDigest.slice(0, 12)}，远端 v${remoteCatalog.version}/${String(remoteCatalog.source_digest).slice(0, 12)}`);
+}
+
+console.log(`Supabase 暑期计划同步完成：v${plan.meta.version}，${templates.length} 个真实任务，清理 ${staleTemplateIds.length} 个未实例化旧模板，目录 ${catalogId}，摘要 ${sourceDigest.slice(0, 12)}。`);

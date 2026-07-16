@@ -13,6 +13,7 @@ import {
 } from "../workspace";
 
 type MembershipRow = { family_id: string; role: Role };
+type FamilyRow = { daily_block_capacity: number };
 type StudentRow = { id: string };
 type AssignmentRow = { student_id: string; subject_id: string };
 
@@ -91,6 +92,7 @@ type HomeworkVersionSummaryRow = {
 };
 type NotificationRow = { id: number; notification_type: string; title: string; body: string; read_at: string | null; created_at: string };
 type WeeklyReportRow = { id: string; week_start: string; week_end: string; metrics: Record<string, number>; narrative: string; generated_at: string };
+type PlanVersionStatusRow = { catalog_id: string; applied_version: number; available_version: number; update_available: boolean };
 
 type ActivityRow = {
   task_id: string;
@@ -203,6 +205,8 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
   if (membershipResult.error) throw new Error(`读取家庭身份：${membershipResult.error.message}`);
   const membership = membershipResult.data as MembershipRow | null;
   if (!membership) return { tasks: [], progress: {}, overrides: {}, audit: [], userId, remoteEnabled: true };
+  const familyResult = await client.from("family_spaces").select("daily_block_capacity").eq("id", membership.family_id).single();
+  const family = requireData(familyResult, "读取家庭容量") as FamilyRow;
 
   let studentId: string | undefined;
   if (membership.role === "student") {
@@ -219,14 +223,17 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
     studentId = (result.data as StudentRow | null)?.id;
   }
 
-  if (!studentId) return { tasks: [], progress: {}, overrides: {}, audit: [], role: membership.role, userId, remoteEnabled: true };
+  if (!studentId) return { tasks: [], progress: {}, overrides: {}, audit: [], role: membership.role, userId, remoteEnabled: true, familyId: membership.family_id, dailyBlockCapacity: family.daily_block_capacity };
 
-  const [notificationResult, weeklyReportResult] = await Promise.all([
+  const [notificationResult, weeklyReportResult, planVersionResult] = await Promise.all([
     client.from("notifications").select("id,notification_type,title,body,read_at,created_at").eq("recipient_id", userId).order("created_at", { ascending: false }).limit(30),
     client.from("weekly_reports").select("id,week_start,week_end,metrics,narrative,generated_at").eq("student_id", studentId).order("week_start", { ascending: false }).limit(12),
+    client.from("student_plan_version_status").select("catalog_id,applied_version,available_version,update_available").eq("student_id", studentId).limit(1).maybeSingle(),
   ]);
   const notificationRows = requireData(notificationResult, "读取站内通知") as NotificationRow[];
   const weeklyReportRows = requireData(weeklyReportResult, "读取周报") as WeeklyReportRow[];
+  if (planVersionResult.error) throw new Error(`读取计划版本：${planVersionResult.error.message}`);
+  const planVersionRow = planVersionResult.data as PlanVersionStatusRow | null;
   let archivedHomeworks: ArchivedHomeworkSummary[] = [];
   let archivedPlanBlocks: WorkspaceTask[] = [];
   if (membership.role === "parent") {
@@ -279,10 +286,18 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
   }
   const workspaceExtras = {
     studentId,
+    familyId: membership.family_id,
+    dailyBlockCapacity: family.daily_block_capacity,
     archivedHomeworks,
     archivedPlanBlocks,
     notifications: notificationRows.map((row) => ({ id: row.id, type: row.notification_type, title: row.title, body: row.body, readAt: row.read_at ?? undefined, createdAt: row.created_at })),
     weeklyReports: weeklyReportRows.map((row) => ({ id: row.id, weekStart: row.week_start, weekEnd: row.week_end, metrics: row.metrics, narrative: row.narrative, generatedAt: row.generated_at })),
+    planVersionStatus: planVersionRow ? {
+      catalogId: planVersionRow.catalog_id,
+      appliedVersion: planVersionRow.applied_version,
+      availableVersion: planVersionRow.available_version,
+      updateAvailable: planVersionRow.update_available,
+    } : undefined,
   };
 
   const taskRows = requireData(

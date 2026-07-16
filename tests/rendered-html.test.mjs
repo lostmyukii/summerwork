@@ -29,7 +29,7 @@ test("server-renders the homework closed-loop platform", async () => {
   assert.match(html, /闭环状态/);
   assert.match(html, /学校提交/);
   assert.match(html, /真实计划已导入/);
-  assert.match(html, /200(?:<!-- -->)?条/);
+  assert.match(html, /203(?:<!-- -->)?条/);
   assert.match(html, /本体已核对/);
   assert.match(html, /作业1、2、10按子卷拆/);
   assert.match(html, /提交后解锁答案/);

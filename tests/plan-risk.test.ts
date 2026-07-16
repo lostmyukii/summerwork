@@ -24,6 +24,23 @@ describe("FR-005/FR-014 日期容量与截止风险", () => {
     expect(risks.find((risk) => risk.type === "capacity")?.detail).toContain("涉及 3 科");
   });
 
+  it("课内任务与独立作业分开计数，但仍显示当日总负荷", () => {
+    const course = task("course", "2026-07-20", "2026-07-25", "化学");
+    course.courseIntegrated = true;
+    expect(computePlanRisks([
+      task("m", "2026-07-20", "2026-07-25"),
+      task("p", "2026-07-20", "2026-07-25", "物理"),
+      course,
+    ], {}, {}, "2026-07-17").some((risk) => risk.type === "capacity")).toBe(false);
+    const risks = computePlanRisks([
+      task("m", "2026-07-20", "2026-07-25"),
+      task("p", "2026-07-20", "2026-07-25", "物理"),
+      task("b", "2026-07-20", "2026-07-25", "生物"),
+      course,
+    ], {}, {}, "2026-07-17");
+    expect(risks.find((risk) => risk.type === "capacity")?.detail).toContain("另有课内 1 块，当日共 4 块");
+  });
+
   it("计划移动到截止后会产生红色风险", () => {
     const risks = computePlanRisks([task("m", "2026-07-20", "2026-07-25")], { m: { date: "2026-07-26", reason: "课程冲突", changedAt: "", actor: "家教" } }, {}, "2026-07-17");
     expect(risks).toEqual(expect.arrayContaining([expect.objectContaining({ type: "after_deadline", severity: "high" })]));

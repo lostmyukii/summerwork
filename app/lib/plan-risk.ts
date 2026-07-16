@@ -36,16 +36,18 @@ export function computePlanRisks(
   }
 
   for (const [date, dateTasks] of byDate) {
-    if (dateTasks.length <= capacity) continue;
+    const courseTasks = dateTasks.filter((task) => task.courseIntegrated);
+    const independentTasks = dateTasks.filter((task) => !task.courseIntegrated);
+    if (independentTasks.length <= capacity) continue;
     const subjects = new Set(dateTasks.map((task) => task.subject));
     risks.push({
       id: `capacity-${date}`,
       type: "capacity",
-      severity: dateTasks.length > capacity + 1 ? "high" : "attention",
+      severity: independentTasks.length > capacity + 1 ? "high" : "attention",
       date,
       taskIds: dateTasks.map((task) => task.id),
-      title: `${date.slice(5).replace("-", "月")}日安排 ${dateTasks.length} 个任务块`,
-      detail: `家庭建议容量为 ${capacity} 块；涉及 ${subjects.size} 科，需要协调跨科负荷。`,
+      title: `${date.slice(5).replace("-", "月")}日独立作业 ${independentTasks.length} 块`,
+      detail: `另有课内 ${courseTasks.length} 块，当日共 ${dateTasks.length} 块、涉及 ${subjects.size} 科；家庭独立作业建议容量为 ${capacity} 块。`,
     });
   }
 

@@ -116,6 +116,13 @@ export type ArchivedHomeworkSummary = {
   updatedAt: string;
 };
 
+export type PlanVersionStatus = {
+  catalogId: string;
+  appliedVersion: number;
+  availableVersion: number;
+  updateAvailable: boolean;
+};
+
 export type InitialWorkspace = StoredWorkspace & {
   tasks: WorkspaceTask[];
   studentId?: string;
@@ -123,6 +130,9 @@ export type InitialWorkspace = StoredWorkspace & {
   weeklyReports?: WeeklyReportSummary[];
   archivedHomeworks?: ArchivedHomeworkSummary[];
   archivedPlanBlocks?: WorkspaceTask[];
+  planVersionStatus?: PlanVersionStatus;
+  familyId?: string;
+  dailyBlockCapacity?: number;
   role?: "parent" | "tutor" | "student";
   userId?: string;
   remoteEnabled?: boolean;

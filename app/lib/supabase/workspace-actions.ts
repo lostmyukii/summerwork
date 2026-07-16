@@ -257,6 +257,15 @@ export async function markNotificationRead(notificationId: number, read = true) 
   if (error) throw new Error(error.message);
 }
 
+export async function updateFamilyDailyCapacity(familyId: string, capacity: number) {
+  if (!Number.isInteger(capacity) || capacity < 1 || capacity > 8) throw new Error("每日容量必须是1—8个任务块");
+  const { error } = await getSupabaseBrowserClient()
+    .from("family_spaces")
+    .update({ daily_block_capacity: capacity })
+    .eq("id", familyId);
+  if (error) throw new Error(`更新家庭容量：${error.message}`);
+}
+
 export async function addSubmissionCheckpoint(task: WorkspaceTask, input: { label: string; dueDate?: string; type?: "initial" | "correction_return" | "paper_retention" | "custom" }) {
   if (!task.homeworkId) throw new Error("缺少作业标识，请刷新后重试");
   const { data, error } = await getSupabaseBrowserClient().rpc("add_submission_checkpoint", {

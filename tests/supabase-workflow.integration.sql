@@ -94,6 +94,17 @@ set role authenticated;
 select public.accept_invitation(:'student_invite_token');
 reset role;
 
+select set_config('request.jwt.claim.sub', :'parent_id', false);
+set role authenticated;
+update public.family_spaces set daily_block_capacity = 3 where id = :'family_id';
+reset role;
+select pg_temp.assert_true((select daily_block_capacity = 3 from public.family_spaces where id = :'family_id'), 'parent should adjust the family independent-work capacity');
+select set_config('request.jwt.claim.sub', :'physics_tutor_id', false);
+set role authenticated;
+update public.family_spaces set daily_block_capacity = 4 where id = :'family_id';
+reset role;
+select pg_temp.assert_true((select daily_block_capacity = 3 from public.family_spaces where id = :'family_id'), 'tutor must not change the family capacity');
+
 insert into public.plan_catalogs(id, title, version, starts_on, ends_on)
 values('integration-catalog', '作业与任务块分离测试', 1, '2026-07-16', '2026-08-29');
 insert into public.homework_task_templates(
@@ -109,6 +120,11 @@ select set_config('request.jwt.claim.sub', :'parent_id', false);
 set role authenticated;
 select pg_temp.assert_true(public.create_student_plan(:'import_student_id', 'integration-catalog') = 3, 'three templates should create three plan blocks');
 select pg_temp.assert_true((select count(*) = 2 from public.homeworks where student_id = :'import_student_id'), 'two templates with one homework key must count as one homework');
+select pg_temp.assert_true((select bool_and(catalog_version = 1) from public.homeworks where student_id = :'import_student_id'), 'plan instances must retain the catalog version applied at creation');
+reset role;
+update public.plan_catalogs set version = 2, source_digest = 'integration-v2' where id = 'integration-catalog';
+set role authenticated;
+select pg_temp.assert_true((select update_available and applied_version = 1 and available_version = 2 from public.student_plan_version_status where student_id = :'import_student_id'), 'catalog updates must be visible without silently mutating existing family instances');
 select pg_temp.assert_true((select count(distinct homework_id) = 1 and max(sequence_number) = 2 from public.homework_tasks where student_id = :'import_student_id' and template_id in ('integration-block-1', 'integration-block-2')), 'one homework should own multiple ordered blocks');
 select pg_temp.assert_true((select count(*) = 1 from public.task_knowledge_links link join public.homework_tasks task on task.id = link.task_id where task.template_id = 'integration-block-1'), 'first block should only link its own knowledge scope');
 select pg_temp.assert_true((select node.display_name = '向量' from public.task_knowledge_links link join public.homework_tasks task on task.id = link.task_id join public.knowledge_nodes node on node.id = link.knowledge_node_id where task.template_id = 'integration-block-2'), 'second block should keep a distinct knowledge scope');

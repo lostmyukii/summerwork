@@ -47,6 +47,7 @@ export type SubjectRequirement = {
   workBody: string;
   answerSource: string;
   splitRule: string;
+  executionRules: string[];
   answerPolicy: SummerTask["answerPolicy"];
   source: string;
 };
@@ -84,7 +85,6 @@ export const SUBJECT_REQUIREMENTS = SUMMER_PLAN.subjectRequirements;
 export const ONTOLOGY_ISSUES = SUMMER_PLAN.ontologyIssues;
 export const PLAN_START_DATE = SUMMER_PLAN.meta.dateRange.start;
 export const PLAN_END_DATE = SUMMER_PLAN.meta.dateRange.end;
-export const PLAN_REFERENCE_DATE = "2026-07-17";
 
 export const SUBJECT_TONES: Record<SummerSubject, string> = {
   语文: "red",
@@ -121,6 +121,18 @@ export function clampPlanDate(date: string): string {
   if (date < PLAN_START_DATE) return PLAN_START_DATE;
   if (date > PLAN_END_DATE) return PLAN_END_DATE;
   return date;
+}
+
+export function currentPlanDate(now = new Date(), override = process.env.NEXT_PUBLIC_PLAN_REFERENCE_DATE): string {
+  if (override && /^\d{4}-\d{2}-\d{2}$/.test(override)) return clampPlanDate(override);
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(now);
+  const value = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  return clampPlanDate(`${value.year}-${value.month}-${value.day}`);
 }
 
 export function weekDatesFor(date: string): string[] {
