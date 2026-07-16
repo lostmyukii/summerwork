@@ -13,7 +13,9 @@
     "test:unit": "vitest run --config vitest.config.ts",
     "test:render": "node --test tests/rendered-html.test.mjs",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "supabase:push": "node --env-file-if-exists=.env.local scripts/push-supabase.mjs",
+    "supabase:verify": "node --env-file-if-exists=.env.local scripts/verify-supabase-permissions.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.3",
@@ -34,6 +36,7 @@
     "eslint": "9.39.4",
     "eslint-config-next": "^16.2.10",
     "react-server-dom-webpack": "19.2.6",
+    "supabase": "^2.109.1",
     "tailwindcss": "4.2.1",
     "typescript": "5.9.3",
     "vinext": "0.0.50",
