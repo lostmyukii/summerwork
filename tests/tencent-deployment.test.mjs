@@ -61,12 +61,14 @@ test("Nginx templates add only the two named sites and preserve WebSocket", asyn
 });
 
 test("secrets, upstream assets and rollback boundaries are fail-closed", async () => {
-  const [example, generate, fetch, backup, restore, readme, dockerfile, composeWrapper] = await Promise.all([
+  const [example, generate, fetch, backup, restore, cron, logrotate, readme, dockerfile, composeWrapper] = await Promise.all([
     read("deploy/tencent/env.example"),
     read("deploy/tencent/scripts/generate-secrets.sh"),
     read("deploy/tencent/scripts/fetch-supabase-db-assets.sh"),
     read("deploy/tencent/scripts/backup.sh"),
     read("deploy/tencent/scripts/restore-drill.sh"),
+    read("deploy/tencent/cron/summerwork-backup"),
+    read("deploy/tencent/logrotate/summerwork-backup"),
     read("deploy/tencent/README.md"),
     read("deploy/tencent/Dockerfile"),
     read("deploy/tencent/scripts/compose.sh"),
@@ -86,6 +88,9 @@ test("secrets, upstream assets and rollback boundaries are fail-closed", async (
   assert.match(restore, /summerwork_restore_/);
   assert.match(restore, /pg_restore -U supabase_admin/);
   assert.doesNotMatch(restore, /pg_restore -U postgres/);
+  assert.match(cron, /^17 3 \* \* \* root \/srv\/summerwork\/deploy\/scripts\/backup\.sh/m);
+  assert.match(logrotate, /^\/var\/log\/summerwork-backup\.log/m);
+  assert.doesNotMatch(`${cron}\n${logrotate}`, /docker system prune|down -v|\/etc\/nginx/);
 
   const operational = `${readme}\n${backup}\n${restore}`;
   assert.doesNotMatch(operational, /docker\s+(?:system|image|volume|container)?\s*prune/i);

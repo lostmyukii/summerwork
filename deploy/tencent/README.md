@@ -104,6 +104,13 @@ sudo nginx -s reload
 
 确认演练通过后，才为备份脚本增加项目专用定时任务。备份默认保留 14 天，清理表达式只匹配专用目录内的 `summerwork-postgres-*` 文件。
 
+```bash
+sudo install -m 0644 /srv/summerwork/deploy/cron/summerwork-backup /etc/cron.d/summerwork-backup
+sudo install -m 0644 /srv/summerwork/deploy/logrotate/summerwork-backup /etc/logrotate.d/summerwork-backup
+```
+
+定时任务每天 03:17 低优先级备份，只写入项目专属备份目录和日志文件。
+
 ## 8. 单家庭正式启动
 
 公网发布后，由家长在 HTTPS 页面自行注册至少 12 位密码。管理员只把该家长邮箱写入 `public.platform_bootstrap`，不接触或保存家长密码。首个家庭认领完成后，启动门自动关闭；家教和孩子仍必须持有一次性邀请链接才能获得家庭或科目权限。
