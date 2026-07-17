@@ -5,7 +5,7 @@
 ## 当前实现
 
 - 三类真实账号、一次性邀请、按孩子与科目隔离的 RLS 权限。
-- 200 个日期任务块、173 项作业本体、6 科、23 个课程日；7 月 5 日、英语和政史地已排除，语文全部归入考背。
+- 203 个日期任务块、175 项作业本体、6 科、23 个课程日；7 月 5 日、英语和政史地已排除，语文全部归入考背。
 - 作业不可变版本、90 分钟任务块、移动/拆分/合并/追加/归档/恢复及完整变更留痕。
 - 孩子开始、暂停、完成和不会题号；家教勾选式批改、订正、独立复做与掌握确认。
 - 作业流程、知识掌握、学校提交三轨分离；所有必需提交节点确认后才闭环。
@@ -13,7 +13,7 @@
 - 站内通知、风险提示、周报、完整 JSON 导出和带 SHA-256 校验的数据库备份快照。
 - 手机与电脑响应式 iOS 风格页面；没有微信、短信、邮件或代替学校平台提交。
 
-本地权威数据与数据库工作流已完成自动验证。真实 Supabase 项目的账号、邀请、跨科权限、Realtime 和部署仍必须在填写项目凭据后执行远程验收，不能用开发预览代替。
+系统已部署到 [summerwork.ilelezhan.cn](https://summerwork.ilelezhan.cn/)，自建 API 位于 [summerwork-api.ilelezhan.cn](https://summerwork-api.ilelezhan.cn/)。截至 2026-07-17，本地发布门禁、19 份线上迁移、v2 计划同步、四账号真实密码与跨科权限回归、Realtime WebSocket、手机/桌面 HTTPS 和备份校验均已通过；合成验收数据已自动清理。
 
 ## 本地运行
 
@@ -32,9 +32,9 @@ npm run verify:local
 
 源课表验证默认读取 `/Users/yukii/Desktop/假期课表初排.xlsx`。换机器时可设置 `SUMMER_SCHEDULE_SOURCE` 指向原始文件。CI 不上传这份私人课表，因此只在本地发布门禁中做原件哈希核对。
 
-## 连接真实 Supabase
+## 连接或维护自建 Supabase
 
-1. 复制 `.env.example` 为 `.env.local`，填写项目 URL、anon key、service role key 和数据库连接 URI。
+1. 本地维护时复制 `.env.example` 为 `.env.local`，填写项目 URL、anon key、service role key 和数据库连接 URI。
 2. 应用数据库迁移：`npm run supabase:push`。
 3. 同步权威暑期计划：`npm run supabase:sync-plan`。
 4. 验证真实密码登录、一次性邀请、本科/跨科隔离、撤销即失权和清理：`npm run supabase:verify`。
@@ -46,3 +46,4 @@ npm run verify:local
 - `docs/superpowers/specs/2026-07-16-homework-closed-loop-platform-design.md`
 - `docs/superpowers/plans/2026-07-16-homework-closed-loop-platform-implementation.md`
 - `docs/release/2026-07-17-acceptance-traceability.md`
+- `docs/release/2026-07-17-role-operation-guide.md`

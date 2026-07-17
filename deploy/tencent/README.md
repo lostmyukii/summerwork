@@ -2,6 +2,14 @@
 
 本目录部署 `summerwork` 应用、PostgreSQL、Auth、REST、Realtime 和 Kong。它不复用、不停止、不更新服务器上的任何既有项目。
 
+## 当前生产快照（2026-07-17）
+
+- 应用：`https://summerwork.ilelezhan.cn`
+- API：`https://summerwork-api.ilelezhan.cn`
+- 数据库迁移：19 份
+- 计划目录：v2，203 个任务模板、175 项作业本体、6 科、23 个课程日
+- 正式家庭：尚未启用；四账号合成验收完成后已清理
+
 ## 固定边界
 
 - 公网只使用现有 Nginx 的 TCP `80/443`。
@@ -55,11 +63,15 @@ $COMPOSE ps
 ```bash
 /srv/summerwork/deploy/scripts/apply-migrations.sh
 $COMPOSE build app
-$COMPOSE up -d app
 /srv/summerwork/deploy/scripts/sync-plan.sh
+docker stop --timeout 20 summerwork_app
+docker rm summerwork_app
+$COMPOSE up -d app
 /srv/summerwork/deploy/scripts/healthcheck.sh
 /srv/summerwork/deploy/scripts/verify-workflow.sh
 ```
+
+服务器当前仍使用旧版 `docker-compose` 时，直接重建同名应用容器可能触发 Compose 与新版 Docker 的兼容问题，因此只停止并删除无状态的 `summerwork_app` 容器后再创建。数据库、Auth、REST、Realtime、Kong、命名卷及其他项目容器均不删除。不得使用 `down -v`。
 
 验收脚本使用合成家长、数学家教、物理家教和孩子账号完成邀请、跨科拒绝、学习、批改、订正、掌握、提交和撤权测试，并在结束时清理合成数据。
 
