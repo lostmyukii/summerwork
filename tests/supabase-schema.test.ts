@@ -6,6 +6,7 @@ const invitationMigration = readFileSync(new URL("../supabase/migrations/0004_pa
 const identityMigration = readFileSync(new URL("../supabase/migrations/0001_identity_and_rls.sql", import.meta.url), "utf8");
 const bootstrapMigration = readFileSync(new URL("../supabase/migrations/0017_single_family_bootstrap.sql", import.meta.url), "utf8");
 const selfHostedMigration = readFileSync(new URL("../supabase/migrations/0018_self_hosted_crypto_and_verification_cleanup.sql", import.meta.url), "utf8");
+const travelRecoveryMigration = readFileSync(new URL("../supabase/migrations/0020_travel_recovery_schedule.sql", import.meta.url), "utf8");
 const syncScript = readFileSync(new URL("../scripts/sync-summer-plan.mjs", import.meta.url), "utf8");
 
 describe("Supabase 作业闭环结构与分科权限", () => {
@@ -76,5 +77,29 @@ describe("Supabase 作业闭环结构与分科权限", () => {
     expect(selfHostedMigration).toMatch(/target_name not like '权限验收-%'/);
     expect(selfHostedMigration).toMatch(/revoke all on function public\.purge_verification_family\(uuid\) from public, anon, authenticated/);
     expect(selfHostedMigration).toMatch(/grant execute on function public\.purge_verification_family\(uuid\) to service_role/);
+  });
+
+  it("旅行补位独立保存原日期、用途、剩余量和释放状态", () => {
+    expect(travelRecoveryMigration).toContain("public.task_travel_recovery_schedules");
+    expect(travelRecoveryMigration).toContain("original_planned_date");
+    expect(travelRecoveryMigration).toContain("original_purpose");
+    expect(travelRecoveryMigration).toContain("current_purpose");
+    expect(travelRecoveryMigration).toMatch(/task_travel_recovery_status[\s\S]*completed_minutes[\s\S]*remaining_minutes[\s\S]*recovery_state/);
+    expect(travelRecoveryMigration).toMatch(/student_activity_release_travel_recovery[\s\S]*release_travel_recovery_on_completion/);
+  });
+
+  it("补位调整幂等、留痕且只能由本科家教执行", () => {
+    expect(travelRecoveryMigration).toMatch(/set_travel_recovery_schedule[\s\S]*idempotency_key[\s\S]*is_task_tutor/);
+    expect(travelRecoveryMigration).toContain("public.task_travel_recovery_events");
+    expect(travelRecoveryMigration).toMatch(/old_purpose[\s\S]*new_purpose[\s\S]*reason[\s\S]*actor_id[\s\S]*occurred_at/);
+    expect(travelRecoveryMigration).toMatch(/unique\(actor_id, idempotency_key\)/);
+    expect(travelRecoveryMigration).not.toMatch(/travel_recovery_schedule_(insert|update)_authorized/);
+  });
+
+  it("旅行补位读取遵守任务权限且学生不能直接写计划", () => {
+    expect(travelRecoveryMigration).toMatch(/travel_recovery_schedule_select_authorized[\s\S]*public\.can_access_task\(task_id\)/);
+    expect(travelRecoveryMigration).toMatch(/revoke all on table public\.task_travel_recovery_schedules from public, anon, authenticated/);
+    expect(travelRecoveryMigration).toMatch(/grant select on table public\.task_travel_recovery_schedules to authenticated/);
+    expect(travelRecoveryMigration).toMatch(/grant execute on function public\.set_travel_recovery_schedule[\s\S]*to authenticated/);
   });
 });

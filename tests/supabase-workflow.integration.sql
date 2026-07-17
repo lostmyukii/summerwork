@@ -158,8 +158,41 @@ select id as task_id from public.homework_tasks where homework_id = :'homework_i
 select id as knowledge_node_id from public.knowledge_nodes where student_id = :'student_record_id' and knowledge_key = '函数单调性' \gset
 select id as checkpoint_id from public.submission_checkpoints where homework_id = :'homework_id' and checkpoint_type = 'initial' \gset
 
+select set_config('request.jwt.claim.sub', :'math_tutor_id', false);
+set role authenticated;
+select pg_temp.assert_true(public.set_travel_recovery_schedule(
+  :'task_id', '2026-07-30', '2026-08-13', 90,
+  '旅行自主作业→返程补位', '建立旅行软任务', 0,
+  '12121212-0000-4000-8000-000000000001'
+) = 1, 'subject tutor should configure the initial travel recovery schedule');
+select pg_temp.assert_true(public.set_travel_recovery_schedule(
+  :'task_id', '2026-07-30', '2026-08-13', 90,
+  '旅行自主作业→返程补位', '建立旅行软任务', 0,
+  '12121212-0000-4000-8000-000000000001'
+) = 1, 'travel recovery configuration must be idempotent');
+select pg_temp.assert_true((select count(*) = 1 from public.task_travel_recovery_events where task_id = :'task_id'), 'idempotent retry must not duplicate recovery history');
+select pg_temp.assert_true(public.set_travel_recovery_schedule(
+  :'task_id', '2026-07-30', '2026-08-14', 90,
+  '旅行自主作业→返程补位', '返程课程容量调整', 1,
+  '12121212-0000-4000-8000-000000000002'
+) = 2, 'subject tutor should reassign the fallback with optimistic locking');
+select pg_temp.assert_true((select schedule.original_purpose = task.slot_type and schedule.fallback_date = '2026-08-14' and schedule.version = 2 from public.task_travel_recovery_schedules schedule join public.homework_tasks task on task.id = schedule.task_id where schedule.task_id = :'task_id'), 'reassignment must retain original purpose and advance the version');
+reset role;
+
+select set_config('request.jwt.claim.sub', :'physics_tutor_id', false);
+set role authenticated;
+select pg_temp.expect_error(
+  format('select public.set_travel_recovery_schedule(%L::uuid, ''2026-07-30''::date, ''2026-08-15''::date, 90, ''跨科改动'', ''越权'', 2, ''12121212-0000-4000-8000-000000000003''::uuid)', :'task_id'),
+  'subject tutor access required'
+);
+reset role;
+
 select set_config('request.jwt.claim.sub', :'student_user_id', false);
 set role authenticated;
+select pg_temp.expect_error(
+  format('update public.task_travel_recovery_schedules set fallback_date = ''2026-08-20'' where task_id = %L::uuid', :'task_id'),
+  'permission denied'
+);
 select public.record_student_task_event(:'task_id', 'started', array[]::text[], 1, 'aaaaaaaa-0000-4000-8000-000000000001');
 select pg_temp.assert_true((select stage = 'in_progress' and version = 2 from public.task_workflow_current where task_id = :'task_id'), 'start should enter in_progress');
 select public.record_student_task_event(:'task_id', 'paused', array['3','8','3'], 2, 'aaaaaaaa-0000-4000-8000-000000000002');
@@ -167,6 +200,8 @@ select pg_temp.assert_true((select stage = 'in_progress' and version = 3 from pu
 select public.record_student_task_event(:'task_id', 'started', array['3','8'], 3, 'aaaaaaaa-0000-4000-8000-000000000003');
 select public.record_student_task_event(:'task_id', 'completed', array['3','8'], 4, 'aaaaaaaa-0000-4000-8000-000000000004');
 select pg_temp.assert_true((select stage = 'awaiting_review' and version = 5 from public.task_workflow_current where task_id = :'task_id'), 'completion should await review');
+select pg_temp.assert_true((select recovery_state = 'released' and remaining_minutes = 0 and released_at is not null from public.task_travel_recovery_status where task_id = :'task_id'), 'student completion should release the reserved fallback without duplicating the task');
+select pg_temp.assert_true((select count(*) = 3 from public.task_travel_recovery_events where task_id = :'task_id'), 'configuration, reassignment and release must all remain auditable');
 select public.record_student_task_event(:'task_id', 'completed', array['3','8'], 4, 'aaaaaaaa-0000-4000-8000-000000000004');
 select pg_temp.assert_true((select count(*) = 1 from public.study_session_events where idempotency_key = 'aaaaaaaa-0000-4000-8000-000000000004'), 'student completion must be idempotent');
 reset role;
