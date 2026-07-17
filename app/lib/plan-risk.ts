@@ -1,6 +1,12 @@
 import type { PlanOverride, TaskProgress, WorkspaceTask } from "./workspace";
+import {
+  RETURN_START_DATE,
+  isDeferredTravelBacklogTask,
+  scheduledDateForTask,
+  travelTaskMeta,
+} from "./travel-schedule";
 
-export type PlanRiskType = "capacity" | "after_deadline" | "due_soon" | "overdue" | "deadline_day_work" | "uncertainty" | "missing_deadline";
+export type PlanRiskType = "capacity" | "after_deadline" | "due_soon" | "overdue" | "deadline_day_work" | "uncertainty" | "missing_deadline" | "travel_backlog" | "travel_overdue";
 
 export type PlanRisk = {
   id: string;
@@ -30,14 +36,28 @@ export function computePlanRisks(
 ): PlanRisk[] {
   const risks: PlanRisk[] = [];
   const byDate = new Map<string, WorkspaceTask[]>();
+  const deferredTravelBacklog = tasks.filter(isDeferredTravelBacklogTask);
   for (const task of tasks) {
-    const date = effectiveTaskDate(task, overrides);
+    const date = scheduledDateForTask(task, overrides, progress, referenceDate);
+    if (!date) continue;
     byDate.set(date, [...(byDate.get(date) ?? []), task]);
+  }
+
+  if (deferredTravelBacklog.length) {
+    risks.push({
+      id: "travel-backlog",
+      type: "travel_backlog",
+      severity: "high",
+      date: RETURN_START_DATE,
+      taskIds: deferredTravelBacklog.map((task) => task.id),
+      title: `旅行期 ${deferredTravelBacklog.length} 项首做待返程分配`,
+      detail: "这些任务不进入7月26日至8月12日的每日软任务；学校原截止保留，返程后按新课让位、集中补位和后续截止重新分配。",
+    });
   }
 
   for (const [date, dateTasks] of byDate) {
     const courseTasks = dateTasks.filter((task) => task.courseIntegrated);
-    const independentTasks = dateTasks.filter((task) => !task.courseIntegrated);
+    const independentTasks = dateTasks.filter((task) => !task.courseIntegrated && task.kind !== "submission");
     if (independentTasks.length <= capacity) continue;
     const subjects = new Set(dateTasks.map((task) => task.subject));
     risks.push({
@@ -52,9 +72,10 @@ export function computePlanRisks(
   }
 
   for (const task of tasks) {
-    const plannedDate = effectiveTaskDate(task, overrides);
+    const plannedDate = scheduledDateForTask(task, overrides, progress, referenceDate) ?? task.date;
     const taskProgress = progress[task.id];
     const submissionDone = !task.requiresSubmission || Boolean(taskProgress?.schoolSubmitted);
+    const travelMeta = travelTaskMeta(task, taskProgress, referenceDate);
     if (task.uncertainty) {
       risks.push({ id: `uncertainty-${task.id}`, type: "uncertainty", severity: "attention", date: plannedDate, subject: task.subject, taskIds: [task.id], title: `${task.subject}计划仍待确认`, detail: `${task.title}：${task.notes || "需要家长依据学校通知确认。"}` });
     }
@@ -62,7 +83,10 @@ export function computePlanRisks(
       if (task.requiresSubmission) risks.push({ id: `missing-deadline-${task.id}`, type: "missing_deadline", severity: "attention", date: plannedDate, subject: task.subject, taskIds: [task.id], title: `${task.title}缺少正式截止`, detail: "来源材料没有提供可核验的截止日期；系统不会自行编造，需家长确认。" });
       continue;
     }
-    if (plannedDate > task.deadlineDate) {
+    if (travelMeta?.state === "overdue_recovery") {
+      risks.push({ id: `travel-overdue-${task.id}`, type: "travel_overdue", severity: "high", date: travelMeta.fallbackDate, subject: task.subject, taskIds: [task.id], title: `${task.title}逾期待补交`, detail: `学校原截止 ${task.deadlineDate}；返程补位 ${travelMeta.fallbackDate}，剩余 ${travelMeta.remainingMinutes} 分钟。` });
+      continue;
+    } else if (plannedDate > task.deadlineDate) {
       risks.push({ id: `after-deadline-${task.id}`, type: "after_deadline", severity: "high", date: plannedDate, subject: task.subject, taskIds: [task.id], title: `${task.title}排在截止之后`, detail: `计划 ${plannedDate}，学校截止 ${task.deadlineDate}。必须调整或记录强制原因。` });
       continue;
     }

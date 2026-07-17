@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { computePlanRisks } from "../app/lib/plan-risk";
+import { SUMMER_TASKS } from "../app/lib/summer-plan";
 import type { WorkspaceTask } from "../app/lib/workspace";
 
 function task(id: string, date: string, deadlineDate: string | null, subject: WorkspaceTask["subject"] = "数学"): WorkspaceTask {
@@ -52,5 +53,26 @@ describe("FR-005/FR-014 日期容量与截止风险", () => {
     const confirmed = computePlanRisks([base], {}, { m: { runState: "completed", unknown: "", accuracy: "100%", wrongNumbers: "", errorTags: [], note: "", reviewConfirmed: true, reviewSaved: true, correctionPassed: true, redoRequired: false, redoPassed: false, masteryConfirmed: true, schoolSubmitted: true } }, "2026-07-19");
     expect(open.some((risk) => risk.type === "overdue")).toBe(true);
     expect(confirmed.some((risk) => risk.type === "overdue")).toBe(false);
+  });
+
+  it("旅行期未入选首做合并成返程积压，不制造逐日容量爆表", () => {
+    const risks = computePlanRisks(SUMMER_TASKS, {}, {}, "2026-07-17");
+    const backlog = risks.find((risk) => risk.type === "travel_backlog");
+    expect(backlog).toEqual(expect.objectContaining({
+      severity: "high",
+      date: "2026-08-13",
+      taskIds: expect.any(Array),
+    }));
+    expect(backlog?.taskIds).toHaveLength(52);
+    expect(risks.filter((risk) => risk.type === "capacity" && risk.date >= "2026-07-26" && risk.date <= "2026-08-12")).toHaveLength(0);
+  });
+
+  it("旅行软任务返程未完成时显示原截止、补位日和剩余分钟", () => {
+    const russian = SUMMER_TASKS.find((item) => item.id === "russian-2026-07-27-01");
+    expect(russian).toBeDefined();
+    const risk = russian ? computePlanRisks([russian], {}, {}, "2026-08-13").find((item) => item.type === "travel_overdue") : undefined;
+    expect(risk).toEqual(expect.objectContaining({ date: "2026-08-13", severity: "high" }));
+    expect(risk?.detail).toContain("学校原截止 2026-07-27");
+    expect(risk?.detail).toContain("剩余 90 分钟");
   });
 });

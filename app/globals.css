@@ -114,12 +114,14 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .metric-card::after { content: ""; position: absolute; right: -28px; bottom: -35px; width: 82px; height: 82px; border-radius: 50%; background: var(--system-blue-soft); }
 .metric-card.risk::after { background: var(--system-red-soft); }
 .metric-card.success::after { background: var(--system-green-soft); }
+.metric-card.travel::after { background: var(--system-mint-soft); }
 .metric-card span, .metric-card small { display: block; }
 .metric-card span { color: var(--secondary); font-size: 12px; font-weight: 650; }
 .metric-card strong { display: block; margin: 12px 0 7px; font-size: 31px; letter-spacing: -0.035em; }
 .metric-card small { color: var(--tertiary); font-size: 11px; }
 .metric-card.risk strong { color: var(--system-red); }
 .metric-card.success strong { color: var(--system-green); }
+.metric-card.travel strong { color: var(--system-mint); }
 
 .content-columns { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(290px, 0.75fr); gap: 26px; }
 .attention-list { display: grid; gap: 9px; }
@@ -371,11 +373,18 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .selected-day-summary div { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; }
 .selected-day-summary strong { font-size: 12px; }
 .selected-day-summary div span { color: var(--secondary); font-size: 9px; }
-.course-banner, .plan-alert { display: flex; align-items: center; gap: 10px; margin-top: 9px; padding: 11px 13px; border-radius: 15px; background: var(--system-blue-soft); }
+.course-banner, .plan-alert, .travel-banner, .recovery-banner { display: flex; align-items: center; gap: 10px; margin-top: 9px; padding: 11px 13px; border-radius: 15px; background: var(--system-blue-soft); }
 .plan-alert { background: var(--system-orange-soft); }
-.course-banner strong, .course-banner p, .plan-alert strong, .plan-alert p { margin: 0; }
-.course-banner strong, .plan-alert strong { display: block; font-size: 10px; }
-.course-banner p, .plan-alert p { margin-top: 2px; color: var(--secondary); font-size: 9px; line-height: 1.45; }
+.travel-banner { border: 1px solid #b8e8dc; background: linear-gradient(105deg, var(--system-mint-soft), #f7fffc); }
+.travel-banner .mini-icon { background: #ccefe6; color: var(--system-mint); }
+.recovery-banner { border: 1px solid #d8cff8; background: linear-gradient(105deg, var(--system-purple-soft), #fbfaff); }
+.recovery-banner .mini-icon { background: #ded5fb; color: var(--system-purple); }
+.pre-travel-banner { border-color: #c7ddf8; background: linear-gradient(105deg, var(--system-blue-soft), #fafdff); }
+.pre-travel-banner .mini-icon { background: #d2e7ff; color: var(--system-blue); }
+.travel-conflict { border: 1px solid #ffd0a0; }
+.course-banner strong, .course-banner p, .plan-alert strong, .plan-alert p, .travel-banner strong, .travel-banner p, .recovery-banner strong, .recovery-banner p { margin: 0; }
+.course-banner strong, .plan-alert strong, .travel-banner strong, .recovery-banner strong { display: block; font-size: 10px; }
+.course-banner p, .plan-alert p, .travel-banner p, .recovery-banner p { margin-top: 2px; color: var(--secondary); font-size: 9px; line-height: 1.45; }
 .ontology-brief { margin-top: 10px; padding: 13px 14px; border: 1px dashed #c8c8cf; border-radius: 15px; background: #fbfbfd; }
 .ontology-brief strong { font-size: 10px; }
 .ontology-brief p { margin: 5px 0; color: var(--secondary); font-size: 9px; line-height: 1.55; }
@@ -383,10 +392,18 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .real-task-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
 .real-task-card { min-width: 0; padding: 15px; border: 1px solid var(--line); border-radius: 18px; background: #fff; }
 .real-task-card.uncertain { border-color: #ffc1ba; box-shadow: inset 3px 0 0 var(--system-red); }
+.real-task-card.travel-soft { border-color: #b9e8dc; box-shadow: inset 3px 0 0 var(--system-mint); }
+.real-task-card.travel-recovery { border-color: #e2d5a9; box-shadow: inset 3px 0 0 var(--system-orange); }
+.real-task-card.travel-recovery.overdue { border-color: #ffc1ba; box-shadow: inset 3px 0 0 var(--system-red); }
 .real-task-top, .real-task-top > div, .task-policy-line { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
 .real-task-top { justify-content: space-between; }
 .real-task-top > div > span:not(.status-pill), .real-task-top > div:last-child > span:first-child { color: var(--tertiary); font-size: 8px; }
 .real-task-card h3 { margin: 12px 0 10px; font-size: 14px; line-height: 1.45; letter-spacing: -0.01em; }
+.travel-route { display: grid; grid-template-columns: auto 18px auto 1fr; align-items: center; gap: 7px; margin: -1px 0 12px; padding: 8px 9px; border-radius: 11px; background: var(--system-mint-soft); color: var(--system-mint); }
+.travel-route span { font-size: 8px; font-weight: 800; }
+.travel-route i { position: relative; height: 1px; background: currentColor; opacity: .5; }
+.travel-route i::after { content: ""; position: absolute; right: -1px; top: -2px; width: 5px; height: 5px; border-top: 1px solid currentColor; border-right: 1px solid currentColor; transform: rotate(45deg); }
+.travel-route strong { justify-self: end; font-size: 8px; }
 .task-facts { display: grid; gap: 7px; margin: 0; }
 .task-facts div { display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 8px; }
 .task-facts dt { color: var(--tertiary); font-size: 8px; font-weight: 800; }
@@ -534,6 +551,8 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
   .real-week-strip button { min-width: 43px; min-height: 64px; border-radius: 12px; }
   .real-task-list { grid-template-columns: 1fr; }
   .selected-day-summary { align-items: flex-start; }
+  .travel-route { grid-template-columns: auto 16px auto; }
+  .travel-route strong { grid-column: 1 / -1; justify-self: start; }
   .task-facts div { grid-template-columns: 52px minmax(0, 1fr); }
   .workflow-section-head { display: block; }
   .workflow-section-head p { margin-top: 4px; }

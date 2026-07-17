@@ -76,6 +76,16 @@ import {
 } from "../lib/supabase/workspace-actions";
 import { getSupabaseBrowserClient } from "../lib/supabase/client";
 import { computePlanRisks, countRisksBySeverity, type PlanRisk } from "../lib/plan-risk";
+import {
+  TRAVEL_SOFT_TASKS,
+  TRAVEL_STATE_COPY,
+  isTravelCourseConflictDate,
+  preTravelBlocksForDate,
+  recoveryRuleForDate,
+  scheduledDateForTask,
+  travelScheduleSummary,
+  travelTaskMeta,
+} from "../lib/travel-schedule";
 
 const STORAGE_KEY = "summerwork:workspace:v1";
 const REVIEW_DRAFT_FIELDS = ["accuracy", "wrongNumbers", "errorTags", "note", "correctionPassed", "redoRequired", "redoPassed"] as const;
@@ -142,6 +152,7 @@ function SummerPlanBrowser({
   onPlanChange,
   overrides,
   planTasks,
+  progress,
 }: {
   dailyCapacity: number;
   role: Role;
@@ -149,17 +160,34 @@ function SummerPlanBrowser({
   onPlanChange?: (task: WorkspaceTask) => void;
   overrides: Record<string, PlanOverride>;
   planTasks: WorkspaceTask[];
+  progress: Record<string, TaskProgress>;
 }) {
   const referenceDate = currentPlanDate();
   const defaultTutorSubject = planTasks.some((task) => task.subject === "数学") ? "数学" : planTasks[0]?.subject ?? "数学";
   const [selectedDate, setSelectedDate] = useState(role === "tutor" ? planTasks.find((task) => task.subject === defaultTutorSubject)?.date ?? planTasks[0]?.date ?? referenceDate : referenceDate);
   const [subject, setSubject] = useState<SummerSubject | "全部">(role === "tutor" ? defaultTutorSubject : "全部");
   const weekDates = weekDatesFor(selectedDate);
-  const effectiveDate = (task: WorkspaceTask) => overrides[task.id]?.date ?? task.date;
-  const tasks = planTasks.filter((task) => effectiveDate(task) === selectedDate && (subject === "全部" || task.subject === subject));
-  const allDayTasks = planTasks.filter((task) => effectiveDate(task) === selectedDate);
+  const scheduleByDate = useMemo(() => {
+    const result = new Map<string, WorkspaceTask[]>();
+    for (const task of planTasks) {
+      const date = scheduledDateForTask(task, overrides, progress, referenceDate);
+      if (!date) continue;
+      result.set(date, [...(result.get(date) ?? []), task]);
+    }
+    return result;
+  }, [overrides, planTasks, progress, referenceDate]);
+  const allDayTasks = scheduleByDate.get(selectedDate) ?? [];
+  const tasks = allDayTasks.filter((task) => subject === "全部" || task.subject === subject);
+  const independentDayTasks = allDayTasks.filter((task) => !task.courseIntegrated && task.kind !== "submission");
   const course = courseForDate(selectedDate);
   const importantDate = importantDateFor(selectedDate);
+  const travelDefinition = TRAVEL_SOFT_TASKS.find((item) => item.travelDate === selectedDate && planTasks.some((task) => task.id === item.taskId) && (subject === "全部" || item.subject === subject));
+  const preTravelBlocks = preTravelBlocksForDate(selectedDate).filter((item) => planTasks.some((task) => task.id === item.taskId) && (subject === "全部" || item.subject === subject));
+  const recoveryRule = recoveryRuleForDate(selectedDate);
+  const reservedFallbacks = TRAVEL_SOFT_TASKS.filter((item) => item.fallbackDate === selectedDate && progress[item.taskId]?.runState !== "completed" && planTasks.some((task) => task.id === item.taskId) && (subject === "全部" || item.subject === subject));
+  const visibleConvertedSubjects = recoveryRule?.convertedSubjects.filter((item) => subject === "全部" || item === subject) ?? [];
+  const visibleRestoredSubjects = recoveryRule?.restoredSubjects.filter((item) => subject === "全部" || item === subject) ?? [];
+  const showRecoveryRule = Boolean(recoveryRule && (subject === "全部" || visibleConvertedSubjects.length || visibleRestoredSubjects.length || (subject === "语文" && recoveryRule.chineseExtraBlock) || recoveryRule.concentratedFallbackLimit));
   const requirement = subject === "全部" ? undefined : SUBJECT_REQUIREMENTS.find((item) => item.subject === subject);
   const actionCopy = role === "parent" ? "查看任务" : role === "tutor" ? "进入批改" : "开始做题";
   const availableSubjects = SUMMER_SUBJECTS.filter((item) => planTasks.some((task) => task.subject === item));
@@ -201,9 +229,9 @@ function SummerPlanBrowser({
 
       <div className="real-week-strip">
         {weekDates.map((date) => {
-          const dateTasks = planTasks.filter((task) => effectiveDate(task) === date);
+          const dateTasks = scheduleByDate.get(date) ?? [];
           const count = dateTasks.filter((task) => subject === "全部" || task.subject === subject).length;
-          const independentCount = dateTasks.filter((task) => !task.courseIntegrated).length;
+          const independentCount = dateTasks.filter((task) => !task.courseIntegrated && task.kind !== "submission").length;
           return (
             <button
               key={date}
@@ -221,22 +249,28 @@ function SummerPlanBrowser({
       </div>
 
       <div className="selected-day-summary">
-        <div><strong>{formatPlanDate(selectedDate, true)} · 周{weekdayFor(selectedDate)}</strong><span>{subject === "全部" ? `课内 ${allDayTasks.filter((task) => task.courseIntegrated).length} · 独立作业 ${allDayTasks.filter((task) => !task.courseIntegrated).length} · 共 ${allDayTasks.length} 块` : `${subject} ${tasks.length}个任务块`}</span></div>
-        {allDayTasks.filter((task) => !task.courseIntegrated).length > dailyCapacity ? <StatusPill tone="red">超过容量 {dailyCapacity} · 独立作业 {allDayTasks.filter((task) => !task.courseIntegrated).length}块</StatusPill> : <StatusPill tone="green">家庭容量 {dailyCapacity} · 负荷可控</StatusPill>}
+        <div><strong>{formatPlanDate(selectedDate, true)} · 周{weekdayFor(selectedDate)}</strong><span>{subject === "全部" ? `课内 ${allDayTasks.filter((task) => task.courseIntegrated).length} · 独立作业 ${independentDayTasks.length} · 提交节点 ${allDayTasks.filter((task) => task.kind === "submission").length}` : `${subject} ${tasks.length}个任务块`}</span></div>
+        {independentDayTasks.length > dailyCapacity ? <StatusPill tone="red">超过容量 {dailyCapacity} · 独立作业 {independentDayTasks.length}块</StatusPill> : travelDefinition ? <StatusPill tone="mint">旅行软任务 1/1</StatusPill> : <StatusPill tone="green">家庭容量 {dailyCapacity} · 负荷可控</StatusPill>}
       </div>
 
-      {course ? <div className="course-banner"><MiniIcon>课</MiniIcon><div><strong>当天课程</strong><p>{course.labels.join(" / ")}</p></div></div> : null}
+      {course && isTravelCourseConflictDate(selectedDate) ? <div className="plan-alert travel-conflict"><MiniIcon>停</MiniIcon><div><strong>旅行冲突 · 原课程未执行</strong><p>{course.labels.join(" / ")}仅保留原课表记录，不计入家教容量。</p></div></div> : course ? <div className="course-banner"><MiniIcon>课</MiniIcon><div><strong>当天课程</strong><p>{course.labels.join(" / ")}</p></div></div> : null}
+      {preTravelBlocks.length ? <div className="recovery-banner pre-travel-banner"><MiniIcon>前</MiniIcon><div><strong>出发前置作业</strong><p>{preTravelBlocks.map((item) => `${item.subject}${item.label} ${item.plannedMinutes}分钟`).join(" · ")}</p></div></div> : null}
+      {travelDefinition ? <div className="travel-banner"><MiniIcon>旅</MiniIcon><div><strong>旅行自主 · 今天只排这一项</strong><p>{travelDefinition.subject}{travelDefinition.shortLabel} 90分钟；未完成于 {formatPlanDate(travelDefinition.fallbackDate)} 补位。</p></div></div> : null}
+      {showRecoveryRule && recoveryRule ? <div className="recovery-banner"><MiniIcon>补</MiniIcon><div><strong>{recoveryRule.concentratedFallbackLimit ? `集中补位 · 默认最多${recoveryRule.concentratedFallbackLimit}块` : "返程课程重排"}</strong><p>{visibleConvertedSubjects.length ? `${visibleConvertedSubjects.join("、")}新课让位` : "无新课让位"}{visibleRestoredSubjects.length ? ` · ${visibleRestoredSubjects.join("、")}恢复新课` : ""}{reservedFallbacks.length ? ` · ${reservedFallbacks.length}个旅行补位待执行` : " · 对应旅行任务已完成则释放补位"}{subject === "全部" || subject === "语文" ? recoveryRule.chineseExtraBlock ? " · 语文积压未清时增加自主90分钟" : "" : ""}</p></div></div> : null}
       {importantDate ? <div className="plan-alert"><MiniIcon>!</MiniIcon><div><strong>重要节点</strong><p>{importantDate.label}</p></div></div> : null}
       {requirement ? <div className="ontology-brief"><strong>{requirement.workBody}</strong><p>{requirement.splitRule}</p><p>{requirement.executionRules.join("；")}</p><small>答案：{requirement.answerSource}</small></div> : null}
 
       <div className="real-task-list">
-        {tasks.length ? tasks.map((task) => (
-          <article className={task.uncertainty ? "real-task-card uncertain" : "real-task-card"} key={task.id}>
+        {tasks.length ? tasks.map((task) => {
+          const travelMeta = travelTaskMeta(task, progress[task.id], referenceDate);
+          return (
+          <article className={`${task.uncertainty ? "real-task-card uncertain" : "real-task-card"}${travelMeta ? travelMeta.state === "overdue_recovery" ? " travel-recovery overdue" : travelMeta.state === "recovery" ? " travel-recovery" : " travel-soft" : ""}`} key={task.id}>
             <div className="real-task-top">
               <div><StatusPill tone={SUBJECT_TONES[task.subject]}>{task.subject === "语文" ? "语文·考背" : task.subject}</StatusPill><span>{task.slotType}</span></div>
               <div><span>标准 {task.blockMinutes} 分钟</span>{task.recommendedMinutes !== 90 ? <StatusPill tone="orange">建议 {task.recommendedMinutes} 分钟</StatusPill> : null}</div>
             </div>
             <h3>{task.title}</h3>
+            {travelMeta ? <div className="travel-route"><span>{formatPlanDate(travelMeta.travelDate)} 旅行</span><i>→</i><span>{travelMeta.state === "released" ? "补位已释放" : `${formatPlanDate(travelMeta.fallbackDate)} 补位`}</span><strong>{TRAVEL_STATE_COPY[travelMeta.state]}</strong></div> : null}
             <dl className="task-facts">
               <div><dt>知识点</dt><dd>{task.knowledge || "待补充"}</dd></div>
               <div><dt>{role === "student" ? "答案状态" : "批改依据"}</dt><dd>{role === "student" ? ANSWER_POLICY_COPY[task.answerPolicy] : task.answerBasis}</dd></div>
@@ -249,6 +283,7 @@ function SummerPlanBrowser({
               {task.requirementLevel === "pending_confirmation" ? <StatusPill tone="orange">待老师确认</StatusPill> : null}
               {task.requirementLevel === "optional" ? <StatusPill tone="gray">选做/拓展</StatusPill> : null}
               {task.uncertainty ? <StatusPill tone="red">计划存疑</StatusPill> : null}
+              {travelMeta ? <StatusPill tone={travelMeta.state === "released" ? "green" : travelMeta.state === "overdue_recovery" ? "red" : "mint"}>{TRAVEL_STATE_COPY[travelMeta.state]}{travelMeta.remainingMinutes ? ` · 剩余${travelMeta.remainingMinutes}分钟` : ""}</StatusPill> : null}
             </div>
             {task.notes ? <p className="task-note">{task.notes}</p> : null}
             <div className={role === "tutor" ? "task-card-actions" : undefined}>
@@ -256,7 +291,8 @@ function SummerPlanBrowser({
               {role === "tutor" && onPlanChange ? <button type="button" className="secondary-button" onClick={() => onPlanChange(task)}>调整计划</button> : null}
             </div>
           </article>
-        )) : (
+          );
+        }) : (
           <div className="empty-day"><span>✓</span><h3>筛选范围内无任务</h3><p>可切换科目或选择其他日期。</p></div>
         )}
       </div>
@@ -882,13 +918,14 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
         {role === "parent" && initialWorkspace?.planVersionStatus?.updateAvailable ? <div className="plan-alert"><MiniIcon>!</MiniIcon><div><strong>暑期计划有新版本</strong><p>当前家庭保留 v{initialWorkspace.planVersionStatus.appliedVersion}，模板已更新至 v{initialWorkspace.planVersionStatus.availableVersion}；既有进度未被覆盖，请核对变更后再迁移。</p></div></div> : null}
 
         {role === "parent" && activeNav.parent === "总览" ? <ParentView auditEntries={auditEntries} dailyCapacity={dailyCapacity} overrides={planOverrides} planRisks={planRisks} planTasks={planTasks} progress={progress} showToast={showToast} /> : null}
-        {role === "parent" && activeNav.parent === "日历" ? <CalendarHome dailyCapacity={dailyCapacity} role="parent" overrides={planOverrides} planTasks={planTasks} showToast={showToast} /> : null}
+        {role === "parent" && activeNav.parent === "日历" ? <CalendarHome dailyCapacity={dailyCapacity} role="parent" overrides={planOverrides} planTasks={planTasks} progress={progress} showToast={showToast} /> : null}
         {role === "parent" && activeNav.parent === "作业" ? <HomeworkLibraryView archivedHomeworks={initialWorkspace?.archivedHomeworks ?? []} onAdd={addHomework} onAddCheckpoint={addCheckpoint} onArchive={archiveHomework} onArchiveCheckpoint={archiveCheckpoint} onEdit={editHomework} onEditCheckpoint={editCheckpoint} onRestore={restoreHomework} onRestoreCheckpoint={restoreCheckpoint} planTasks={planTasks} studentId={initialWorkspace?.studentId} /> : null}
         {role === "parent" && activeNav.parent === "知识" ? <KnowledgeDashboard planTasks={planTasks} progress={progress} role="parent" /> : null}
         {role === "parent" && activeNav.parent === "设置" ? <AccountCenter dailyCapacity={dailyCapacity} notifications={initialWorkspace?.notifications ?? []} onBackup={createCurrentBackup} onCapacityChange={saveDailyCapacity} onDownload={downloadArchive} onGenerateReport={createCurrentWeeklyReport} onMarkRead={async (id) => { await markNotificationRead(id); router.refresh(); }} remoteEnabled={remoteEnabled} reports={initialWorkspace?.weeklyReports ?? []} role="parent" signOut={signOut} /> : null}
         {role === "tutor" && ["今天", "日历"].includes(activeNav.tutor) ? (
           <TutorView
             auditEntries={auditEntries}
+            allProgress={progress}
             closeLoopReady={closeLoopReady}
             dailyCapacity={dailyCapacity}
             evidence={evidence}
@@ -919,7 +956,7 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
             updateTaskProgress={updateTaskProgress}
           />
         ) : null}
-        {role === "student" && activeNav.student === "本周" ? <CalendarHome dailyCapacity={dailyCapacity} role="student" overrides={planOverrides} planTasks={planTasks} showToast={showToast} /> : null}
+        {role === "student" && activeNav.student === "本周" ? <CalendarHome dailyCapacity={dailyCapacity} role="student" overrides={planOverrides} planTasks={planTasks} progress={progress} showToast={showToast} /> : null}
         {role === "student" && activeNav.student === "知识" ? <KnowledgeDashboard planTasks={planTasks} progress={progress} role="student" /> : null}
         {role === "student" && activeNav.student === "我的" ? <AccountCenter notifications={initialWorkspace?.notifications ?? []} onBackup={createCurrentBackup} onDownload={downloadArchive} onGenerateReport={createCurrentWeeklyReport} onMarkRead={async (id) => { await markNotificationRead(id); router.refresh(); }} remoteEnabled={remoteEnabled} reports={initialWorkspace?.weeklyReports ?? []} role="student" signOut={signOut} /> : null}
 
@@ -979,11 +1016,11 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
   );
 }
 
-function CalendarHome({ dailyCapacity, role, overrides, planTasks, showToast }: { dailyCapacity: number; role: "parent" | "student"; overrides: Record<string, PlanOverride>; planTasks: WorkspaceTask[]; showToast: (message: string) => void }) {
+function CalendarHome({ dailyCapacity, role, overrides, planTasks, progress, showToast }: { dailyCapacity: number; role: "parent" | "student"; overrides: Record<string, PlanOverride>; planTasks: WorkspaceTask[]; progress: Record<string, TaskProgress>; showToast: (message: string) => void }) {
   return (
     <div className="page-content">
       <AppHeader eyebrow={role === "parent" ? "家长管理员" : "我的学习"} title="暑期日历" subtitle="日期级计划 · 每个任务块标准90分钟 · 精确截止单独显示" />
-      <SummerPlanBrowser dailyCapacity={dailyCapacity} role={role} overrides={overrides} planTasks={planTasks} onAction={(task) => showToast(`已选择：${task.subject} · ${task.title}`)} />
+      <SummerPlanBrowser dailyCapacity={dailyCapacity} role={role} overrides={overrides} planTasks={planTasks} progress={progress} onAction={(task) => showToast(`已选择：${task.subject} · ${task.title}`)} />
     </div>
   );
 }
@@ -1166,10 +1203,10 @@ function AccountCenter({ archivedPlanBlocks = [], dailyCapacity = 2, notificatio
 
 function ParentView({ auditEntries, dailyCapacity, overrides, planRisks, planTasks, progress, showToast }: { auditEntries: AuditEntry[]; dailyCapacity: number; overrides: Record<string, PlanOverride>; planRisks: PlanRisk[]; planTasks: WorkspaceTask[]; progress: Record<string, TaskProgress>; showToast: (message: string) => void }) {
   const subjectCounts = SUMMER_SUBJECTS.map((subject) => ({ subject, count: planTasks.filter((task) => task.subject === subject).length }));
-  const availableSubjectCount = subjectCounts.filter((item) => item.count > 0).length;
   const submittedCount = Object.values(progress).filter((item) => item.schoolSubmitted).length;
   const completedCount = Object.values(progress).filter((item) => item.runState === "completed").length;
   const riskCounts = countRisksBySeverity(planRisks);
+  const travelSummary = travelScheduleSummary(planTasks, progress, currentPlanDate());
   return (
     <div className="page-content parent-page">
       <AppHeader
@@ -1182,11 +1219,11 @@ function ParentView({ auditEntries, dailyCapacity, overrides, planRisks, planTas
       <section className="metric-grid" aria-label="暑期计划概况">
         <article className="metric-card"><span>真实任务块</span><strong>{planTasks.length}</strong><small>已完成首做 {completedCount} 项</small></article>
         <article className="metric-card risk"><span>高风险</span><strong>{riskCounts.high}</strong><small>另有 {riskCounts.attention + ONTOLOGY_ISSUES.length} 项需关注</small></article>
-        <article className="metric-card success"><span>科目范围</span><strong>{availableSubjectCount}</strong><small>英语、政史地已排除</small></article>
+        <article className="metric-card travel"><span>旅行软任务</span><strong>{travelSummary.completed}/{travelSummary.total}</strong><small>部分 {travelSummary.partial} · 待补位 {travelSummary.recovery} · 另有积压 {travelSummary.deferredBacklog}</small></article>
         <article className="metric-card"><span>提交确认</span><strong>{submittedCount}</strong><small>7月5日无安排</small></article>
       </section>
 
-      <SummerPlanBrowser dailyCapacity={dailyCapacity} role="parent" overrides={overrides} planTasks={planTasks} onAction={(task) => showToast(`已选择：${task.subject} · ${task.title}`)} />
+      <SummerPlanBrowser dailyCapacity={dailyCapacity} role="parent" overrides={overrides} planTasks={planTasks} progress={progress} onAction={(task) => showToast(`已选择：${task.subject} · ${task.title}`)} />
 
       <div className="content-columns">
         <section>
@@ -1235,6 +1272,7 @@ function ParentView({ auditEntries, dailyCapacity, overrides, planRisks, planTas
 
 type TutorViewProps = {
   auditEntries: AuditEntry[];
+  allProgress: Record<string, TaskProgress>;
   closeLoopReady: boolean;
   dailyCapacity: number;
   evidence: WorkflowEvidence;
@@ -1278,6 +1316,7 @@ function TutorView(props: TutorViewProps) {
         role="tutor"
         overrides={props.overrides}
         planTasks={props.planTasks}
+        progress={props.allProgress}
         onAction={(task) => { props.setWorkflowTask(task); props.setReviewOpen(true); }}
         onPlanChange={(task) => { props.setWorkflowTask(task); props.setPlanOpen(task); }}
       />
@@ -1347,7 +1386,11 @@ type StudentViewProps = {
 
 function StudentView({ dailyCapacity, overrides, planTasks, progress, setWorkflowTask, showToast, updateTaskProgress }: StudentViewProps) {
   const referenceDate = currentPlanDate();
-  const todayTasks = planTasks.filter((task) => (overrides[task.id]?.date ?? task.date) === referenceDate);
+  const scheduledTasks = useMemo(() => planTasks.flatMap((task) => {
+    const date = scheduledDateForTask(task, overrides, progress, referenceDate);
+    return date ? [{ task, date }] : [];
+  }), [overrides, planTasks, progress, referenceDate]);
+  const todayTasks = scheduledTasks.filter((item) => item.date === referenceDate).map((item) => item.task);
   const [focusTask, setFocusTask] = useState<WorkspaceTask>(() => todayTasks[0] ?? SUMMER_PLAN.tasks[0]);
   const focusProgress = progress[focusTask.id] ?? blankTaskProgress();
   const masteryLevel = deriveMasteryLevel(evidenceFor(focusProgress, focusTask.requiresSubmission));
@@ -1361,7 +1404,7 @@ function StudentView({ dailyCapacity, overrides, planTasks, progress, setWorkflo
   }, [runState]);
   const liveSeconds = (focusProgress.actualSeconds ?? 0) + (runState === "running" && focusProgress.activeStartedAt ? Math.max(0, Math.floor((clock - new Date(focusProgress.activeStartedAt).getTime()) / 1000)) : 0);
   const liveTime = `${String(Math.floor(liveSeconds / 60)).padStart(2, "0")}:${String(liveSeconds % 60).padStart(2, "0")}`;
-  const nextTask = todayTasks.find((task) => task.id !== focusTask.id) ?? planTasks.find((task) => (overrides[task.id]?.date ?? task.date) > referenceDate) ?? planTasks[1] ?? SUMMER_PLAN.tasks[1];
+  const nextTask = todayTasks.find((task) => task.id !== focusTask.id) ?? scheduledTasks.find((item) => item.date > referenceDate)?.task ?? planTasks[1] ?? SUMMER_PLAN.tasks[1];
   const buttonCopy = { ready: "开始做题", running: "暂停", paused: "继续", completed: "已完成" }[runState];
   async function handleMainAction() {
     setSyncing(true);
@@ -1384,7 +1427,7 @@ function StudentView({ dailyCapacity, overrides, planTasks, progress, setWorkflo
   return (
     <div className="page-content student-page">
       <AppHeader eyebrow="我的学习" title="今天" subtitle={`${todayTasks.length}个任务块 · 共${todayTasks.length * 90}分钟`} action={<button className="avatar-button" type="button" aria-label="孩子账户">学</button>} />
-      <SummerPlanBrowser dailyCapacity={dailyCapacity} role="student" overrides={overrides} planTasks={planTasks} onAction={(task) => { setFocusTask(task); setWorkflowTask(task); showToast(`已切换到：${task.subject} · ${task.title}`); }} />
+      <SummerPlanBrowser dailyCapacity={dailyCapacity} role="student" overrides={overrides} planTasks={planTasks} progress={progress} onAction={(task) => { setFocusTask(task); setWorkflowTask(task); showToast(`已切换到：${task.subject} · ${task.title}`); }} />
       <div className="student-grid">
         <section className="focus-task">
           <div className="focus-top"><StatusPill tone={SUBJECT_TONES[focusTask.subject]}>{focusTask.subject === "语文" ? "语文·考背" : focusTask.subject}</StatusPill><span>标准 {focusTask.blockMinutes} 分钟</span></div>
