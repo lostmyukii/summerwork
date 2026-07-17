@@ -101,6 +101,8 @@ test("secrets, upstream assets and rollback boundaries are fail-closed", async (
   assert.doesNotMatch(dockerfile, /ARG\s+(?:SUPABASE_SERVICE_ROLE_KEY|SUPABASE_SECRET_KEY|POSTGRES_PASSWORD)/);
   assert.match(composeWrapper, /docker compose version/);
   assert.match(composeWrapper, /exec docker-compose/);
+  assert.match(readme, /\$COMPOSE up -d --no-deps app/);
+  assert.doesNotMatch(readme, /\$COMPOSE up -d app/);
 });
 
 test("Kong exposes Auth, REST and Realtime only", async () => {

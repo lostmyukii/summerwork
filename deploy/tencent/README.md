@@ -66,12 +66,12 @@ $COMPOSE build app
 /srv/summerwork/deploy/scripts/sync-plan.sh
 docker stop --timeout 20 summerwork_app
 docker rm summerwork_app
-$COMPOSE up -d app
+$COMPOSE up -d --no-deps app
 /srv/summerwork/deploy/scripts/healthcheck.sh
 /srv/summerwork/deploy/scripts/verify-workflow.sh
 ```
 
-服务器当前仍使用旧版 `docker-compose` 时，直接重建同名应用容器可能触发 Compose 与新版 Docker 的兼容问题，因此只停止并删除无状态的 `summerwork_app` 容器后再创建。数据库、Auth、REST、Realtime、Kong、命名卷及其他项目容器均不删除。不得使用 `down -v`。
+服务器当前仍使用旧版 `docker-compose` 时，直接重建同名应用容器可能触发 Compose 与新版 Docker 的兼容问题，因此只停止并删除无状态的 `summerwork_app` 容器后，再使用 `--no-deps` 创建应用。`--no-deps` 是强制项，防止 Compose 连带重建 Auth、REST、Realtime 或 Kong。数据库、命名卷及其他项目容器均不删除。不得使用 `down -v`。
 
 验收脚本使用合成家长、数学家教、物理家教和孩子账号完成邀请、跨科拒绝、学习、批改、订正、掌握、提交和撤权测试，并在结束时清理合成数据。
 
