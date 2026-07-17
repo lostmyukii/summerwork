@@ -56,6 +56,9 @@ test("Nginx templates add only the two named sites and preserve WebSocket", asyn
   assert.match(https, /proxy_pass http:\/\/127\.0\.0\.1:8180/);
   assert.match(https, /proxy_set_header Upgrade \$http_upgrade/);
   assert.match(https, /proxy_set_header Connection \$summerwork_connection_upgrade/);
+  assert.match(https, /proxy_buffer_size 32k;/);
+  assert.match(https, /proxy_buffers 8 32k;/);
+  assert.match(https, /proxy_busy_buffers_size 64k;/);
   assert.match(limits, /zone=summerwork_auth/);
   assert.doesNotMatch(combined, /include\s+\/etc\/nginx\/sites-enabled/);
 });
