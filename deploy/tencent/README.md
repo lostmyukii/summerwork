@@ -6,7 +6,7 @@
 
 - 应用：`https://summerwork.ilelezhan.cn`
 - API：`https://summerwork-api.ilelezhan.cn`
-- 数据库迁移：19 份
+- 数据库迁移：20 份（最新 `0020_travel_recovery_schedule.sql`）
 - 计划目录：v2，203 个任务模板、175 项作业本体、6 科、23 个课程日
 - 正式家庭：尚未启用；四账号合成验收完成后已清理
 
