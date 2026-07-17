@@ -1,8 +1,17 @@
 import { describe, expect, it } from "vitest";
+import { splitIntoChunks } from "../app/lib/supabase/homework";
 import { canCloseLoop, deriveWorkflowState } from "../app/lib/workflow";
 import { blankTaskProgress, deriveSubmissionTiming, evidenceFor } from "../app/lib/workspace";
 
 describe("逐任务独立闭环状态", () => {
+  it("大计划查询按固定上限拆分，避免超长URL", () => {
+    const values = Array.from({ length: 203 }, (_, index) => `task-${index + 1}`);
+    const chunks = splitIntoChunks(values);
+    expect(chunks).toHaveLength(5);
+    expect(chunks.map((chunk) => chunk.length)).toEqual([50, 50, 50, 50, 3]);
+    expect(chunks.flat()).toEqual(values);
+  });
+
   it("每个任务获得独立的错误标签数组", () => {
     const math = blankTaskProgress();
     const physics = blankTaskProgress();

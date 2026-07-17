@@ -152,6 +152,26 @@ function requireData<T>(result: { data: T | null; error: { message: string } | n
   return result.data;
 }
 
+const IN_FILTER_CHUNK_SIZE = 50;
+
+type ArrayQueryResult<T> = { data: T[] | null; error: { message: string } | null };
+
+export function splitIntoChunks<T>(values: readonly T[], size = IN_FILTER_CHUNK_SIZE): T[][] {
+  if (!Number.isInteger(size) || size < 1) throw new Error("分批大小必须是正整数");
+  const chunks: T[][] = [];
+  for (let index = 0; index < values.length; index += size) chunks.push(values.slice(index, index + size));
+  return chunks;
+}
+
+async function requireChunkedData<T>(
+  values: readonly string[],
+  label: string,
+  query: (chunk: string[]) => PromiseLike<ArrayQueryResult<T>>,
+): Promise<T[]> {
+  const results = await Promise.all(splitIntoChunks(values).map((chunk) => query(chunk)));
+  return results.flatMap((result) => requireData(result, label));
+}
+
 function toWorkspaceTask(row: TaskRow): WorkspaceTask {
   const subject = SUBJECT_BY_ID[row.subject_id];
   if (!subject) throw new Error(`未知科目：${row.subject_id}`);
@@ -316,38 +336,23 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
   const taskIds = tasks.map((task) => task.id);
   const homeworkIds = [...new Set(taskRows.map((task) => task.homework_id).filter((id): id is string => Boolean(id)))];
 
-  const [activityResult, reviewResult, changeResult, workflowResult, checkpointResult, linkResult, homeworkResult] = await Promise.all([
-    client.from("student_task_activity").select("task_id,run_state,unknown_numbers,completed_at,updated_at").in("task_id", taskIds),
-    client.from("task_reviews").select("task_id,accuracy_band,wrong_numbers,error_tags,note,correction_passed,redo_required,redo_passed,mastery_confirmed,review_confirmed_at,review_saved_at,school_submitted_at,updated_at").in("task_id", taskIds),
-    client.from("task_plan_changes").select("id,task_id,old_date,new_date,reason,changed_by,created_at").in("task_id", taskIds).order("created_at", { ascending: false }),
-    client.from("task_workflow_current").select("task_id,stage,actual_seconds,active_started_at,version,updated_at").in("task_id", taskIds),
-    homeworkIds.length
-      ? client.from("submission_checkpoints").select("id,homework_id,label,required,due_date,due_at,status,confirmed_at,archived_at,version").in("homework_id", homeworkIds)
-      : Promise.resolve({ data: [] as CheckpointRow[], error: null }),
-    taskIds.length
-      ? client.from("task_knowledge_links").select("task_id,knowledge_node_id").in("task_id", taskIds)
-      : Promise.resolve({ data: [] as KnowledgeLinkRow[], error: null }),
-    homeworkIds.length
-      ? client.from("homeworks").select("id,version,current_version_id").in("id", homeworkIds)
-      : Promise.resolve({ data: [] as HomeworkSummaryRow[], error: null }),
+  const [activityRows, reviewRows, unsortedChangeRows, workflowRows, checkpointRows, linkRows, homeworkRows] = await Promise.all([
+    requireChunkedData<ActivityRow>(taskIds, "读取孩子任务状态", (chunk) => client.from("student_task_activity").select("task_id,run_state,unknown_numbers,completed_at,updated_at").in("task_id", chunk)),
+    requireChunkedData<ReviewRow>(taskIds, "读取家教批改", (chunk) => client.from("task_reviews").select("task_id,accuracy_band,wrong_numbers,error_tags,note,correction_passed,redo_required,redo_passed,mastery_confirmed,review_confirmed_at,review_saved_at,school_submitted_at,updated_at").in("task_id", chunk)),
+    requireChunkedData<PlanChangeRow>(taskIds, "读取计划变更", (chunk) => client.from("task_plan_changes").select("id,task_id,old_date,new_date,reason,changed_by,created_at").in("task_id", chunk).order("created_at", { ascending: false })),
+    requireChunkedData<WorkflowRow>(taskIds, "读取权威工作流", (chunk) => client.from("task_workflow_current").select("task_id,stage,actual_seconds,active_started_at,version,updated_at").in("task_id", chunk)),
+    requireChunkedData<CheckpointRow>(homeworkIds, "读取学校提交节点", (chunk) => client.from("submission_checkpoints").select("id,homework_id,label,required,due_date,due_at,status,confirmed_at,archived_at,version").in("homework_id", chunk)),
+    requireChunkedData<KnowledgeLinkRow>(taskIds, "读取知识点关联", (chunk) => client.from("task_knowledge_links").select("task_id,knowledge_node_id").in("task_id", chunk)),
+    requireChunkedData<HomeworkSummaryRow>(homeworkIds, "读取作业版本", (chunk) => client.from("homeworks").select("id,version,current_version_id").in("id", chunk)),
   ]);
-
-  const activityRows = requireData(activityResult, "读取孩子任务状态") as ActivityRow[];
-  const reviewRows = requireData(reviewResult, "读取家教批改") as ReviewRow[];
-  const changeRows = requireData(changeResult, "读取计划变更") as PlanChangeRow[];
-  const workflowRows = requireData(workflowResult, "读取权威工作流") as WorkflowRow[];
-  const checkpointRows = requireData(checkpointResult, "读取学校提交节点") as CheckpointRow[];
-  const linkRows = requireData(linkResult, "读取知识点关联") as KnowledgeLinkRow[];
-  const homeworkRows = requireData(homeworkResult, "读取作业版本") as HomeworkSummaryRow[];
+  const changeRows = unsortedChangeRows.sort((left, right) => right.created_at.localeCompare(left.created_at));
   const knowledgeNodeIds = [...new Set(linkRows.map((link) => link.knowledge_node_id))];
   const currentHomeworkVersionIds = homeworkRows.map((row) => row.current_version_id).filter((id): id is string => Boolean(id));
-  const versionRows = currentHomeworkVersionIds.length
-    ? requireData(await client.from("homework_versions").select("id,title,requirements,knowledge_tags,requirement_level,answer_policy,answer_basis,submission_requirement,deadline_date").in("id", currentHomeworkVersionIds), "读取当前作业版本") as HomeworkVersionSummaryRow[]
-    : [];
-  const [nodeRows, snapshotRows] = knowledgeNodeIds.length ? await Promise.all([
-    client.from("knowledge_nodes").select("id,display_name").in("id", knowledgeNodeIds).then((result) => requireData(result, "读取知识点")) as Promise<KnowledgeNodeRow[]>,
-    client.from("mastery_snapshots").select("knowledge_node_id,current_level,highest_level").in("knowledge_node_id", knowledgeNodeIds).then((result) => requireData(result, "读取知识点亮")) as Promise<MasterySnapshotRow[]>,
-  ]) : [[], []];
+  const versionRows = await requireChunkedData<HomeworkVersionSummaryRow>(currentHomeworkVersionIds, "读取当前作业版本", (chunk) => client.from("homework_versions").select("id,title,requirements,knowledge_tags,requirement_level,answer_policy,answer_basis,submission_requirement,deadline_date").in("id", chunk));
+  const [nodeRows, snapshotRows] = await Promise.all([
+    requireChunkedData<KnowledgeNodeRow>(knowledgeNodeIds, "读取知识点", (chunk) => client.from("knowledge_nodes").select("id,display_name").in("id", chunk)),
+    requireChunkedData<MasterySnapshotRow>(knowledgeNodeIds, "读取知识点亮", (chunk) => client.from("mastery_snapshots").select("knowledge_node_id,current_level,highest_level").in("knowledge_node_id", chunk)),
+  ]);
   const activityByTask = new Map(activityRows.map((row) => [row.task_id, row]));
   const reviewByTask = new Map(reviewRows.map((row) => [row.task_id, row]));
   const workflowByTask = new Map(workflowRows.map((row) => [row.task_id, row]));
