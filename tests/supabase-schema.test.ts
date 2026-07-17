@@ -12,6 +12,7 @@ const dailyScheduleMigration = readFileSync(new URL("../supabase/migrations/0022
 const syncScript = readFileSync(new URL("../scripts/sync-summer-plan.mjs", import.meta.url), "utf8");
 const prestudySyncScript = readFileSync(new URL("../scripts/sync-prestudy-plan.mjs", import.meta.url), "utf8");
 const dailyScheduleSyncScript = readFileSync(new URL("../scripts/sync-daily-dual-track.mjs", import.meta.url), "utf8");
+const permissionVerificationScript = readFileSync(new URL("../scripts/verify-supabase-permissions.mjs", import.meta.url), "utf8");
 
 describe("Supabase 作业闭环结构与分科权限", () => {
   it("把孩子活动、家教批改、计划变更和知识掌握分表保存", () => {
@@ -173,5 +174,10 @@ describe("Supabase 作业闭环结构与分科权限", () => {
     expect(dailyScheduleSyncScript).toMatch(/travelBlocks\.length !== 18/);
     expect(dailyScheduleSyncScript).toContain("task_plan_changes");
     expect(dailyScheduleSyncScript).toContain("change_events");
+  });
+
+  it("全流程合成验收在正式家庭存在时先拒绝且不改启动门", () => {
+    expect(permissionVerificationScript).toMatch(/existingFamilyProbe[\s\S]*拒绝运行会改写启动门/);
+    expect(permissionVerificationScript.indexOf("existingFamilyProbe")).toBeLessThan(permissionVerificationScript.indexOf("await purgeSyntheticResidue"));
   });
 });

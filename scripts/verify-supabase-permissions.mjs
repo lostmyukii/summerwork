@@ -161,6 +161,11 @@ async function purgeSyntheticResidue() {
 }
 
 async function main() {
+  const existingFamilyProbe = await admin.from("family_spaces").select("id", { count: "exact", head: true }).is("deleted_at", null);
+  if (existingFamilyProbe.error) throw new Error(`读取正式家庭状态：${existingFamilyProbe.error.message}`);
+  if ((existingFamilyProbe.count ?? 0) > 0) {
+    throw new Error("检测到已初始化的正式家庭，拒绝运行会改写启动门的全流程合成验收；请改用现有账号只读RLS验收。");
+  }
   await purgeSyntheticResidue();
   const schemaProbe = await admin.from("subjects").select("id").in("id", ["math", "physics"]);
   if (schemaProbe.error || schemaProbe.data?.length !== 2) {
