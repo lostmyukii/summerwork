@@ -1,9 +1,21 @@
 export function isSupabaseConfigured(): boolean {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() ?? "";
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim() ?? "";
-  return /^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)
+
+  let endpoint: URL;
+  try {
+    endpoint = new URL(url);
+  } catch {
+    return false;
+  }
+
+  const isSecureEndpoint = endpoint.protocol === "https:";
+  const isLocalEndpoint = endpoint.protocol === "http:"
+    && ["localhost", "127.0.0.1", "::1", "kong"].includes(endpoint.hostname);
+
+  return (isSecureEndpoint || isLocalEndpoint)
     && anonKey.length >= 20
-    && !/your-|example|placeholder|填写/i.test(`${url}${anonKey}`);
+    && !/your-|example|placeholder|填写|change[_-]?me/i.test(`${url}${anonKey}`);
 }
 
 export function getSupabasePublicConfig() {
