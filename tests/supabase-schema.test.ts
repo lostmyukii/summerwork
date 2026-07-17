@@ -8,8 +8,10 @@ const bootstrapMigration = readFileSync(new URL("../supabase/migrations/0017_sin
 const selfHostedMigration = readFileSync(new URL("../supabase/migrations/0018_self_hosted_crypto_and_verification_cleanup.sql", import.meta.url), "utf8");
 const travelRecoveryMigration = readFileSync(new URL("../supabase/migrations/0020_travel_recovery_schedule.sql", import.meta.url), "utf8");
 const prestudyMigration = readFileSync(new URL("../supabase/migrations/0021_independent_prestudy_track.sql", import.meta.url), "utf8");
+const dailyScheduleMigration = readFileSync(new URL("../supabase/migrations/0022_daily_dual_track_schedule.sql", import.meta.url), "utf8");
 const syncScript = readFileSync(new URL("../scripts/sync-summer-plan.mjs", import.meta.url), "utf8");
 const prestudySyncScript = readFileSync(new URL("../scripts/sync-prestudy-plan.mjs", import.meta.url), "utf8");
+const dailyScheduleSyncScript = readFileSync(new URL("../scripts/sync-daily-dual-track.mjs", import.meta.url), "utf8");
 
 describe("Supabase 作业闭环结构与分科权限", () => {
   it("把孩子活动、家教批改、计划变更和知识掌握分表保存", () => {
@@ -147,13 +149,29 @@ describe("Supabase 作业闭环结构与分科权限", () => {
     expect(prestudyMigration).toMatch(/家教已更新预习内容/);
   });
 
-  it("预习同步脚本幂等同步23节并拒绝覆盖已带学内容", () => {
+  it("预习同步脚本幂等同步43节并拒绝覆盖已带学内容", () => {
     expect(prestudySyncScript).toContain("prestudy-2026.json");
     expect(prestudySyncScript).toContain("prestudy_lessons");
     expect(prestudySyncScript).toContain("prestudy_execution_records");
-    expect(prestudySyncScript).toMatch(/lessons\.length !== 23/);
+    expect(prestudySyncScript).toMatch(/lessons\.length !== 43/);
     expect(prestudySyncScript).toMatch(/refuse|拒绝/i);
     expect(prestudySyncScript).toMatch(/content_edited_at/);
     expect(prestudySyncScript).toMatch(/tutorEditedLessonIds/);
+  });
+
+  it("逐日清单把作业块和任务映射分开保存并保持分科读取", () => {
+    expect(dailyScheduleMigration).toContain("public.study_blocks");
+    expect(dailyScheduleMigration).toContain("public.study_block_items");
+    expect(dailyScheduleMigration).toMatch(/can_access_study_block[\s\S]*is_family_parent[\s\S]*is_student_owner[\s\S]*is_subject_tutor/);
+    expect(dailyScheduleMigration).toMatch(/unique\(task_id\)/);
+    expect(dailyScheduleMigration).toMatch(/where lesson\.active/);
+  });
+
+  it("逐日同步强校验203项、81块和18项旅行自主并写入变更审计", () => {
+    expect(dailyScheduleSyncScript).toMatch(/schedule\.blocks\.length !== 81/);
+    expect(dailyScheduleSyncScript).toMatch(/taskIds\.length !== 203/);
+    expect(dailyScheduleSyncScript).toMatch(/travelBlocks\.length !== 18/);
+    expect(dailyScheduleSyncScript).toContain("task_plan_changes");
+    expect(dailyScheduleSyncScript).toContain("change_events");
   });
 });

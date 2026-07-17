@@ -2,11 +2,22 @@
   "meta": {
     "id": "prestudy-2026-summer",
     "title": "黑龙江高二上暑期家教带学预习计划",
-    "version": 1,
-    "dateRange": { "start": "2026-07-19", "end": "2026-08-29" },
+    "version": 2,
+    "dateRange": {
+      "start": "2026-07-19",
+      "end": "2026-08-29"
+    },
     "plannedMinutes": 90,
-    "allowedSubjects": ["语文", "数学", "俄语", "物理", "化学", "生物"],
-    "sourceFiles": ["黑龙江高二上每日90分钟预习计划_双方案统一版.xlsx#每日预习"]
+    "allowedSubjects": [
+      "数学",
+      "物理",
+      "化学",
+      "生物"
+    ],
+    "sourceFiles": [
+      "黑龙江高二上每日90分钟预习计划_双方案统一版.xlsx#每日预习",
+      "2026暑假逐日预习线与作业线清单#最终确认"
+    ]
   },
   "lessons": [
     {
@@ -27,7 +38,11 @@
       },
       "acceptanceCriteria": "能根据条件选最短方程并识别斜率不存在",
       "plannedMinutes": 90,
-      "knowledgePoints": ["直线倾斜角", "斜率及不存在情形", "直线方程五种形式"]
+      "knowledgePoints": [
+        "直线倾斜角",
+        "斜率及不存在情形",
+        "直线方程五种形式"
+      ]
     },
     {
       "sourceKey": "prestudy-2026-C01",
@@ -47,7 +62,58 @@
       },
       "acceptanceCriteria": "能从能量变化升级到按物质的量规范计算",
       "plannedMinutes": 90,
-      "knowledgePoints": ["热化学方程式规范", "化学计量数与反应焓", "反应焓单位与正负"]
+      "knowledgePoints": [
+        "热化学方程式规范",
+        "化学计量数与反应焓",
+        "反应焓单位与正负"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-biology-2026-07-20",
+      "subject": "生物",
+      "moduleCode": "B-PREVIEW",
+      "lessonCode": "B-0720",
+      "originalDate": "2026-07-20",
+      "plannedDate": "2026-07-20",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "体液组成、内环境概念与物质交换",
+      "phases": {
+        "input": "教材输入：圈出“体液组成、内环境概念与物质交换”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "体液组成",
+        "内环境概念",
+        "物质交换"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-math-2026-07-21",
+      "subject": "数学",
+      "moduleCode": "M-PREVIEW",
+      "lessonCode": "M-0721",
+      "originalDate": "2026-07-21",
+      "plannedDate": "2026-07-21",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "直线方程形式转换与条件选择",
+      "phases": {
+        "input": "教材输入：圈出“直线方程形式转换与条件选择”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "直线方程形式转换",
+        "条件选择"
+      ]
     },
     {
       "sourceKey": "prestudy-2026-P01",
@@ -67,7 +133,35 @@
       },
       "acceptanceCriteria": "能区分电动势、路端电压和内电压",
       "plannedMinutes": 90,
-      "knowledgePoints": ["电动势与内阻", "闭合电路欧姆定律", "路端电压与内电压", "电路功率分配"]
+      "knowledgePoints": [
+        "电动势与内阻",
+        "闭合电路欧姆定律",
+        "路端电压与内电压",
+        "电路功率分配"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-chemistry-2026-07-22",
+      "subject": "化学",
+      "moduleCode": "C-PREVIEW",
+      "lessonCode": "C-0722",
+      "originalDate": "2026-07-22",
+      "plannedDate": "2026-07-22",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "热化学方程式规范书写与定量换算",
+      "phases": {
+        "input": "教材输入：圈出“热化学方程式规范书写与定量换算”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "热化学方程式规范书写",
+        "定量换算"
+      ]
     },
     {
       "sourceKey": "prestudy-2026-B01",
@@ -87,47 +181,130 @@
       },
       "acceptanceCriteria": "能判定一种物质是否属于内环境并说明理由",
       "plannedMinutes": 90,
-      "knowledgePoints": ["内环境三种体液", "体液相互转化", "内环境成分判断", "稳态的动态性"]
+      "knowledgePoints": [
+        "内环境三种体液",
+        "体液相互转化",
+        "内环境成分判断",
+        "稳态的动态性"
+      ]
     },
     {
-      "sourceKey": "prestudy-2026-M02",
+      "sourceKey": "prestudy-2026-math-2026-07-23",
       "subject": "数学",
-      "moduleCode": "M-LC",
-      "lessonCode": "M02",
+      "moduleCode": "M-PREVIEW",
+      "lessonCode": "M-0723",
       "originalDate": "2026-07-23",
       "plannedDate": "2026-07-23",
       "scheduleAdjustmentReason": null,
       "tutorLane": "本科",
-      "title": "两直线的位置关系、交点、角与距离",
+      "title": "两直线位置关系、交点、角与距离",
       "phases": {
-        "input": "读平行、垂直判定和点到直线距离公式",
-        "analysis": "跟做求交点与点到直线距离各1例",
-        "practice": "独立完成3道平行/垂直/距离题",
-        "output": "整理斜率法与一般式法的适用条件"
+        "input": "教材输入：圈出“两直线位置关系、交点、角与距离”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
       },
-      "acceptanceCriteria": "能由方程判断位置关系并完成距离计算",
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
       "plannedMinutes": 90,
-      "knowledgePoints": ["两直线平行与垂直", "两直线交点", "点到直线距离", "斜率法与一般式法"]
+      "knowledgePoints": [
+        "两直线位置关系",
+        "交点",
+        "距离"
+      ]
     },
     {
-      "sourceKey": "prestudy-2026-R01",
-      "subject": "俄语",
-      "moduleCode": "R-GRAMMAR",
-      "lessonCode": "R01",
+      "sourceKey": "prestudy-2026-physics-2026-07-23",
+      "subject": "物理",
+      "moduleCode": "P-PREVIEW",
+      "lessonCode": "P-0723",
+      "originalDate": "2026-07-23",
+      "plannedDate": "2026-07-23",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "动态电路、路端电压与功率分配",
+      "phases": {
+        "input": "教材输入：圈出“动态电路、路端电压与功率分配”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "动态电路",
+        "路端电压",
+        "功率分配"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-chemistry-2026-07-24",
+      "subject": "化学",
+      "moduleCode": "C-PREVIEW",
+      "lessonCode": "C-0724",
       "originalDate": "2026-07-24",
       "plannedDate": "2026-07-24",
       "scheduleAdjustmentReason": null,
       "tutorLane": "本科",
-      "title": "运动动词与常见前缀",
+      "title": "能量图、反应路径与盖斯定律准备",
       "phases": {
-        "input": "复习идти/ходить、ехать/ездить的单向与往返",
-        "analysis": "按в-/вы-/при-/у-整理含义与支配格",
-        "practice": "完成12个动词填空并口头造句4句",
-        "output": "制作运动动词前缀对照表"
+        "input": "教材输入：圈出“能量图、反应路径与盖斯定律准备”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
       },
-      "acceptanceCriteria": "能根据语境选择运动动词和前缀",
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
       "plannedMinutes": 90,
-      "knowledgePoints": ["运动动词单向与往返", "运动动词常见前缀", "前缀含义与支配格"]
+      "knowledgePoints": [
+        "能量图",
+        "反应路径",
+        "盖斯定律准备"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-biology-2026-07-24",
+      "subject": "生物",
+      "moduleCode": "B-PREVIEW",
+      "lessonCode": "B-0724",
+      "originalDate": "2026-07-24",
+      "plannedDate": "2026-07-24",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "稳态调节网络与内环境综合判断",
+      "phases": {
+        "input": "教材输入：圈出“稳态调节网络与内环境综合判断”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "稳态调节网络",
+        "内环境综合判断"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-math-2026-07-25",
+      "subject": "数学",
+      "moduleCode": "M-PREVIEW",
+      "lessonCode": "M-0725",
+      "originalDate": "2026-07-25",
+      "plannedDate": "2026-07-25",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "直线综合与解析几何方法整理",
+      "phases": {
+        "input": "教材输入：圈出“直线综合与解析几何方法整理”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "直线综合",
+        "解析几何方法整理"
+      ]
     },
     {
       "sourceKey": "prestudy-2026-P02",
@@ -147,7 +324,12 @@
       },
       "acceptanceCriteria": "能从实验图像求E、r并解释主要误差",
       "plannedMinutes": 90,
-      "knowledgePoints": ["伏安法测电源", "滑动变阻器作用", "U-I图像截距斜率", "实验误差来源"]
+      "knowledgePoints": [
+        "伏安法测电源",
+        "滑动变阻器作用",
+        "U-I图像截距斜率",
+        "实验误差来源"
+      ]
     },
     {
       "sourceKey": "prestudy-2026-C02",
@@ -167,7 +349,36 @@
       },
       "acceptanceCriteria": "能用两条独立路径计算并相互校验ΔH",
       "plannedMinutes": 90,
-      "knowledgePoints": ["盖斯定律", "反应式倍乘与反向", "平均键能估算反应焓", "反应焓路径校验"]
+      "knowledgePoints": [
+        "盖斯定律",
+        "反应式倍乘与反向",
+        "平均键能估算反应焓",
+        "反应焓路径校验"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-biology-2026-08-13",
+      "subject": "生物",
+      "moduleCode": "B-PREVIEW",
+      "lessonCode": "B-0813",
+      "originalDate": "2026-08-13",
+      "plannedDate": "2026-08-13",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "神经调节导入、反射与反射弧",
+      "phases": {
+        "input": "教材输入：圈出“神经调节导入、反射与反射弧”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "神经调节导入",
+        "反射",
+        "反射弧"
+      ]
     },
     {
       "sourceKey": "prestudy-2026-M03",
@@ -187,7 +398,12 @@
       },
       "acceptanceCriteria": "能由条件求圆并检验切线",
       "plannedMinutes": 90,
-      "knowledgePoints": ["圆的标准方程", "圆的一般方程", "配方求圆心半径", "圆的切线方程"]
+      "knowledgePoints": [
+        "圆的标准方程",
+        "圆的一般方程",
+        "配方求圆心半径",
+        "圆的切线方程"
+      ]
     },
     {
       "sourceKey": "prestudy-2026-P03",
@@ -207,7 +423,36 @@
       },
       "acceptanceCriteria": "能按测量目的选电路，并从图像提取电阻变化",
       "plannedMinutes": 90,
-      "knowledgePoints": ["伏安法内外接", "滑动变阻器接法", "多用电表使用规则", "I-U图像读数"]
+      "knowledgePoints": [
+        "伏安法内外接",
+        "滑动变阻器接法",
+        "多用电表使用规则",
+        "I-U图像读数"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-chemistry-2026-08-15",
+      "subject": "化学",
+      "moduleCode": "C-PREVIEW",
+      "lessonCode": "C-0815",
+      "originalDate": "2026-08-15",
+      "plannedDate": "2026-08-15",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "化学反应速率、影响因素与图像",
+      "phases": {
+        "input": "教材输入：圈出“化学反应速率、影响因素与图像”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "化学反应速率",
+        "影响因素",
+        "图像"
+      ]
     },
     {
       "sourceKey": "prestudy-2026-B02",
@@ -227,67 +472,152 @@
       },
       "acceptanceCriteria": "能根据受损部位推断反射和感觉是否存在",
       "plannedMinutes": 90,
-      "knowledgePoints": ["反射弧五环节", "兴奋传导方向", "感受器与效应器", "反射弧受损判断"]
+      "knowledgePoints": [
+        "反射弧五环节",
+        "兴奋传导方向",
+        "感受器与效应器",
+        "反射弧受损判断"
+      ]
     },
     {
-      "sourceKey": "prestudy-2026-R02",
-      "subject": "俄语",
-      "moduleCode": "R-GRAMMAR",
-      "lessonCode": "R02",
+      "sourceKey": "prestudy-2026-chemistry-2026-08-17",
+      "subject": "化学",
+      "moduleCode": "C-PREVIEW",
+      "lessonCode": "C-0817",
       "originalDate": "2026-08-17",
       "plannedDate": "2026-08-17",
       "scheduleAdjustmentReason": null,
       "tutorLane": "本科",
-      "title": "形容词短尾：构成、意义与谓语用法",
+      "title": "化学平衡状态与条件改变",
       "phases": {
-        "input": "从熟悉形容词长尾过渡到短尾的性数变化和暂时特征表达",
-        "analysis": "把8个长尾句改写为短尾谓语并比较语义",
-        "practice": "完成10个短尾构成与选用题",
-        "output": "整理常见短尾形式和支配搭配"
+        "input": "教材输入：圈出“化学平衡状态与条件改变”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
       },
-      "acceptanceCriteria": "能构成常见短尾，并判断长尾/短尾的语义差别",
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
       "plannedMinutes": 90,
-      "knowledgePoints": ["形容词短尾构成", "短尾性数变化", "短尾谓语用法", "长尾短尾语义差别"]
+      "knowledgePoints": [
+        "化学平衡状态",
+        "条件改变"
+      ]
     },
     {
-      "sourceKey": "prestudy-2026-Y01",
-      "subject": "语文",
-      "moduleCode": "Y-REV",
-      "lessonCode": "Y01",
+      "sourceKey": "prestudy-2026-biology-2026-08-17",
+      "subject": "生物",
+      "moduleCode": "B-PREVIEW",
+      "lessonCode": "B-0817",
+      "originalDate": "2026-08-17",
+      "plannedDate": "2026-08-17",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "兴奋在神经纤维上的产生与传导",
+      "phases": {
+        "input": "教材输入：圈出“兴奋在神经纤维上的产生与传导”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "兴奋在神经纤维上的产生",
+        "传导"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-math-2026-08-18",
+      "subject": "数学",
+      "moduleCode": "M-PREVIEW",
+      "lessonCode": "M-0818",
       "originalDate": "2026-08-18",
       "plannedDate": "2026-08-18",
       "scheduleAdjustmentReason": null,
-      "tutorLane": "考背",
-      "title": "选择性必修上第一单元：演讲与纪实文本",
+      "tutorLane": "本科",
+      "title": "圆的几何性质与切线条件",
       "phases": {
-        "input": "通读《中国人民站起来了》，标出对象、场合、主张与情感推进",
-        "analysis": "拆解开篇—主体—号召的演讲结构",
-        "practice": "仿写一段120字有对象感的发言",
-        "output": "记录2处历史语境与2种表达策略"
+        "input": "教材输入：圈出“圆的几何性质与切线条件”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
       },
-      "acceptanceCriteria": "能说明演讲内容如何服务特定场合与听众",
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
       "plannedMinutes": 90,
-      "knowledgePoints": ["演讲对象与场合", "演讲结构", "主张与情感推进", "演讲表达策略"]
+      "knowledgePoints": [
+        "圆的几何性质",
+        "切线条件"
+      ]
     },
     {
-      "sourceKey": "prestudy-2026-C03",
+      "sourceKey": "prestudy-2026-physics-2026-08-18",
+      "subject": "物理",
+      "moduleCode": "P-PREVIEW",
+      "lessonCode": "P-0818",
+      "originalDate": "2026-08-18",
+      "plannedDate": "2026-08-18",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "动量、冲量与系统选择",
+      "phases": {
+        "input": "教材输入：圈出“动量、冲量与系统选择”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "动量",
+        "冲量",
+        "系统选择"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-chemistry-2026-08-19",
       "subject": "化学",
-      "moduleCode": "C-RATEEQ",
-      "lessonCode": "C03",
+      "moduleCode": "C-PREVIEW",
+      "lessonCode": "C-0819",
       "originalDate": "2026-08-19",
       "plannedDate": "2026-08-19",
       "scheduleAdjustmentReason": null,
       "tutorLane": "本科",
-      "title": "化学平衡常数K与三段式",
+      "title": "化学平衡常数 K 与三段式",
       "phases": {
-        "input": "从期末卷的平衡状态判断过渡到K表达式、浓度幂次和固液体省略规则",
-        "analysis": "跟做1道Kc和1道平衡转化率三段式",
-        "practice": "完成2道基础K与转化率计算",
-        "output": "写ICE表模板和不列入K的物质清单"
+        "input": "教材输入：圈出“化学平衡常数 K 与三段式”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
       },
-      "acceptanceCriteria": "能列K表达式并用三段式完成单反应基础计算",
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
       "plannedMinutes": 90,
-      "knowledgePoints": ["平衡常数K表达式", "固液体省略规则", "ICE三段式", "平衡转化率"]
+      "knowledgePoints": [
+        "化学平衡常数 K",
+        "三段式"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-biology-2026-08-19",
+      "subject": "生物",
+      "moduleCode": "B-PREVIEW",
+      "lessonCode": "B-0819",
+      "originalDate": "2026-08-19",
+      "plannedDate": "2026-08-19",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "突触结构、膜电位与单向传递准备",
+      "phases": {
+        "input": "教材输入：圈出“突触结构、膜电位与单向传递准备”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "突触结构",
+        "膜电位",
+        "单向传递准备"
+      ]
     },
     {
       "sourceKey": "prestudy-2026-M04",
@@ -307,7 +637,60 @@
       },
       "acceptanceCriteria": "能完成相切、弦长和简单轨迹问题",
       "plannedMinutes": 90,
-      "knowledgePoints": ["直线与圆位置关系", "圆心到直线距离", "弦长计算", "简单轨迹问题"]
+      "knowledgePoints": [
+        "直线与圆位置关系",
+        "圆心到直线距离",
+        "弦长计算",
+        "简单轨迹问题"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-physics-2026-08-20",
+      "subject": "物理",
+      "moduleCode": "P-PREVIEW",
+      "lessonCode": "P-0820",
+      "originalDate": "2026-08-20",
+      "plannedDate": "2026-08-20",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "动量守恒、碰撞与临界判断",
+      "phases": {
+        "input": "教材输入：圈出“动量守恒、碰撞与临界判断”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "动量守恒",
+        "碰撞",
+        "临界判断"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-chemistry-2026-08-21",
+      "subject": "化学",
+      "moduleCode": "C-PREVIEW",
+      "lessonCode": "C-0821",
+      "originalDate": "2026-08-21",
+      "plannedDate": "2026-08-21",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "平衡常数、转化率与综合计算",
+      "phases": {
+        "input": "教材输入：圈出“平衡常数、转化率与综合计算”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "平衡常数",
+        "转化率",
+        "综合计算"
+      ]
     },
     {
       "sourceKey": "prestudy-2026-B03",
@@ -327,7 +710,37 @@
       },
       "acceptanceCriteria": "能解释传导方向和分级调节",
       "plannedMinutes": 90,
-      "knowledgePoints": ["神经纤维兴奋传导", "突触结构与单向传递", "膜内外电位", "神经系统分级调节"]
+      "knowledgePoints": [
+        "神经纤维兴奋传导",
+        "突触结构与单向传递",
+        "膜内外电位",
+        "神经系统分级调节"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-math-2026-08-22",
+      "subject": "数学",
+      "moduleCode": "M-PREVIEW",
+      "lessonCode": "M-0822",
+      "originalDate": "2026-08-22",
+      "plannedDate": "2026-08-22",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "直线与圆综合、参数与最值",
+      "phases": {
+        "input": "教材输入：圈出“直线与圆综合、参数与最值”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "直线",
+        "圆综合",
+        "参数",
+        "最值"
+      ]
     },
     {
       "sourceKey": "prestudy-2026-P04",
@@ -347,47 +760,105 @@
       },
       "acceptanceCriteria": "能从振动图像读周期，并判断各物理量方向和大小变化",
       "plannedMinutes": 90,
-      "knowledgePoints": ["简谐运动模型", "振幅与周期", "振动图像读数", "速度加速度回复力"]
+      "knowledgePoints": [
+        "简谐运动模型",
+        "振幅与周期",
+        "振动图像读数",
+        "速度加速度回复力"
+      ]
     },
     {
-      "sourceKey": "prestudy-2026-Y02",
-      "subject": "语文",
-      "moduleCode": "Y-CLASSIC",
-      "lessonCode": "Y02",
+      "sourceKey": "prestudy-2026-math-2026-08-24",
+      "subject": "数学",
+      "moduleCode": "M-PREVIEW",
+      "lessonCode": "M-0824",
       "originalDate": "2026-08-24",
       "plannedDate": "2026-08-24",
       "scheduleAdjustmentReason": null,
-      "tutorLane": "考背",
-      "title": "《论语十二章》《大学之道》：导读与首轮背诵",
+      "tutorLane": "本科",
+      "title": "圆锥曲线定义与坐标法过渡",
       "phases": {
-        "input": "通读注释和译文，圈出学习、仁、修身、治国的核心命题",
-        "analysis": "各拆1条“观点—理由—结果”论证链并口头复述",
-        "practice": "背诵《大学之道》核心段和《论语》3则重点句",
-        "output": "闭卷默写4句并标出易错字"
+        "input": "教材输入：圈出“圆锥曲线定义与坐标法过渡”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
       },
-      "acceptanceCriteria": "能解释两篇修身路径，并完成首轮重点句默写",
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
       "plannedMinutes": 90,
-      "knowledgePoints": ["学习与仁的核心命题", "修身与治国路径", "观点理由结果链", "重点句背诵默写"]
+      "knowledgePoints": [
+        "圆锥曲线定义",
+        "坐标法过渡"
+      ]
     },
     {
-      "sourceKey": "prestudy-2026-R03",
-      "subject": "俄语",
-      "moduleCode": "R-GRAMMAR",
-      "lessonCode": "R03",
+      "sourceKey": "prestudy-2026-physics-2026-08-24",
+      "subject": "物理",
+      "moduleCode": "P-PREVIEW",
+      "lessonCode": "P-0824",
+      "originalDate": "2026-08-24",
+      "plannedDate": "2026-08-24",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "单摆、周期规律与测重力加速度实验",
+      "phases": {
+        "input": "教材输入：圈出“单摆、周期规律与测重力加速度实验”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "单摆",
+        "周期规律",
+        "测重力加速度实验"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-chemistry-2026-08-25",
+      "subject": "化学",
+      "moduleCode": "C-PREVIEW",
+      "lessonCode": "C-0825",
       "originalDate": "2026-08-25",
       "plannedDate": "2026-08-25",
       "scheduleAdjustmentReason": null,
       "tutorLane": "本科",
-      "title": "不定人称句与无人称句辨析",
+      "title": "浓度商 Q 与平衡移动判断",
       "phases": {
-        "input": "读复数第三人称/过去时复数构成的不定人称句，复习无人称句主体与谓语",
-        "analysis": "把8个明确主语句改写为不定人称句",
-        "practice": "完成10个句型辨析与改写题",
-        "output": "整理“谁做不重要/主体不可指明”的判断卡"
+        "input": "教材输入：圈出“浓度商 Q 与平衡移动判断”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
       },
-      "acceptanceCriteria": "能在语境中区分不定人称句和无人称句并完成改写",
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
       "plannedMinutes": 90,
-      "knowledgePoints": ["不定人称句构成", "无人称句主体与谓语", "两类句型辨析", "句型改写"]
+      "knowledgePoints": [
+        "浓度商 Q",
+        "平衡移动判断"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-biology-2026-08-25",
+      "subject": "生物",
+      "moduleCode": "B-PREVIEW",
+      "lessonCode": "B-0825",
+      "originalDate": "2026-08-25",
+      "plannedDate": "2026-08-25",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "激素调节特点与血糖调节",
+      "phases": {
+        "input": "教材输入：圈出“激素调节特点与血糖调节”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "激素调节特点",
+        "血糖调节"
+      ]
     },
     {
       "sourceKey": "prestudy-2026-M05",
@@ -407,47 +878,155 @@
       },
       "acceptanceCriteria": "能从焦点位置和条件写出椭圆标准方程",
       "plannedMinutes": 90,
-      "knowledgePoints": ["椭圆定义", "椭圆焦点位置", "椭圆标准方程", "a、b、c关系"]
+      "knowledgePoints": [
+        "椭圆定义",
+        "椭圆焦点位置",
+        "椭圆标准方程",
+        "a、b、c关系"
+      ]
     },
     {
-      "sourceKey": "prestudy-2026-C04",
+      "sourceKey": "prestudy-2026-physics-2026-08-26",
+      "subject": "物理",
+      "moduleCode": "P-PREVIEW",
+      "lessonCode": "P-0826",
+      "originalDate": "2026-08-26",
+      "plannedDate": "2026-08-26",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "机械波形成、波长频率与传播方向",
+      "phases": {
+        "input": "教材输入：圈出“机械波形成、波长频率与传播方向”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "机械波形成",
+        "波长频率",
+        "传播方向"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-chemistry-2026-08-27",
       "subject": "化学",
-      "moduleCode": "C-RATEEQ",
-      "lessonCode": "C04",
+      "moduleCode": "C-PREVIEW",
+      "lessonCode": "C-0827",
       "originalDate": "2026-08-27",
       "plannedDate": "2026-08-27",
       "scheduleAdjustmentReason": null,
       "tutorLane": "本科",
-      "title": "浓度商Q、平衡移动与速率—时间图像",
+      "title": "浓度商 Q、平衡移动与速率—时间图像",
       "phases": {
-        "input": "读Q与K的三种关系，串联浓度/压强/温度改变后的平衡移动",
-        "analysis": "跟做1道Q-K判断和1道v-t图像",
-        "practice": "完成3道平衡移动与图像题",
-        "output": "画“条件改变—瞬时速率—移动方向—新平衡”链"
+        "input": "教材输入：圈出“浓度商 Q、平衡移动与速率—时间图像”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
       },
-      "acceptanceCriteria": "能用Q与K解释移动方向，并画出基础速率变化图",
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
       "plannedMinutes": 90,
-      "knowledgePoints": ["浓度商Q与K", "化学平衡移动", "条件改变与瞬时速率", "速率时间图像"]
+      "knowledgePoints": [
+        "浓度商 Q",
+        "平衡移动",
+        "速率—时间图像"
+      ]
     },
     {
-      "sourceKey": "prestudy-2026-P05",
-      "subject": "物理",
-      "moduleCode": "P-WAVE",
-      "lessonCode": "P05",
+      "sourceKey": "prestudy-2026-biology-2026-08-27",
+      "subject": "生物",
+      "moduleCode": "B-PREVIEW",
+      "lessonCode": "B-0827",
+      "originalDate": "2026-08-27",
+      "plannedDate": "2026-08-27",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "分级调节、反馈调节与曲线判断",
+      "phases": {
+        "input": "教材输入：圈出“分级调节、反馈调节与曲线判断”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "分级调节",
+        "反馈调节",
+        "曲线判断"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-math-2026-08-28",
+      "subject": "数学",
+      "moduleCode": "M-PREVIEW",
+      "lessonCode": "M-0828",
       "originalDate": "2026-08-28",
       "plannedDate": "2026-08-28",
       "scheduleAdjustmentReason": null,
       "tutorLane": "本科",
-      "title": "机械波、波形图与v=λf",
+      "title": "椭圆基本性质、离心率与简单综合",
       "phases": {
-        "input": "从单个质点振动过渡到振动传播，读波长、频率、波速和传播方向",
-        "analysis": "跟做1道波形图质点振动方向例题",
-        "practice": "完成3道波形图与v=λf基础题",
-        "output": "写“波在走、质点不随波迁移”的辨析卡"
+        "input": "教材输入：圈出“椭圆基本性质、离心率与简单综合”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
       },
-      "acceptanceCriteria": "能区分振动图与波形图，并用v=λf完成基础计算",
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
       "plannedMinutes": 90,
-      "knowledgePoints": ["机械波传播", "波长频率波速", "波形图与振动图", "质点振动方向"]
+      "knowledgePoints": [
+        "椭圆基本性质",
+        "离心率",
+        "简单综合"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-physics-2026-08-28",
+      "subject": "物理",
+      "moduleCode": "P-PREVIEW",
+      "lessonCode": "P-0828",
+      "originalDate": "2026-08-28",
+      "plannedDate": "2026-08-28",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "机械波、波形图与 v=λf",
+      "phases": {
+        "input": "教材输入：圈出“机械波、波形图与 v=λf”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "机械波",
+        "波形图",
+        "v=λf"
+      ]
+    },
+    {
+      "sourceKey": "prestudy-2026-chemistry-2026-08-29",
+      "subject": "化学",
+      "moduleCode": "C-PREVIEW",
+      "lessonCode": "C-0829",
+      "originalDate": "2026-08-29",
+      "plannedDate": "2026-08-29",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "弱电解质与水溶液平衡导入",
+      "phases": {
+        "input": "教材输入：圈出“弱电解质与水溶液平衡导入”中的定义、条件与基本公式，家教用最小例子建立概念。",
+        "analysis": "例题拆解：由家教示范条件识别、模型选择与规范表达，孩子复述关键判断链。",
+        "practice": "最小自测：完成家教现场选题；只记录实际完成题数，并勾选未掌握知识点。",
+        "output": "输出建模：用3分钟口述本节知识结构、易错条件和一道代表题的解法。"
+      },
+      "acceptanceCriteria": "家教勾选“已带学”和“验收通过”；能独立说明核心概念并完成至少一道代表题。",
+      "plannedMinutes": 90,
+      "knowledgePoints": [
+        "弱电解质",
+        "水溶液平衡导入"
+      ]
     },
     {
       "sourceKey": "prestudy-2026-B04",
@@ -467,7 +1046,13 @@
       },
       "acceptanceCriteria": "能根据曲线判断激素变化和反馈方向",
       "plannedMinutes": 90,
-      "knowledgePoints": ["激素作用特点", "激素分级调节", "反馈调节", "血糖平衡", "神经体液调节比较"]
+      "knowledgePoints": [
+        "激素作用特点",
+        "激素分级调节",
+        "反馈调节",
+        "血糖平衡",
+        "神经体液调节比较"
+      ]
     }
   ]
 }

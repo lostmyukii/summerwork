@@ -21,8 +21,25 @@ export type WorkspaceTask = SummerTask & {
   blockType?: "knowledge_review" | "first_attempt" | "continuation" | "tutor_review" | "correction" | "independent_redo" | "submission_confirmation" | "reading";
   sequenceNumber?: number;
   deletedAt?: string;
+  studyBlock?: StudyBlockSummary;
   knowledgeNodes?: KnowledgeNodeSummary[];
   submissionCheckpoints?: SubmissionCheckpointSummary[];
+};
+
+export type StudyBlockSummary = {
+  id: string;
+  sourceKey: string;
+  date: string;
+  kind: "tutor_homework" | "travel_independent";
+  tutorLane: "本科" | "考背" | "生物课内共享" | "旅行自主";
+  title: string;
+  capacityMinutes: number;
+  estimatedMinutes: number;
+  overflowMinutes: number;
+  supplementMinutes: number;
+  fallbackDate?: string;
+  taskCount: number;
+  sortOrder: number;
 };
 
 export type KnowledgeNodeSummary = {

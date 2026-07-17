@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PrestudyTrack } from "./prestudy-track";
@@ -196,10 +196,14 @@ function SummerPlanBrowser({
     return result;
   }, [overrides, planTasks, progress, referenceDate]);
   const allDayTasks = scheduleByDate.get(selectedDate) ?? [];
-  const tasks = allDayTasks.filter((task) => subject === "全部" || task.subject === subject);
+  const tasks = allDayTasks
+    .filter((task) => subject === "全部" || task.subject === subject)
+    .toSorted((left, right) => (
+      (left.studyBlock?.date ?? left.date).localeCompare(right.studyBlock?.date ?? right.date)
+      || SUMMER_SUBJECTS.indexOf(left.subject) - SUMMER_SUBJECTS.indexOf(right.subject)
+      || (left.studyBlock?.sortOrder ?? left.sequenceNumber ?? 0) - (right.studyBlock?.sortOrder ?? right.sequenceNumber ?? 0)
+    ));
   const dayPrestudy = prestudyLessons.filter((lesson) => lesson.plannedDate === selectedDate && (subject === "全部" || lesson.subject === subject));
-  const independentDayTasks = allDayTasks.filter((task) => !task.courseIntegrated && task.kind !== "submission");
-  const visibleIndependentDayTasks = independentDayTasks.filter((task) => subject === "全部" || task.subject === subject);
   const course = courseForDate(selectedDate);
   const importantDate = importantDateFor(selectedDate);
   const travelDefinition = TRAVEL_SOFT_TASKS.find((item) => item.travelDate === selectedDate && planTasks.some((task) => task.id === item.taskId) && (subject === "全部" || item.subject === subject));
@@ -212,7 +216,14 @@ function SummerPlanBrowser({
   const requirement = subject === "全部" ? undefined : SUBJECT_REQUIREMENTS.find((item) => item.subject === subject);
   const actionCopy = role === "parent" ? "查看任务" : role === "tutor" ? "进入批改" : "开始做题";
   const availableSubjects = SUMMER_SUBJECTS.filter((item) => planTasks.some((task) => task.subject === item) || prestudyLessons.some((lesson) => lesson.subject === item));
-  const totalDayMinutes = allDayTasks.reduce((sum, task) => sum + task.blockMinutes, 0) + prestudyLessons.filter((lesson) => lesson.plannedDate === selectedDate).reduce((sum, lesson) => sum + lesson.plannedMinutes, 0);
+  const visibleBlockById = new Map(tasks.flatMap((task) => task.studyBlock ? [[task.studyBlock.id, task.studyBlock] as const] : []));
+  const allDayBlockById = new Map(allDayTasks.flatMap((task) => task.studyBlock ? [[task.studyBlock.id, task.studyBlock] as const] : []));
+  const firstTaskIdByBlock = new Map<string, string>();
+  for (const task of tasks) if (task.studyBlock && !firstTaskIdByBlock.has(task.studyBlock.id)) firstTaskIdByBlock.set(task.studyBlock.id, task.id);
+  const ungroupedMinutes = allDayTasks.filter((task) => !task.studyBlock).reduce((sum, task) => sum + task.blockMinutes, 0);
+  const totalDayMinutes = [...allDayBlockById.values()].reduce((sum, block) => sum + block.capacityMinutes, ungroupedMinutes)
+    + prestudyLessons.filter((lesson) => lesson.plannedDate === selectedDate).reduce((sum, lesson) => sum + lesson.plannedMinutes, 0);
+  const visibleOverflowMinutes = [...visibleBlockById.values()].reduce((sum, block) => sum + block.overflowMinutes, 0);
 
   function moveWeek(amount: number) {
     setSelectedDate(clampPlanDate(addPlanDays(selectedDate, amount * 7)));
@@ -273,7 +284,7 @@ function SummerPlanBrowser({
 
       <div className="selected-day-summary">
         <div><strong>{formatPlanDate(selectedDate, true)} · 周{weekdayFor(selectedDate)}</strong><span>{subject === "全部" ? `预习 ${dayPrestudy.length} · 作业 ${allDayTasks.length} · 总负荷 ${totalDayMinutes}分钟` : `${subject}：预习 ${dayPrestudy.length} · 作业 ${tasks.length}`}</span></div>
-        {visibleIndependentDayTasks.length > dailyCapacity ? <StatusPill tone="red">超过容量 {dailyCapacity} · 独立作业 {visibleIndependentDayTasks.length}块</StatusPill> : travelDefinition ? <StatusPill tone="mint">旅行软任务 1/1</StatusPill> : <StatusPill tone="green">家庭容量 {dailyCapacity} · 负荷可控</StatusPill>}
+        {visibleOverflowMinutes > 0 ? <StatusPill tone="red">本科课内积压 {visibleOverflowMinutes}分钟</StatusPill> : travelDefinition ? <StatusPill tone="mint">旅行软任务 1/1</StatusPill> : <StatusPill tone="green">课内作业 {visibleBlockById.size || tasks.length}块</StatusPill>}
       </div>
 
       {course && isTravelCourseConflictDate(selectedDate) ? <div className="plan-alert travel-conflict"><MiniIcon>停</MiniIcon><div><strong>旅行冲突 · 原课程未执行</strong><p>{course.labels.join(" / ")}仅保留原课表记录，不计入家教容量。</p></div></div> : course ? <div className="course-banner"><MiniIcon>课</MiniIcon><div><strong>当天课程</strong><p>{course.labels.join(" / ")}</p></div></div> : null}
@@ -291,8 +302,16 @@ function SummerPlanBrowser({
         {tasks.length ? tasks.map((task) => {
           const travelMeta = travelTaskMeta(task, progress[task.id], referenceDate);
           const submissionTiming = deriveSubmissionTiming(task, progress[task.id] ?? blankTaskProgress(), submissionReferenceAt);
+          const block = task.studyBlock;
+          const showBlockHeader = Boolean(block && firstTaskIdByBlock.get(block.id) === task.id);
           return (
-          <article className={`${task.uncertainty ? "real-task-card uncertain" : "real-task-card"}${travelMeta ? travelMeta.state === "overdue_recovery" ? " travel-recovery overdue" : travelMeta.state === "recovery" ? " travel-recovery" : " travel-soft" : ""}`} key={task.id}>
+          <Fragment key={task.id}>
+          {showBlockHeader && block ? <div className={`study-block-banner ${block.kind === "travel_independent" ? "travel" : block.overflowMinutes > 0 ? "overflow" : "tutor"}`}>
+            <div><span>{block.kind === "travel_independent" ? "旅行自主" : block.tutorLane}</span><strong>{block.title}</strong><small>{block.taskCount}项 · 容量{block.capacityMinutes}分钟 · 初估{block.estimatedMinutes}分钟</small></div>
+            {block.overflowMinutes > 0 ? <StatusPill tone="red">课内积压 {block.overflowMinutes}分钟</StatusPill> : block.fallbackDate ? <StatusPill tone="mint">未完成→{formatPlanDate(block.fallbackDate)}家教补位</StatusPill> : <StatusPill tone="green">课内完成</StatusPill>}
+            {block.overflowMinutes > 0 ? <p>余项继续绑定本科家教课，标记待补课/逾期待补交，不转为普通自习。</p> : null}
+          </div> : null}
+          <article className={`${task.uncertainty ? "real-task-card uncertain" : "real-task-card"}${travelMeta ? travelMeta.state === "overdue_recovery" ? " travel-recovery overdue" : travelMeta.state === "recovery" ? " travel-recovery" : " travel-soft" : ""}`}>
             <div className="real-task-top">
               <div><StatusPill tone={SUBJECT_TONES[task.subject]}>{task.subject === "语文" ? "语文·考背" : task.subject}</StatusPill><span>{task.slotType}</span></div>
               <div><span>标准 {task.blockMinutes} 分钟</span>{task.recommendedMinutes !== 90 ? <StatusPill tone="orange">建议 {task.recommendedMinutes} 分钟</StatusPill> : null}</div>
@@ -320,6 +339,7 @@ function SummerPlanBrowser({
               {role === "tutor" && onPlanChange ? <button type="button" className="secondary-button" onClick={() => onPlanChange(task)}>调整计划</button> : null}
             </div>
           </article>
+          </Fragment>
           );
         }) : (
           <div className="empty-day"><span>✓</span><h3>筛选范围内无任务</h3><p>可切换科目或选择其他日期。</p></div>
@@ -347,7 +367,7 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
   const [auditEntries, setAuditEntries] = useState<AuditEntry[]>(initialWorkspace?.audit ?? []);
   const [prestudyLessons, setPrestudyLessons] = useState<PrestudyLesson[]>(() => initialWorkspace ? initialWorkspace.prestudyLessons ?? [] : previewPrestudyLessons());
   const prestudyCourseSlots: PrestudyCourseSlot[] = initialWorkspace ? initialWorkspace.prestudyCourseSlots ?? [] : previewPrestudyCourseSlots();
-  const [tutorTrack, setTutorTrack] = useState<"prestudy" | "homework">("prestudy");
+  const [tutorTrack, setTutorTrack] = useState<"prestudy" | "homework">(() => initialWorkspace && (initialWorkspace.prestudyLessons?.length ?? 0) === 0 ? "homework" : "prestudy");
   const [selectedPrestudyId, setSelectedPrestudyId] = useState<string | undefined>(() => (initialWorkspace?.prestudyLessons ?? previewPrestudyLessons())[0]?.id);
   const [persistenceReady, setPersistenceReady] = useState(remoteEnabled);
   const [planDate, setPlanDate] = useState(referenceDate);
@@ -1450,6 +1470,7 @@ type TutorViewProps = {
 
 function TutorView(props: TutorViewProps) {
   const tutorSubject = props.remoteEnabled ? props.planTasks[0]?.subject ?? props.workflowTask.subject : props.workflowTask.subject;
+  const hasPrestudyLine = props.prestudyLessons.length > 0;
   const taskAudit = props.auditEntries.filter((entry) => entry.taskId === props.workflowTask.id).slice(0, 3);
   const completedSteps = [
     props.progress.runState === "completed",
@@ -1472,7 +1493,7 @@ function TutorView(props: TutorViewProps) {
       />
 
       <div className="dual-line-switch" aria-label="家教工作线切换">
-        <button className={props.tutorTrack === "prestudy" ? "active" : ""} type="button" onClick={() => props.setTutorTrack("prestudy")}><span>预习</span><small>带学与验收</small></button>
+        {hasPrestudyLine ? <button className={props.tutorTrack === "prestudy" ? "active" : ""} type="button" onClick={() => props.setTutorTrack("prestudy")}><span>预习</span><small>带学与验收</small></button> : null}
         <button className={props.tutorTrack === "homework" ? "active" : ""} type="button" onClick={() => props.setTutorTrack("homework")}><span>作业</span><small>批改与闭环</small></button>
       </div>
 
@@ -1488,7 +1509,7 @@ function TutorView(props: TutorViewProps) {
         onPlanChange={(task) => { props.setWorkflowTask(task); props.setPlanOpen(task); }}
       />
 
-      {props.tutorTrack === "prestudy" ? <PrestudyWorkspace
+      {hasPrestudyLine && props.tutorTrack === "prestudy" ? <PrestudyWorkspace
         lessons={props.prestudyLessons}
         courseSlots={props.prestudyCourseSlots}
         selectedLessonId={props.selectedPrestudyId}

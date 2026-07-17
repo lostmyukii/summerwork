@@ -84,13 +84,12 @@ describe("旅行期软任务与返程补位", () => {
     expect(submission && scheduledDateForTask(submission, {}, {}, "2026-07-17")).toBe("2026-08-01");
   });
 
-  it("8月12日标记旅行冲突，返程日明确新课让位和恢复", () => {
+  it("8月12日标记旅行冲突，8月16日和23日不再设置集中补位", () => {
     expect(isTravelCourseConflictDate("2026-08-12")).toBe(true);
-    expect(recoveryRuleForDate("2026-08-13")?.convertedSubjects).toEqual(["俄语", "化学", "生物"]);
-    expect(recoveryRuleForDate("2026-08-21")).toEqual(expect.objectContaining({
-      convertedSubjects: ["化学", "生物"],
-      restoredSubjects: ["俄语"],
-    }));
-    expect(RECOVERY_DAY_RULES.filter((item) => item.concentratedFallbackLimit)).toHaveLength(2);
+    expect(recoveryRuleForDate("2026-08-13")).toBeUndefined();
+    expect(recoveryRuleForDate("2026-08-16")).toBeUndefined();
+    expect(recoveryRuleForDate("2026-08-23")).toBeUndefined();
+    expect(RECOVERY_DAY_RULES).toHaveLength(0);
+    expect(TRAVEL_SOFT_TASKS.some((item) => ["2026-08-16", "2026-08-23"].includes(item.fallbackDate))).toBe(false);
   });
 });

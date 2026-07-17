@@ -7,20 +7,18 @@ import {
 } from "../app/lib/prestudy-plan";
 
 describe("2026 暑期独立预习计划", () => {
-  it("固化23个90分钟预习块且稳定来源键唯一", () => {
-    expect(PRESTUDY_LESSONS).toHaveLength(23);
-    expect(new Set(PRESTUDY_LESSONS.map((lesson) => lesson.sourceKey)).size).toBe(23);
+  it("固化43个90分钟预习块且稳定来源键唯一", () => {
+    expect(PRESTUDY_LESSONS).toHaveLength(43);
+    expect(new Set(PRESTUDY_LESSONS.map((lesson) => lesson.sourceKey)).size).toBe(43);
     expect(PRESTUDY_LESSONS.every((lesson) => lesson.plannedMinutes === 90)).toBe(true);
   });
 
-  it("六科数量与已确认方案一致", () => {
+  it("只保留数理化生预习且每节家教课均覆盖", () => {
     expect(Object.fromEntries(PRESTUDY_PLAN.meta.allowedSubjects.map((subject) => [subject, prestudyForSubject(subject).length]))).toEqual({
-      语文: 2,
-      数学: 5,
-      俄语: 3,
-      物理: 5,
-      化学: 4,
-      生物: 4,
+      数学: 11,
+      物理: 10,
+      化学: 11,
+      生物: 11,
     });
   });
 
@@ -35,11 +33,9 @@ describe("2026 暑期独立预习计划", () => {
     expect(m03?.scheduleAdjustmentReason).toContain("俄罗斯");
   });
 
-  it("语文预习只进入8月考背家教课", () => {
-    expect(prestudyForSubject("语文").map((lesson) => [lesson.plannedDate, lesson.tutorLane])).toEqual([
-      ["2026-08-18", "考背"],
-      ["2026-08-24", "考背"],
-    ]);
+  it("俄语和语文不设预习线", () => {
+    expect(prestudyForSubject("语文")).toEqual([]);
+    expect(prestudyForSubject("俄语")).toEqual([]);
   });
 
   it("每节保留四阶段、验收标准和可勾选的预设知识点", () => {
@@ -56,9 +52,7 @@ describe("2026 暑期独立预习计划", () => {
   });
 
   it("来源文件留在仓库外，结构化数据保留溯源说明", () => {
-    expect(PRESTUDY_PLAN.meta.sourceFiles).toEqual([
-      "黑龙江高二上每日90分钟预习计划_双方案统一版.xlsx#每日预习",
-    ]);
+    expect(PRESTUDY_PLAN.meta.sourceFiles).toContain("黑龙江高二上每日90分钟预习计划_双方案统一版.xlsx#每日预习");
     expect(JSON.stringify(PRESTUDY_PLAN)).not.toContain(".inspect.ndjson");
   });
 });

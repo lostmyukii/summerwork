@@ -390,6 +390,15 @@ button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px s
 .ontology-brief p { margin: 5px 0; color: var(--secondary); font-size: 9px; line-height: 1.55; }
 .ontology-brief small { color: var(--tertiary); font-size: 8px; }
 .real-task-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
+.study-block-banner { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 6px 12px; padding: 12px 14px; border: 1px solid #d8e8ff; border-radius: 16px; background: linear-gradient(135deg, #f8fbff, #eef6ff); }
+.study-block-banner > div { display: grid; gap: 2px; }
+.study-block-banner > div > span { color: var(--system-blue); font-size: 8px; font-weight: 850; }
+.study-block-banner strong { font-size: 12px; }
+.study-block-banner small { color: var(--secondary); font-size: 8px; }
+.study-block-banner > p { grid-column: 1 / -1; margin: 0; color: #9b3d34; font-size: 8px; line-height: 1.5; }
+.study-block-banner.overflow { border-color: #ffd0c9; background: linear-gradient(135deg, #fff9f7, #fff0ec); }
+.study-block-banner.travel { border-color: #b9e8dc; background: linear-gradient(135deg, #f6fffc, #eaf9f4); }
+.study-block-banner.travel > div > span { color: #188b71; }
 .real-task-card { min-width: 0; padding: 15px; border: 1px solid var(--line); border-radius: 18px; background: #fff; }
 .real-task-card.uncertain { border-color: #ffc1ba; box-shadow: inset 3px 0 0 var(--system-red); }
 .real-task-card.travel-soft { border-color: #b9e8dc; box-shadow: inset 3px 0 0 var(--system-mint); }

@@ -12,7 +12,7 @@ if (missingEnvironment.length > 0) {
 
 const planPath = fileURLToPath(new URL("../app/data/prestudy-2026.json", import.meta.url));
 const plan = JSON.parse(await fs.readFile(planPath, "utf8"));
-if (plan.lessons.length !== 23) throw new Error(`预习源数据必须为23节，当前为${plan.lessons.length}节。`);
+if (plan.lessons.length !== 43) throw new Error(`预习源数据必须为43节，当前为${plan.lessons.length}节。`);
 
 const subjectIds = {
   语文: "chinese",
@@ -50,27 +50,35 @@ const tutorRows = requireSuccess(
   "读取分科家教",
 );
 const tutorBySubject = new Map(tutorRows.map((row) => [row.subject_id, row.tutor_user_id]));
-const missingTutorSubjects = Object.values(subjectIds).filter((subjectId) => !tutorBySubject.has(subjectId));
+const allowedSubjectIds = plan.meta.allowedSubjects.map((subject) => subjectIds[subject]);
+const missingTutorSubjects = allowedSubjectIds.filter((subjectId) => !tutorBySubject.has(subjectId));
 if (missingTutorSubjects.length > 0) throw new Error(`拒绝导入：以下科目没有有效家教授权：${missingTutorSubjects.join("、")}。`);
 
-const summerPlan = JSON.parse(await fs.readFile(fileURLToPath(new URL("../app/data/summer-2026.json", import.meta.url)), "utf8"));
-const courseSlots = summerPlan.courseSchedule.flatMap((day) => {
-  if (day.date === "2026-08-12") return [];
-  return day.subjects.map((subject) => ({
+const courseSlots = plan.lessons.map((lesson) => ({
     family_id: student.family_id,
     student_id: student.id,
-    subject_id: subjectIds[subject],
-    course_date: day.date,
-    tutor_lane: subject === "语文" ? "考背" : "本科",
+    subject_id: subjectIds[lesson.subject],
+    course_date: lesson.plannedDate,
+    tutor_lane: lesson.tutorLane,
     planned_minutes: 90,
     active: true,
-    source_reference: day.source,
+    source_reference: plan.meta.sourceFiles.join("；"),
   }));
-});
 requireSuccess(
   await admin.from("prestudy_course_slots").upsert(courseSlots, { onConflict: "student_id,subject_id,course_date,tutor_lane" }),
   "同步家教课程槽",
 );
+const existingCourseSlots = requireSuccess(
+  await admin.from("prestudy_course_slots").select("id,subject_id,course_date,tutor_lane,active").eq("student_id", student.id),
+  "读取现有家教课程槽",
+);
+const activeSlotKeys = new Set(courseSlots.map((slot) => `${slot.subject_id}|${slot.course_date}|${slot.tutor_lane}`));
+const staleCourseSlotIds = existingCourseSlots
+  .filter((slot) => slot.active && !activeSlotKeys.has(`${slot.subject_id}|${slot.course_date}|${slot.tutor_lane}`))
+  .map((slot) => slot.id);
+if (staleCourseSlotIds.length > 0) {
+  requireSuccess(await admin.from("prestudy_course_slots").update({ active: false }).in("id", staleCourseSlotIds), "停用无预习线课程槽");
+}
 
 const slotKeys = new Set(courseSlots.map((slot) => `${slot.subject_id}|${slot.course_date}|${slot.tutor_lane}`));
 for (const lesson of plan.lessons) {
@@ -81,7 +89,7 @@ for (const lesson of plan.lessons) {
 }
 
 const existingLessons = requireSuccess(
-  await admin.from("prestudy_lessons").select("id,source_key,source_digest,version,content_edited_at").eq("student_id", student.id),
+  await admin.from("prestudy_lessons").select("id,source_key,source_digest,version,content_edited_at,active").eq("student_id", student.id),
   "读取现有预习课",
 );
 const existingBySource = new Map(existingLessons.map((lesson) => [lesson.source_key, lesson]));
@@ -93,8 +101,8 @@ const executionRows = existingIds.length === 0 ? [] : requireSuccess(
 );
 const startedLessonIds = new Set(executionRows.filter((row) => row.led_at).map((row) => row.lesson_id));
 
-const requestedLimit = Number.parseInt(process.env.PRESTUDY_SYNC_LIMIT ?? "23", 10);
-const limit = Number.isInteger(requestedLimit) && requestedLimit > 0 ? Math.min(requestedLimit, 23) : 23;
+const requestedLimit = Number.parseInt(process.env.PRESTUDY_SYNC_LIMIT ?? "43", 10);
+const limit = Number.isInteger(requestedLimit) && requestedLimit > 0 ? Math.min(requestedLimit, 43) : 43;
 const lessons = plan.lessons.slice(0, limit);
 const preparedLessons = lessons.map((lesson) => {
   const existing = existingBySource.get(lesson.sourceKey);
@@ -123,6 +131,9 @@ const preparedLessons = lessons.map((lesson) => {
     output_80_90: lesson.phases.output,
     acceptance_criteria: lesson.acceptanceCriteria,
     planned_minutes: lesson.plannedMinutes,
+    active: true,
+    archived_at: null,
+    archival_reason: "",
     created_by: createdBy,
   };
 });
@@ -132,7 +143,7 @@ for (const row of preparedLessons) {
   const tutorEdited = tutorEditedLessonIds.has(row.id);
   if (started || tutorEdited) {
     requireSuccess(
-      await admin.from("prestudy_lessons").update({ assigned_tutor_user_id: row.assigned_tutor_user_id }).eq("id", row.id),
+      await admin.from("prestudy_lessons").update({ assigned_tutor_user_id: row.assigned_tutor_user_id, active: true, archived_at: null, archival_reason: "" }).eq("id", row.id),
       `更新${row.lesson_code}负责家教`,
     );
   } else {
@@ -177,14 +188,21 @@ for (const lesson of lessons) {
   }
 }
 
-if (limit === 23) {
+if (limit === 43) {
+  const expectedKeys = new Set(plan.lessons.map((lesson) => lesson.sourceKey));
+  const staleLessonIds = existingLessons.filter((lesson) => lesson.active && !expectedKeys.has(lesson.source_key)).map((lesson) => lesson.id);
+  if (staleLessonIds.length > 0) {
+    requireSuccess(
+      await admin.from("prestudy_lessons").update({ active: false, archived_at: new Date().toISOString(), archival_reason: "最终清单不设俄语或语文预习线" }).in("id", staleLessonIds),
+      "归档清单外预习课",
+    );
+  }
   const allRows = requireSuccess(
-    await admin.from("prestudy_lessons").select("id,source_key").eq("student_id", student.id),
+    await admin.from("prestudy_lessons").select("id,source_key").eq("student_id", student.id).eq("active", true),
     "复核完整预习计划",
   );
-  const expectedKeys = new Set(plan.lessons.map((lesson) => lesson.sourceKey));
   const matchingRows = allRows.filter((row) => expectedKeys.has(row.source_key));
-  if (matchingRows.length !== 23) throw new Error(`完整预习计划应为23节，远端为${matchingRows.length}节。`);
+  if (matchingRows.length !== 43 || allRows.length !== 43) throw new Error(`完整预习计划应为43节，远端有效${allRows.length}节、匹配${matchingRows.length}节。`);
 }
 
-console.log(`Supabase预习同步完成：${lessons.length}/23节，孩子${student.id}，课程槽${courseSlots.length}个。`);
+console.log(`Supabase预习同步完成：${lessons.length}/43节，孩子${student.id}，有效课程槽${courseSlots.length}个，停用旧槽${staleCourseSlotIds.length}个。`);

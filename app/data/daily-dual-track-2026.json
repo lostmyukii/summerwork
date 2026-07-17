@@ -1,0 +1,1441 @@
+{
+  "meta": {
+    "id": "summerwork-daily-dual-track-2026",
+    "title": "2026暑假逐日预习线与作业线清单",
+    "version": 1,
+    "dateRange": {
+      "start": "2026-07-19",
+      "end": "2026-08-29"
+    },
+    "travelRange": {
+      "start": "2026-07-26",
+      "end": "2026-08-12"
+    },
+    "rules": [
+      "数理化生家教课均有预习线",
+      "俄语和语文不设预习线",
+      "旅行期外不安排自主作业",
+      "8月16日和23日不安排执行任务"
+    ]
+  },
+  "blocks": [
+    {
+      "sourceKey": "daily-2026-2026-07-19-math",
+      "date": "2026-07-19",
+      "subject": "数学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "数学家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 30,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "math-2026-07-19-01",
+        "math-2026-07-27-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-19-russian",
+      "date": "2026-07-19",
+      "subject": "俄语",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "俄语家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 90,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "russian-2026-07-20-01",
+        "russian-2026-07-21-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-20-chinese",
+      "date": "2026-07-20",
+      "subject": "语文",
+      "kind": "tutor_homework",
+      "tutorLane": "生物课内共享",
+      "title": "语文家教课内作业",
+      "capacityMinutes": 45,
+      "estimatedMinutes": 210,
+      "overflowMinutes": 165,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chinese-2026-07-16-01",
+        "chinese-2026-07-17-01",
+        "chinese-2026-07-18-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-20-russian",
+      "date": "2026-07-20",
+      "subject": "俄语",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "俄语家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 90,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "russian-2026-07-22-01",
+        "russian-2026-07-23-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-20-chemistry",
+      "date": "2026-07-20",
+      "subject": "化学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "化学家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 360,
+      "overflowMinutes": 210,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "chemistry-2026-07-17-01",
+        "chemistry-2026-07-18-01",
+        "chemistry-2026-07-20-01",
+        "chemistry-2026-07-27-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-21-math",
+      "date": "2026-07-21",
+      "subject": "数学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "数学家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 90,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "math-2026-07-20-01",
+        "math-2026-07-21-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-21-physics",
+      "date": "2026-07-21",
+      "subject": "物理",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "物理家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 405,
+      "overflowMinutes": 255,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "physics-2026-07-16-01",
+        "physics-2026-07-17-01",
+        "physics-2026-07-18-01",
+        "physics-2026-07-19-01",
+        "physics-2026-07-27-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-22-chinese",
+      "date": "2026-07-22",
+      "subject": "语文",
+      "kind": "tutor_homework",
+      "tutorLane": "生物课内共享",
+      "title": "语文家教课内作业",
+      "capacityMinutes": 45,
+      "estimatedMinutes": 270,
+      "overflowMinutes": 225,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chinese-2026-07-19-01",
+        "chinese-2026-07-20-01",
+        "chinese-2026-07-21-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-22-russian",
+      "date": "2026-07-22",
+      "subject": "俄语",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "俄语家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 30,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "russian-2026-07-24-01",
+        "russian-2026-07-26-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-22-chemistry",
+      "date": "2026-07-22",
+      "subject": "化学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "化学家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chemistry-2026-07-22-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-23-math",
+      "date": "2026-07-23",
+      "subject": "数学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "数学家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 30,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "math-2026-07-23-01",
+        "math-2026-07-29-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-23-physics",
+      "date": "2026-07-23",
+      "subject": "物理",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "物理家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 315,
+      "overflowMinutes": 225,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "physics-2026-07-20-01",
+        "physics-2026-07-21-01",
+        "physics-2026-07-22-01",
+        "physics-2026-07-23-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-24-chinese",
+      "date": "2026-07-24",
+      "subject": "语文",
+      "kind": "tutor_homework",
+      "tutorLane": "生物课内共享",
+      "title": "语文家教课内作业",
+      "capacityMinutes": 45,
+      "estimatedMinutes": 225,
+      "overflowMinutes": 180,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chinese-2026-07-22-01",
+        "chinese-2026-07-23-01",
+        "chinese-2026-07-24-01",
+        "chinese-2026-07-25-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-24-russian",
+      "date": "2026-07-24",
+      "subject": "俄语",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "俄语家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "russian-2026-07-25-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-24-chemistry",
+      "date": "2026-07-24",
+      "subject": "化学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "化学家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 135,
+      "overflowMinutes": 0,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "chemistry-2026-07-24-01",
+        "chemistry-2026-07-25-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-24-biology",
+      "date": "2026-07-24",
+      "subject": "生物",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "生物家教课内作业",
+      "capacityMinutes": 45,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 45,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "biology-2026-07-27-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-25-math",
+      "date": "2026-07-25",
+      "subject": "数学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "数学家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 90,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "math-2026-07-24-01",
+        "math-2026-07-25-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-25-physics",
+      "date": "2026-07-25",
+      "subject": "物理",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "物理家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 240,
+      "overflowMinutes": 90,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "physics-2026-07-24-01",
+        "physics-2026-07-25-01",
+        "physics-2026-07-25-02",
+        "physics-2026-07-28-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-26-russian",
+      "date": "2026-07-26",
+      "subject": "俄语",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "俄语旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-13",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "russian-2026-07-27-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-27-biology",
+      "date": "2026-07-27",
+      "subject": "生物",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "生物旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-13",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "biology-2026-07-28-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-28-physics",
+      "date": "2026-07-28",
+      "subject": "物理",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "物理旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-14",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "physics-2026-07-29-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-29-math",
+      "date": "2026-07-29",
+      "subject": "数学",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "数学旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-14",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "math-2026-07-31-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-30-chemistry",
+      "date": "2026-07-30",
+      "subject": "化学",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "化学旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-13",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chemistry-2026-07-28-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-07-31-chinese",
+      "date": "2026-07-31",
+      "subject": "语文",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "语文旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-14",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chinese-2026-07-27-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-01-russian",
+      "date": "2026-08-01",
+      "subject": "俄语",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "俄语旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-15",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "russian-2026-07-28-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-02-biology",
+      "date": "2026-08-02",
+      "subject": "生物",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "生物旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-15",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "biology-2026-07-29-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-03-physics",
+      "date": "2026-08-03",
+      "subject": "物理",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "物理旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-18",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "physics-2026-07-30-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-04-math",
+      "date": "2026-08-04",
+      "subject": "数学",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "数学旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-18",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "math-2026-08-03-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-05-chemistry",
+      "date": "2026-08-05",
+      "subject": "化学",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "化学旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-15",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chemistry-2026-07-29-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-06-chinese",
+      "date": "2026-08-06",
+      "subject": "语文",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "语文旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-18",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chinese-2026-07-28-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-07-russian",
+      "date": "2026-08-07",
+      "subject": "俄语",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "俄语旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-17",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "russian-2026-07-29-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-08-biology",
+      "date": "2026-08-08",
+      "subject": "生物",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "生物旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-17",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "biology-2026-07-30-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-09-physics",
+      "date": "2026-08-09",
+      "subject": "物理",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "物理旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-18",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "physics-2026-07-31-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-10-math",
+      "date": "2026-08-10",
+      "subject": "数学",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "数学旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-20",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "math-2026-08-05-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-11-chemistry",
+      "date": "2026-08-11",
+      "subject": "化学",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "化学旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 90,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-17",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chemistry-2026-07-30-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-12-chinese",
+      "date": "2026-08-12",
+      "subject": "语文",
+      "kind": "travel_independent",
+      "tutorLane": "旅行自主",
+      "title": "语文旅行自主作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 60,
+      "overflowMinutes": 0,
+      "fallbackDate": "2026-08-18",
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chinese-2026-07-29-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-13-russian",
+      "date": "2026-08-13",
+      "subject": "俄语",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "俄语家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 270,
+      "overflowMinutes": 180,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "russian-2026-07-30-01",
+        "russian-2026-07-31-01",
+        "russian-2026-08-01-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-13-chemistry",
+      "date": "2026-08-13",
+      "subject": "化学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "化学家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 150,
+      "overflowMinutes": 0,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "chemistry-2026-07-26-01",
+        "chemistry-2026-07-31-01",
+        "chemistry-2026-08-01-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-13-biology",
+      "date": "2026-08-13",
+      "subject": "生物",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "生物家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 225,
+      "overflowMinutes": 135,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "biology-2026-07-31-01",
+        "biology-2026-08-01-01",
+        "biology-2026-08-02-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-14-chinese",
+      "date": "2026-08-14",
+      "subject": "语文",
+      "kind": "tutor_homework",
+      "tutorLane": "考背",
+      "title": "语文考背课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 255,
+      "overflowMinutes": 165,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chinese-2026-07-26-01",
+        "chinese-2026-07-30-01",
+        "chinese-2026-07-31-01",
+        "chinese-2026-08-01-01",
+        "chinese-2026-08-02-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-14-math",
+      "date": "2026-08-14",
+      "subject": "数学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "数学家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 150,
+      "overflowMinutes": 60,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "math-2026-07-26-01",
+        "math-2026-08-02-01",
+        "math-2026-08-07-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-14-physics",
+      "date": "2026-08-14",
+      "subject": "物理",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "物理家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 210,
+      "overflowMinutes": 60,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "physics-2026-07-26-01",
+        "physics-2026-08-01-01",
+        "physics-2026-08-02-01",
+        "physics-2026-08-03-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-15-russian",
+      "date": "2026-08-15",
+      "subject": "俄语",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "俄语家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 270,
+      "overflowMinutes": 120,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "russian-2026-08-02-01",
+        "russian-2026-08-03-01",
+        "russian-2026-08-04-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-15-chemistry",
+      "date": "2026-08-15",
+      "subject": "化学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "化学家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 195,
+      "overflowMinutes": 105,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chemistry-2026-08-02-01",
+        "chemistry-2026-08-03-01",
+        "chemistry-2026-08-04-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-15-biology",
+      "date": "2026-08-15",
+      "subject": "生物",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "生物家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 270,
+      "overflowMinutes": 180,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "biology-2026-08-03-01",
+        "biology-2026-08-04-01",
+        "biology-2026-08-05-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-17-russian",
+      "date": "2026-08-17",
+      "subject": "俄语",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "俄语家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 270,
+      "overflowMinutes": 180,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "russian-2026-08-05-01",
+        "russian-2026-08-06-01",
+        "russian-2026-08-07-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-17-chemistry",
+      "date": "2026-08-17",
+      "subject": "化学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "化学家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 270,
+      "overflowMinutes": 120,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "chemistry-2026-08-05-01",
+        "chemistry-2026-08-06-01",
+        "chemistry-2026-08-07-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-17-biology",
+      "date": "2026-08-17",
+      "subject": "生物",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "生物家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 90,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "biology-2026-08-06-01",
+        "biology-2026-08-07-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-18-chinese",
+      "date": "2026-08-18",
+      "subject": "语文",
+      "kind": "tutor_homework",
+      "tutorLane": "考背",
+      "title": "语文考背课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 360,
+      "overflowMinutes": 270,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chinese-2026-08-03-01",
+        "chinese-2026-08-04-01",
+        "chinese-2026-08-05-01",
+        "chinese-2026-08-06-01",
+        "chinese-2026-08-07-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-18-math",
+      "date": "2026-08-18",
+      "subject": "数学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "数学家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 210,
+      "overflowMinutes": 60,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "math-2026-08-08-01",
+        "math-2026-08-09-01",
+        "math-2026-08-10-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-18-physics",
+      "date": "2026-08-18",
+      "subject": "物理",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "物理家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 360,
+      "overflowMinutes": 270,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "physics-2026-08-04-01",
+        "physics-2026-08-05-01",
+        "physics-2026-08-06-01",
+        "physics-2026-08-07-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-19-russian",
+      "date": "2026-08-19",
+      "subject": "俄语",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "俄语家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 270,
+      "overflowMinutes": 120,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "russian-2026-08-08-01",
+        "russian-2026-08-09-01",
+        "russian-2026-08-10-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-19-chemistry",
+      "date": "2026-08-19",
+      "subject": "化学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "化学家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 150,
+      "overflowMinutes": 60,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chemistry-2026-08-08-01",
+        "chemistry-2026-08-09-01",
+        "chemistry-2026-08-13-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-19-biology",
+      "date": "2026-08-19",
+      "subject": "生物",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "生物家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 135,
+      "overflowMinutes": 45,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "biology-2026-08-08-01",
+        "biology-2026-08-09-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-20-chinese",
+      "date": "2026-08-20",
+      "subject": "语文",
+      "kind": "tutor_homework",
+      "tutorLane": "考背",
+      "title": "语文考背课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 315,
+      "overflowMinutes": 225,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chinese-2026-08-08-01",
+        "chinese-2026-08-09-01",
+        "chinese-2026-08-10-01",
+        "chinese-2026-08-11-01",
+        "chinese-2026-08-12-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-20-math",
+      "date": "2026-08-20",
+      "subject": "数学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "数学家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 270,
+      "overflowMinutes": 180,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "math-2026-08-11-01",
+        "math-2026-08-12-01",
+        "math-2026-08-14-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-20-physics",
+      "date": "2026-08-20",
+      "subject": "物理",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "物理家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 255,
+      "overflowMinutes": 105,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "physics-2026-08-08-01",
+        "physics-2026-08-09-01",
+        "physics-2026-08-10-01",
+        "physics-2026-08-11-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-21-russian",
+      "date": "2026-08-21",
+      "subject": "俄语",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "俄语家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 90,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "russian-2026-08-11-01",
+        "russian-2026-08-12-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-21-chemistry",
+      "date": "2026-08-21",
+      "subject": "化学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "化学家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 135,
+      "overflowMinutes": 0,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "chemistry-2026-08-15-01",
+        "chemistry-2026-08-16-01",
+        "chemistry-2026-08-17-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-21-biology",
+      "date": "2026-08-21",
+      "subject": "生物",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "生物家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 90,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "biology-2026-08-10-01",
+        "biology-2026-08-11-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-22-chinese",
+      "date": "2026-08-22",
+      "subject": "语文",
+      "kind": "tutor_homework",
+      "tutorLane": "考背",
+      "title": "语文考背课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 300,
+      "overflowMinutes": 210,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chinese-2026-08-13-01",
+        "chinese-2026-08-14-01",
+        "chinese-2026-08-15-01",
+        "chinese-2026-08-16-01",
+        "chinese-2026-08-17-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-22-math",
+      "date": "2026-08-22",
+      "subject": "数学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "数学家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 210,
+      "overflowMinutes": 60,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "math-2026-08-16-01",
+        "math-2026-08-18-01",
+        "math-2026-08-19-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-22-physics",
+      "date": "2026-08-22",
+      "subject": "物理",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "物理家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 255,
+      "overflowMinutes": 165,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "physics-2026-08-12-01",
+        "physics-2026-08-13-01",
+        "physics-2026-08-14-01",
+        "physics-2026-08-15-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-24-chinese",
+      "date": "2026-08-24",
+      "subject": "语文",
+      "kind": "tutor_homework",
+      "tutorLane": "考背",
+      "title": "语文考背课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 360,
+      "overflowMinutes": 270,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chinese-2026-08-18-01",
+        "chinese-2026-08-19-01",
+        "chinese-2026-08-20-01",
+        "chinese-2026-08-21-01",
+        "chinese-2026-08-22-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-24-math",
+      "date": "2026-08-24",
+      "subject": "数学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "数学家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 225,
+      "overflowMinutes": 135,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "math-2026-08-20-01",
+        "math-2026-08-22-01",
+        "math-2026-08-23-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-24-physics",
+      "date": "2026-08-24",
+      "subject": "物理",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "物理家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 315,
+      "overflowMinutes": 165,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "physics-2026-08-16-01",
+        "physics-2026-08-17-01",
+        "physics-2026-08-18-01",
+        "physics-2026-08-19-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-25-russian",
+      "date": "2026-08-25",
+      "subject": "俄语",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "俄语家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 30,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "russian-2026-08-13-01",
+        "russian-2026-08-14-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-25-chemistry",
+      "date": "2026-08-25",
+      "subject": "化学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "化学家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 60,
+      "overflowMinutes": 0,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chemistry-2026-08-18-01",
+        "chemistry-2026-08-19-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-25-biology",
+      "date": "2026-08-25",
+      "subject": "生物",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "生物家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 90,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "biology-2026-08-12-01",
+        "biology-2026-08-13-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-26-chinese",
+      "date": "2026-08-26",
+      "subject": "语文",
+      "kind": "tutor_homework",
+      "tutorLane": "考背",
+      "title": "语文考背课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 255,
+      "overflowMinutes": 165,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chinese-2026-08-22-02",
+        "chinese-2026-08-23-01",
+        "chinese-2026-08-24-01",
+        "chinese-2026-08-25-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-26-math",
+      "date": "2026-08-26",
+      "subject": "数学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "数学家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 165,
+      "overflowMinutes": 15,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "math-2026-08-24-01",
+        "math-2026-08-25-01",
+        "math-2026-08-26-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-26-physics",
+      "date": "2026-08-26",
+      "subject": "物理",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "物理家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 210,
+      "overflowMinutes": 120,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "physics-2026-08-20-01",
+        "physics-2026-08-21-01",
+        "physics-2026-08-22-01",
+        "physics-2026-08-23-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-27-russian",
+      "date": "2026-08-27",
+      "subject": "俄语",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "俄语家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 90,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "russian-2026-08-15-01",
+        "russian-2026-08-16-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-27-chemistry",
+      "date": "2026-08-27",
+      "subject": "化学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "化学家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 60,
+      "overflowMinutes": 0,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "chemistry-2026-08-20-01",
+        "chemistry-2026-08-21-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-27-biology",
+      "date": "2026-08-27",
+      "subject": "生物",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "生物家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 90,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "biology-2026-08-14-01",
+        "biology-2026-08-15-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-28-chinese",
+      "date": "2026-08-28",
+      "subject": "语文",
+      "kind": "tutor_homework",
+      "tutorLane": "考背",
+      "title": "语文考背课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 255,
+      "overflowMinutes": 165,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chinese-2026-08-26-01",
+        "chinese-2026-08-27-01",
+        "chinese-2026-08-28-01",
+        "chinese-2026-08-29-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-28-math",
+      "date": "2026-08-28",
+      "subject": "数学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "数学家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 75,
+      "overflowMinutes": 0,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "math-2026-08-28-01",
+        "math-2026-08-29-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-28-physics",
+      "date": "2026-08-28",
+      "subject": "物理",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "物理家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 135,
+      "overflowMinutes": 0,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "physics-2026-08-24-01",
+        "physics-2026-08-26-01",
+        "physics-2026-08-28-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-29-russian",
+      "date": "2026-08-29",
+      "subject": "俄语",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "俄语家教课内作业",
+      "capacityMinutes": 150,
+      "estimatedMinutes": 180,
+      "overflowMinutes": 30,
+      "fallbackDate": null,
+      "supplementMinutes": 60,
+      "taskIds": [
+        "russian-2026-08-17-01",
+        "russian-2026-08-18-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-29-chemistry",
+      "date": "2026-08-29",
+      "subject": "化学",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "化学家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 75,
+      "overflowMinutes": 0,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "chemistry-2026-08-25-01",
+        "chemistry-2026-08-27-01"
+      ]
+    },
+    {
+      "sourceKey": "daily-2026-2026-08-29-biology",
+      "date": "2026-08-29",
+      "subject": "生物",
+      "kind": "tutor_homework",
+      "tutorLane": "本科",
+      "title": "生物家教课内作业",
+      "capacityMinutes": 90,
+      "estimatedMinutes": 60,
+      "overflowMinutes": 0,
+      "fallbackDate": null,
+      "supplementMinutes": 0,
+      "taskIds": [
+        "biology-2026-08-21-01",
+        "biology-2026-08-25-01"
+      ]
+    }
+  ]
+}

@@ -47,7 +47,6 @@ export const PRE_TRAVEL_BLOCKS: readonly PreTravelBlock[] = [
   { date: "2026-07-22", taskId: "russian-2026-07-26-01", subject: "俄语", label: "强基训练7", plannedMinutes: 90 },
   { date: "2026-07-23", taskId: "math-2026-07-29-01", subject: "数学", label: "作业5", plannedMinutes: 90 },
   { date: "2026-07-24", taskId: "biology-2026-07-27-01", subject: "生物", label: "测试一选择", plannedMinutes: 90 },
-  { date: "2026-07-24", taskId: "biology-2026-07-28-01", subject: "生物", label: "测试一非选择起步", plannedMinutes: 45 },
   { date: "2026-07-25", taskId: "physics-2026-07-28-01", subject: "物理", label: "作业9", plannedMinutes: 90 },
 ] as const;
 
@@ -60,37 +59,19 @@ export const TRAVEL_SOFT_TASKS: readonly TravelSoftTask[] = [
   { travelDate: "2026-07-31", taskId: "chinese-2026-07-27-01", subject: "语文", shortLabel: "套三除作文外", fallbackDate: "2026-08-14" },
   { travelDate: "2026-08-01", taskId: "russian-2026-07-28-01", subject: "俄语", shortLabel: "强基训练9", fallbackDate: "2026-08-15" },
   { travelDate: "2026-08-02", taskId: "biology-2026-07-29-01", subject: "生物", shortLabel: "测试二选择", fallbackDate: "2026-08-15" },
-  { travelDate: "2026-08-03", taskId: "physics-2026-07-30-01", subject: "物理", shortLabel: "作业11", fallbackDate: "2026-08-16" },
+  { travelDate: "2026-08-03", taskId: "physics-2026-07-30-01", subject: "物理", shortLabel: "作业11", fallbackDate: "2026-08-18" },
   { travelDate: "2026-08-04", taskId: "math-2026-08-03-01", subject: "数学", shortLabel: "作业7", fallbackDate: "2026-08-18" },
   { travelDate: "2026-08-05", taskId: "chemistry-2026-07-29-01", subject: "化学", shortLabel: "必刷题（八）", fallbackDate: "2026-08-15" },
-  { travelDate: "2026-08-06", taskId: "chinese-2026-07-28-01", subject: "语文", shortLabel: "套三作文", fallbackDate: "2026-08-16" },
+  { travelDate: "2026-08-06", taskId: "chinese-2026-07-28-01", subject: "语文", shortLabel: "套三作文", fallbackDate: "2026-08-18" },
   { travelDate: "2026-08-07", taskId: "russian-2026-07-29-01", subject: "俄语", shortLabel: "强基训练10", fallbackDate: "2026-08-17" },
-  { travelDate: "2026-08-08", taskId: "biology-2026-07-30-01", subject: "生物", shortLabel: "测试二非选择", fallbackDate: "2026-08-16" },
+  { travelDate: "2026-08-08", taskId: "biology-2026-07-30-01", subject: "生物", shortLabel: "测试二非选择", fallbackDate: "2026-08-17" },
   { travelDate: "2026-08-09", taskId: "physics-2026-07-31-01", subject: "物理", shortLabel: "作业12", fallbackDate: "2026-08-18" },
   { travelDate: "2026-08-10", taskId: "math-2026-08-05-01", subject: "数学", shortLabel: "作业8", fallbackDate: "2026-08-20" },
   { travelDate: "2026-08-11", taskId: "chemistry-2026-07-30-01", subject: "化学", shortLabel: "必刷题（九）", fallbackDate: "2026-08-17" },
   { travelDate: "2026-08-12", taskId: "chinese-2026-07-29-01", subject: "语文", shortLabel: "《红楼梦》31—40回阅读", fallbackDate: "2026-08-18" },
 ] as const;
 
-export const RECOVERY_DAY_RULES: readonly RecoveryDayRule[] = [
-  { date: "2026-08-13", convertedSubjects: ["俄语", "化学", "生物"], restoredSubjects: [], chineseExtraBlock: false },
-  { date: "2026-08-14", convertedSubjects: ["数学", "物理"], restoredSubjects: [], chineseExtraBlock: true },
-  { date: "2026-08-15", convertedSubjects: ["俄语", "化学", "生物"], restoredSubjects: [], chineseExtraBlock: false },
-  { date: "2026-08-16", convertedSubjects: [], restoredSubjects: [], chineseExtraBlock: false, concentratedFallbackLimit: 4 },
-  { date: "2026-08-17", convertedSubjects: ["俄语", "化学", "生物"], restoredSubjects: [], chineseExtraBlock: false },
-  { date: "2026-08-18", convertedSubjects: ["数学", "物理"], restoredSubjects: [], chineseExtraBlock: true },
-  { date: "2026-08-19", convertedSubjects: ["俄语", "化学", "生物"], restoredSubjects: [], chineseExtraBlock: false },
-  { date: "2026-08-20", convertedSubjects: ["数学", "物理"], restoredSubjects: [], chineseExtraBlock: true },
-  { date: "2026-08-21", convertedSubjects: ["化学", "生物"], restoredSubjects: ["俄语"], chineseExtraBlock: false },
-  { date: "2026-08-22", convertedSubjects: ["数学", "物理"], restoredSubjects: [], chineseExtraBlock: true },
-  { date: "2026-08-23", convertedSubjects: [], restoredSubjects: [], chineseExtraBlock: false, concentratedFallbackLimit: 4 },
-  { date: "2026-08-24", convertedSubjects: ["物理"], restoredSubjects: ["数学"], chineseExtraBlock: true },
-  { date: "2026-08-25", convertedSubjects: ["生物"], restoredSubjects: ["俄语", "化学"], chineseExtraBlock: false },
-  { date: "2026-08-26", convertedSubjects: [], restoredSubjects: ["数学", "物理"], chineseExtraBlock: true },
-  { date: "2026-08-27", convertedSubjects: [], restoredSubjects: ["俄语", "化学", "生物"], chineseExtraBlock: false },
-  { date: "2026-08-28", convertedSubjects: [], restoredSubjects: ["数学", "物理"], chineseExtraBlock: true },
-  { date: "2026-08-29", convertedSubjects: [], restoredSubjects: ["俄语", "化学", "生物"], chineseExtraBlock: false },
-] as const;
+export const RECOVERY_DAY_RULES: readonly RecoveryDayRule[] = [] as const;
 
 const travelTaskById = new Map(TRAVEL_SOFT_TASKS.map((item) => [item.taskId, item]));
 const fullyFrontloadedTaskIds = new Set(PRE_TRAVEL_BLOCKS.filter((item) => item.plannedMinutes === 90).map((item) => item.taskId));
@@ -168,9 +149,9 @@ export function scheduledDateForTask(
   progress: Record<string, TaskProgress>,
   referenceDate: string,
 ): string | null {
-  if (overrides[task.id]) return overrides[task.id].date;
   const travelMeta = travelTaskMeta(task, progress[task.id], referenceDate);
   if (travelMeta) return travelMeta.plannedDate;
+  if (overrides[task.id]) return overrides[task.id].date;
   const frontloaded = PRE_TRAVEL_BLOCKS.find((item) => item.taskId === task.id && item.plannedMinutes === 90);
   if (frontloaded) return frontloaded.date;
   if (isDeferredTravelBacklogTask(task) || isDeferredTravelReviewTask(task)) return null;

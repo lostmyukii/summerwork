@@ -22,6 +22,7 @@
     "supabase:push": "node --env-file-if-exists=.env.local scripts/push-supabase.mjs",
     "supabase:sync-plan": "node --env-file-if-exists=.env.local scripts/sync-summer-plan.mjs",
     "supabase:sync-prestudy": "node --env-file-if-exists=.env.local scripts/sync-prestudy-plan.mjs",
+    "supabase:sync-daily": "node --env-file-if-exists=.env.local scripts/sync-daily-dual-track.mjs",
     "supabase:verify": "node --env-file-if-exists=.env.local scripts/verify-supabase-permissions.mjs"
   },
   "dependencies": {

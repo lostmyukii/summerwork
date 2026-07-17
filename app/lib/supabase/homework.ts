@@ -94,6 +94,21 @@ type HomeworkVersionSummaryRow = {
 type NotificationRow = { id: number; notification_type: string; title: string; body: string; read_at: string | null; created_at: string };
 type WeeklyReportRow = { id: string; week_start: string; week_end: string; metrics: Record<string, number>; narrative: string; generated_at: string };
 type PlanVersionStatusRow = { catalog_id: string; applied_version: number; available_version: number; update_available: boolean };
+type StudyBlockRow = {
+  id: string;
+  source_key: string;
+  planned_date: string;
+  block_kind: "tutor_homework" | "travel_independent";
+  tutor_lane: "本科" | "考背" | "生物课内共享" | "旅行自主";
+  title: string;
+  capacity_minutes: number;
+  estimated_minutes: number;
+  overflow_minutes: number;
+  supplement_minutes: number;
+  fallback_date: string | null;
+  task_count: number;
+};
+type StudyBlockItemRow = { block_id: string; task_id: string; sort_order: number };
 
 type ActivityRow = {
   task_id: string;
@@ -325,17 +340,50 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
     prestudyCourseSlots: prestudyWorkspace.courseSlots,
   };
 
-  const taskRows = requireData(
-    await client
+  const [taskResult, studyBlockResult] = await Promise.all([
+    client
       .from("homework_tasks")
       .select(TASK_SELECT)
       .eq("student_id", studentId)
       .is("deleted_at", null)
       .order("planned_date"),
-    "读取暑期作业",
-  ) as TaskRow[];
-
-  const tasks = taskRows.map(toWorkspaceTask);
+    client
+      .from("study_block_overview")
+      .select("id,source_key,planned_date,block_kind,tutor_lane,title,capacity_minutes,estimated_minutes,overflow_minutes,supplement_minutes,fallback_date,task_count")
+      .eq("student_id", studentId)
+      .order("planned_date"),
+  ]);
+  const taskRows = requireData(taskResult, "读取暑期作业") as TaskRow[];
+  const studyBlockRows = requireData(studyBlockResult, "读取逐日作业块") as StudyBlockRow[];
+  const studyBlockItems = await requireChunkedData<StudyBlockItemRow>(studyBlockRows.map((block) => block.id), "读取作业块任务映射", (chunk) => (
+    client.from("study_block_items").select("block_id,task_id,sort_order").in("block_id", chunk)
+  ));
+  const studyBlockById = new Map(studyBlockRows.map((block) => [block.id, block]));
+  const studyBlockItemByTask = new Map(studyBlockItems.map((item) => [item.task_id, item]));
+  const tasks = taskRows.map((row) => {
+    const task = toWorkspaceTask(row);
+    const item = studyBlockItemByTask.get(row.id);
+    const block = item ? studyBlockById.get(item.block_id) : undefined;
+    if (!item || !block) return task;
+    return {
+      ...task,
+      studyBlock: {
+        id: block.id,
+        sourceKey: block.source_key,
+        date: block.planned_date,
+        kind: block.block_kind,
+        tutorLane: block.tutor_lane,
+        title: block.title,
+        capacityMinutes: block.capacity_minutes,
+        estimatedMinutes: block.estimated_minutes,
+        overflowMinutes: block.overflow_minutes,
+        supplementMinutes: block.supplement_minutes,
+        fallbackDate: block.fallback_date ?? undefined,
+        taskCount: block.task_count,
+        sortOrder: item.sort_order,
+      },
+    };
+  });
   if (tasks.length === 0) return { tasks, progress: {}, overrides: {}, audit: [], role: membership.role, userId, remoteEnabled: true, ...workspaceExtras };
   const taskIds = tasks.map((task) => task.id);
   const homeworkIds = [...new Set(taskRows.map((task) => task.homework_id).filter((id): id is string => Boolean(id)))];

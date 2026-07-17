@@ -1,6 +1,6 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { PRESTUDY_LESSONS } from "../prestudy-plan";
-import { SUMMER_PLAN, type SummerSubject } from "../summer-plan";
+import type { SummerSubject } from "../summer-plan";
 import type {
   PrestudyCourseSlot,
   PrestudyKnowledgeItem,
@@ -84,11 +84,11 @@ export function previewPrestudyLessons(): PrestudyLesson[] {
 }
 
 export function previewPrestudyCourseSlots(): PrestudyCourseSlot[] {
-  return SUMMER_PLAN.courseSchedule.flatMap((day) => day.date === "2026-08-12" ? [] : day.subjects.map((subject) => ({
-    subject,
-    date: day.date,
-    tutorLane: subject === "语文" ? "考背" as const : "本科" as const,
-  })));
+  return PRESTUDY_LESSONS.map((lesson) => ({
+    subject: lesson.subject,
+    date: lesson.plannedDate,
+    tutorLane: lesson.tutorLane,
+  }));
 }
 
 export async function loadPrestudyWorkspace(client: SupabaseClient, studentId: string): Promise<{
