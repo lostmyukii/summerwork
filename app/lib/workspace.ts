@@ -46,6 +46,7 @@ export type SubmissionCheckpointSummary = {
 
 export type TaskProgress = {
   runState: StudentRunState;
+  completedAt?: string;
   unknown: string;
   accuracy: string;
   wrongNumbers: string;
@@ -65,6 +66,27 @@ export type TaskProgress = {
   actualSeconds?: number;
   activeStartedAt?: string;
   updatedAt?: string;
+};
+
+export type SubmissionTimingState =
+  | "not_required"
+  | "pending"
+  | "completed_pending"
+  | "overdue_incomplete"
+  | "overdue_completed"
+  | "submitted_on_time"
+  | "submitted_late"
+  | "submitted_unknown_time";
+
+export type SubmissionTiming = {
+  state: SubmissionTimingState;
+  label: string;
+  detail: string;
+  tone: "gray" | "orange" | "red" | "green";
+  deadlineAt?: string;
+  completedAt?: string;
+  submittedAt?: string;
+  lateDays?: number;
 };
 
 export type PlanOverride = {
@@ -167,5 +189,120 @@ export function evidenceFor(progress: TaskProgress, requiresSubmission = true): 
     redoPassed: progress.redoPassed,
     masteryConfirmed: progress.masteryConfirmed,
     requiredSubmissionConfirmed: !requiresSubmission || progress.schoolSubmitted,
+  };
+}
+
+function taskDeadlineAt(task: Pick<SummerTask, "deadlineAt" | "deadlineDate">): string | undefined {
+  if (task.deadlineAt && Number.isFinite(Date.parse(task.deadlineAt))) return task.deadlineAt;
+  if (!task.deadlineDate) return undefined;
+  return `${task.deadlineDate}T23:59:59+08:00`;
+}
+
+function displayAt(value: string): string {
+  const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) return value;
+  return new Intl.DateTimeFormat("zh-CN", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(date);
+}
+
+function submissionDetail(prefix: string, completedAt?: string, submittedAt?: string): string {
+  const parts = [prefix];
+  if (completedAt) parts.push(`首次完成 ${displayAt(completedAt)}`);
+  if (submittedAt) parts.push(`提交确认 ${displayAt(submittedAt)}`);
+  return parts.join(" · ");
+}
+
+export function deriveSubmissionTiming(
+  task: Pick<SummerTask, "requiresSubmission" | "deadlineAt" | "deadlineDate">,
+  progress: TaskProgress,
+  referenceAt = new Date().toISOString(),
+): SubmissionTiming {
+  if (!task.requiresSubmission) {
+    return { state: "not_required", label: "无需提交", detail: "本任务没有学校平台提交要求", tone: "gray" };
+  }
+
+  const deadlineAt = taskDeadlineAt(task);
+  const completedAt = progress.completedAt;
+  const submittedAt = progress.schoolSubmittedAt;
+  if (progress.schoolSubmitted) {
+    if (!submittedAt || !deadlineAt) {
+      return {
+        state: "submitted_unknown_time",
+        label: "已提交·时间待确认",
+        detail: submissionDetail(deadlineAt ? `学校截止 ${displayAt(deadlineAt)}` : "学校截止待确认", completedAt, submittedAt),
+        tone: "green",
+        deadlineAt,
+        completedAt,
+        submittedAt,
+      };
+    }
+    const delay = Date.parse(submittedAt) - Date.parse(deadlineAt);
+    if (delay <= 0) {
+      return {
+        state: "submitted_on_time",
+        label: "按时提交",
+        detail: submissionDetail(`学校截止 ${displayAt(deadlineAt)}`, completedAt, submittedAt),
+        tone: "green",
+        deadlineAt,
+        completedAt,
+        submittedAt,
+      };
+    }
+    const lateDays = Math.max(1, Math.ceil(delay / 86_400_000));
+    return {
+      state: "submitted_late",
+      label: `已补交·逾期${lateDays}天`,
+      detail: submissionDetail(`学校原截止 ${displayAt(deadlineAt)}`, completedAt, submittedAt),
+      tone: "green",
+      deadlineAt,
+      completedAt,
+      submittedAt,
+      lateDays,
+    };
+  }
+
+  const overdue = Boolean(deadlineAt && Date.parse(referenceAt) > Date.parse(deadlineAt));
+  if (overdue && deadlineAt && progress.runState === "completed") {
+    return {
+      state: "overdue_completed",
+      label: "已完成·待补交",
+      detail: submissionDetail(`学校原截止 ${displayAt(deadlineAt)}`, completedAt),
+      tone: "red",
+      deadlineAt,
+      completedAt,
+    };
+  }
+  if (overdue && deadlineAt) {
+    return {
+      state: "overdue_incomplete",
+      label: "逾期待补交",
+      detail: submissionDetail(`学校原截止 ${displayAt(deadlineAt)}`),
+      tone: "red",
+      deadlineAt,
+    };
+  }
+  if (progress.runState === "completed") {
+    return {
+      state: "completed_pending",
+      label: "已完成·待提交",
+      detail: submissionDetail(deadlineAt ? `学校截止 ${displayAt(deadlineAt)}` : "学校截止待确认", completedAt),
+      tone: "orange",
+      deadlineAt,
+      completedAt,
+    };
+  }
+  return {
+    state: "pending",
+    label: "待提交",
+    detail: deadlineAt ? `学校截止 ${displayAt(deadlineAt)}` : "学校截止待确认",
+    tone: "orange",
+    deadlineAt,
   };
 }

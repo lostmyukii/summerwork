@@ -98,6 +98,7 @@ type ActivityRow = {
   task_id: string;
   run_state: TaskProgress["runState"];
   unknown_numbers: string[];
+  completed_at: string | null;
   updated_at: string;
 };
 
@@ -316,7 +317,7 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
   const homeworkIds = [...new Set(taskRows.map((task) => task.homework_id).filter((id): id is string => Boolean(id)))];
 
   const [activityResult, reviewResult, changeResult, workflowResult, checkpointResult, linkResult, homeworkResult] = await Promise.all([
-    client.from("student_task_activity").select("task_id,run_state,unknown_numbers,updated_at").in("task_id", taskIds),
+    client.from("student_task_activity").select("task_id,run_state,unknown_numbers,completed_at,updated_at").in("task_id", taskIds),
     client.from("task_reviews").select("task_id,accuracy_band,wrong_numbers,error_tags,note,correction_passed,redo_required,redo_passed,mastery_confirmed,review_confirmed_at,review_saved_at,school_submitted_at,updated_at").in("task_id", taskIds),
     client.from("task_plan_changes").select("id,task_id,old_date,new_date,reason,changed_by,created_at").in("task_id", taskIds).order("created_at", { ascending: false }),
     client.from("task_workflow_current").select("task_id,stage,actual_seconds,active_started_at,version,updated_at").in("task_id", taskIds),
@@ -402,6 +403,7 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
     progress[task.id] = {
       ...blankTaskProgress(),
       runState: activity?.run_state ?? "ready",
+      completedAt: activity?.completed_at ?? undefined,
       unknown: activity?.unknown_numbers?.join("、") ?? "",
       accuracy: review ? ACCURACY_COPY[review.accuracy_band] : "70%—89%",
       wrongNumbers: review?.wrong_numbers?.join("、") ?? "",

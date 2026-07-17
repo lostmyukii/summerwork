@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { canCloseLoop, deriveWorkflowState } from "../app/lib/workflow";
-import { blankTaskProgress, evidenceFor } from "../app/lib/workspace";
+import { blankTaskProgress, deriveSubmissionTiming, evidenceFor } from "../app/lib/workspace";
 
 describe("逐任务独立闭环状态", () => {
   it("每个任务获得独立的错误标签数组", () => {
@@ -41,5 +41,41 @@ describe("逐任务独立闭环状态", () => {
       schoolSubmitted: true,
     });
     expect(deriveWorkflowState(evidence)).toBe("awaiting_correction");
+  });
+
+  it("学校提交状态由原截止、首次完成和实际提交时间派生", () => {
+    const task = {
+      requiresSubmission: true,
+      deadlineDate: "2026-08-13",
+      deadlineAt: "2026-08-13T21:00:00+08:00",
+    };
+    const pending = blankTaskProgress();
+    expect(deriveSubmissionTiming(task, pending, "2026-08-13T12:00:00+08:00").state).toBe("pending");
+
+    const completed = { ...pending, runState: "completed" as const, completedAt: "2026-08-13T20:00:00+08:00" };
+    expect(deriveSubmissionTiming(task, completed, "2026-08-14T08:00:00+08:00")).toEqual(expect.objectContaining({
+      state: "overdue_completed",
+      label: "已完成·待补交",
+      completedAt: "2026-08-13T20:00:00+08:00",
+    }));
+
+    const late = { ...completed, schoolSubmitted: true, schoolSubmittedAt: "2026-08-15T09:00:00+08:00" };
+    expect(deriveSubmissionTiming(task, late, "2026-08-15T09:00:00+08:00")).toEqual(expect.objectContaining({
+      state: "submitted_late",
+      label: "已补交·逾期2天",
+      lateDays: 2,
+    }));
+
+    const onTime = { ...completed, schoolSubmitted: true, schoolSubmittedAt: "2026-08-13T20:30:00+08:00" };
+    expect(deriveSubmissionTiming(task, onTime, "2026-08-13T20:30:00+08:00").state).toBe("submitted_on_time");
+  });
+
+  it("无需提交和缺少提交时间不会被误判为按时", () => {
+    expect(deriveSubmissionTiming({ requiresSubmission: false, deadlineDate: null, deadlineAt: null }, blankTaskProgress()).state).toBe("not_required");
+    expect(deriveSubmissionTiming(
+      { requiresSubmission: true, deadlineDate: "2026-08-13", deadlineAt: null },
+      { ...blankTaskProgress(), schoolSubmitted: true },
+      "2026-08-14T12:00:00+08:00",
+    ).state).toBe("submitted_unknown_time");
   });
 });

@@ -36,6 +36,7 @@ import {
 } from "../lib/summer-plan";
 import {
   blankTaskProgress,
+  deriveSubmissionTiming,
   evidenceFor,
   type ArchivedHomeworkSummary,
   type AuditEntry,
@@ -163,6 +164,7 @@ function SummerPlanBrowser({
   progress: Record<string, TaskProgress>;
 }) {
   const referenceDate = currentPlanDate();
+  const submissionReferenceAt = new Date().toISOString();
   const defaultTutorSubject = planTasks.some((task) => task.subject === "数学") ? "数学" : planTasks[0]?.subject ?? "数学";
   const [selectedDate, setSelectedDate] = useState(role === "tutor" ? planTasks.find((task) => task.subject === defaultTutorSubject)?.date ?? planTasks[0]?.date ?? referenceDate : referenceDate);
   const [subject, setSubject] = useState<SummerSubject | "全部">(role === "tutor" ? defaultTutorSubject : "全部");
@@ -263,6 +265,7 @@ function SummerPlanBrowser({
       <div className="real-task-list">
         {tasks.length ? tasks.map((task) => {
           const travelMeta = travelTaskMeta(task, progress[task.id], referenceDate);
+          const submissionTiming = deriveSubmissionTiming(task, progress[task.id] ?? blankTaskProgress(), submissionReferenceAt);
           return (
           <article className={`${task.uncertainty ? "real-task-card uncertain" : "real-task-card"}${travelMeta ? travelMeta.state === "overdue_recovery" ? " travel-recovery overdue" : travelMeta.state === "recovery" ? " travel-recovery" : " travel-soft" : ""}`} key={task.id}>
             <div className="real-task-top">
@@ -284,6 +287,7 @@ function SummerPlanBrowser({
               {task.requirementLevel === "optional" ? <StatusPill tone="gray">选做/拓展</StatusPill> : null}
               {task.uncertainty ? <StatusPill tone="red">计划存疑</StatusPill> : null}
               {travelMeta ? <StatusPill tone={travelMeta.state === "released" ? "green" : travelMeta.state === "overdue_recovery" ? "red" : "mint"}>{TRAVEL_STATE_COPY[travelMeta.state]}{travelMeta.remainingMinutes ? ` · 剩余${travelMeta.remainingMinutes}分钟` : ""}</StatusPill> : null}
+              {task.requiresSubmission ? <StatusPill tone={submissionTiming.tone}>{submissionTiming.label}</StatusPill> : null}
             </div>
             {task.notes ? <p className="task-note">{task.notes}</p> : null}
             <div className={role === "tutor" ? "task-card-actions" : undefined}>
@@ -478,7 +482,7 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
           window.localStorage.setItem(`summerwork:draft:${taskId}`, JSON.stringify({ unknown: next.unknown, intendedRunState: next.runState, savedAt: next.updatedAt }));
           setProgress((current) => ({
             ...current,
-            [taskId]: { ...(current[taskId] ?? next), runState: previous.runState, activeStartedAt: previous.activeStartedAt, actualSeconds: previous.actualSeconds },
+            [taskId]: { ...(current[taskId] ?? next), runState: previous.runState, completedAt: previous.completedAt, activeStartedAt: previous.activeStartedAt, actualSeconds: previous.actualSeconds },
           }));
           showToast("网络未同步；草稿已保留，请稍后重试");
           return false;
@@ -1301,6 +1305,7 @@ function TutorView(props: TutorViewProps) {
     !props.workflowTask.requiresSubmission || props.progress.schoolSubmitted,
   ].filter(Boolean).length;
   const taskRisk = props.planRisks.find((risk) => risk.taskIds.includes(props.workflowTask.id));
+  const submissionTiming = deriveSubmissionTiming(props.workflowTask, props.progress);
 
   return (
     <div className="page-content tutor-page">
@@ -1354,7 +1359,7 @@ function TutorView(props: TutorViewProps) {
             <div className="closure-head"><div><span>{props.workflowTask.subject} · {props.workflowTask.title}</span><strong>{closeLoopReadyLabel(props.closeLoopReady)}</strong></div><span className="closure-score">{completedSteps}/6</span></div>
             <StatusTrack label="作业流程" value={WORKFLOW_COPY[props.workflowState]} tone={props.workflowState === "closed_loop" ? "green" : "blue"} detail={props.progress.reviewSaved ? "批改记录已保存" : props.progress.runState === "completed" ? "等待家教批改" : "等待孩子独立完成"} />
             <StatusTrack label="知识掌握" value={MASTERY_COPY[props.masteryLevel].label} tone={MASTERY_COPY[props.masteryLevel].tone} detail="订正与复做证据单独判断" />
-            <StatusTrack label="学校提交" value={!props.workflowTask.requiresSubmission ? "无需提交" : props.progress.schoolSubmitted ? "已确认" : "待确认"} tone={!props.workflowTask.requiresSubmission || props.progress.schoolSubmitted ? "green" : "orange"} detail={!props.workflowTask.requiresSubmission ? "本任务无学校平台提交要求" : props.progress.schoolSubmittedAt ? `确认于 ${new Date(props.progress.schoolSubmittedAt).toLocaleString("zh-CN")}` : "不在本系统上传，只做提交标记"} />
+            <StatusTrack label="学校提交" value={submissionTiming.label} tone={submissionTiming.tone} detail={submissionTiming.detail} />
             <button className="primary-button full" type="button" onClick={() => props.setReviewOpen(true)}>继续处理闭环</button>
           </article>
 
@@ -1414,7 +1419,7 @@ function StudentView({ dailyCapacity, overrides, planTasks, progress, setWorkflo
   }
   async function completeTask() {
     setSyncing(true);
-    const saved = await updateTaskProgress(focusTask.id, { runState: "completed", actualSeconds: liveSeconds, activeStartedAt: undefined }, true);
+    const saved = await updateTaskProgress(focusTask.id, { runState: "completed", completedAt: focusProgress.completedAt ?? new Date().toISOString(), actualSeconds: liveSeconds, activeStartedAt: undefined }, true);
     setSyncing(false);
     if (saved) showToast("任务已完成，家教会看到待批改提醒");
   }
@@ -1478,6 +1483,7 @@ type ReviewPanelProps = {
 
 function ReviewPanel(props: ReviewPanelProps) {
   const hasErrors = props.progress.accuracy !== "100%" && normalizeQuestionNumbers(props.progress.wrongNumbers).length > 0;
+  const submissionTiming = deriveSubmissionTiming(props.task, props.progress);
   const canConfirmMastery = props.progress.reviewSaved
     && (!hasErrors || props.progress.correctionPassed)
     && (!props.progress.redoRequired || props.progress.redoPassed);
@@ -1500,7 +1506,7 @@ function ReviewPanel(props: ReviewPanelProps) {
         <div className="triple-track">
           <StatusTrack label="作业流程" value={WORKFLOW_COPY[props.workflowState]} tone={props.workflowState === "closed_loop" ? "green" : "blue"} detail="练习与订正" />
           <StatusTrack label="知识掌握" value={MASTERY_COPY[props.masteryLevel].label} tone={MASTERY_COPY[props.masteryLevel].tone} detail="证据单独判断" />
-          <StatusTrack label="学校提交" value={!props.task.requiresSubmission ? "无需提交" : props.progress.schoolSubmitted ? "已确认" : "待确认"} tone={!props.task.requiresSubmission || props.progress.schoolSubmitted ? "green" : "orange"} detail="外部平台标记" />
+          <StatusTrack label="学校提交" value={submissionTiming.label} tone={submissionTiming.tone} detail={submissionTiming.detail} />
         </div>
 
         <form className="review-form" onSubmit={(event) => { event.preventDefault(); void props.onSave(); }}>
