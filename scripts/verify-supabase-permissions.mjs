@@ -239,7 +239,7 @@ async function main() {
   assert(physicsSubjects.length === 1 && physicsSubjects[0] === "physics", "物理家教只能看到物理授权");
 
   const mathTasks = requireData(
-    await mathTutor.client.from("homework_tasks").select("id,subject_id,planned_date,version").eq("student_id", student.id).order("planned_date"),
+    await mathTutor.client.from("homework_tasks").select("id,template_id,subject_id,planned_date,version").eq("student_id", student.id).order("planned_date"),
     "数学家教读取本科任务",
   );
   assert(
@@ -255,6 +255,53 @@ async function main() {
     physicsTasks.length === expectedSubjectCounts["物理"] && physicsTasks.every((task) => task.subject_id === "physics"),
     `物理家教只能读取${expectedSubjectCounts["物理"]}条物理任务`,
   );
+
+  const travelMathTask = mathTasks.find((task) => task.template_id === "math-2026-07-31-01");
+  assert(Boolean(travelMathTask), "旅行期数学作业6真实任务存在");
+  const travelIdempotencyKey = randomUUID();
+  const travelScheduleInput = {
+    target_task_id: travelMathTask.id,
+    target_travel_date: "2026-07-29",
+    target_fallback_date: "2026-08-14",
+    target_planned_minutes: 90,
+    target_new_purpose: "数学作业6·旅行自主→返程补位",
+    change_reason: "家教到场节奏与学校提交倒排验收",
+    expected_version: 0,
+    target_idempotency_key: travelIdempotencyKey,
+  };
+  assert(
+    requireData(await mathTutor.client.rpc("set_travel_recovery_schedule", travelScheduleInput), "数学家教建立旅行补位") === 1,
+    "数学家教可按确认表建立旅行补位",
+  );
+  assert(
+    requireData(await mathTutor.client.rpc("set_travel_recovery_schedule", travelScheduleInput), "旅行补位幂等重试") === 1,
+    "旅行补位重复操作保持幂等",
+  );
+  const travelRows = requireData(
+    await mathTutor.client.from("task_travel_recovery_schedules").select("task_id,travel_date,fallback_date,planned_minutes,version").eq("task_id", travelMathTask.id),
+    "数学家教读取旅行补位",
+  );
+  assert(
+    travelRows.length === 1
+      && travelRows[0].travel_date === "2026-07-29"
+      && travelRows[0].fallback_date === "2026-08-14"
+      && travelRows[0].planned_minutes === 90
+      && travelRows[0].version === 1,
+    "数学作业6绑定7月29日软任务和8月14日补位",
+  );
+  const travelEvents = requireData(
+    await mathTutor.client.from("task_travel_recovery_events").select("id").eq("task_id", travelMathTask.id),
+    "读取旅行补位审计",
+  );
+  assert(travelEvents.length === 1, "旅行补位幂等重试不重复留痕");
+  const crossSubjectRecovery = await physicsTutor.client.rpc("set_travel_recovery_schedule", {
+    ...travelScheduleInput,
+    target_fallback_date: "2026-08-15",
+    change_reason: "跨科补位越权验收",
+    expected_version: 1,
+    target_idempotency_key: randomUUID(),
+  });
+  assert(Boolean(crossSubjectRecovery.error), "物理家教不能调整数学旅行补位");
 
   const movedDate = new Date(`${mathTasks[0].planned_date}T00:00:00Z`);
   movedDate.setUTCDate(movedDate.getUTCDate() + 1);
@@ -292,6 +339,36 @@ async function main() {
     "孩子读取本人全部任务",
   );
   assert(studentTasks.length === expectedTaskCount, `孩子可查看本人六科${expectedTaskCount}条任务`);
+
+  const studentRecoveryWrite = await studentAccount.client
+    .from("task_travel_recovery_schedules")
+    .update({ fallback_date: "2026-08-20" })
+    .eq("task_id", travelMathTask.id);
+  assert(Boolean(studentRecoveryWrite.error), "孩子不能直接修改旅行补位计划");
+  requireData(await studentAccount.client.rpc("record_student_task_event", {
+    target_task_id: travelMathTask.id,
+    target_event: "started",
+    target_unknown_numbers: ["6"],
+    expected_version: 1,
+    target_idempotency_key: randomUUID(),
+  }), "孩子开始旅行软任务");
+  requireData(await studentAccount.client.rpc("record_student_task_event", {
+    target_task_id: travelMathTask.id,
+    target_event: "completed",
+    target_unknown_numbers: ["6"],
+    expected_version: 2,
+    target_idempotency_key: randomUUID(),
+  }), "孩子完成旅行软任务");
+  const releasedRecovery = requireData(
+    await studentAccount.client.from("task_travel_recovery_status").select("recovery_state,remaining_minutes,released_at").eq("task_id", travelMathTask.id).single(),
+    "孩子读取旅行补位释放状态",
+  );
+  assert(
+    releasedRecovery.recovery_state === "released"
+      && releasedRecovery.remaining_minutes === 0
+      && Boolean(releasedRecovery.released_at),
+    "旅行软任务完成后自动释放返程补位且不复制作业",
+  );
 
   requireData(await studentAccount.client.rpc("record_student_task_event", {
     target_task_id: mathTasks[0].id,
