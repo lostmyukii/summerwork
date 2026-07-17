@@ -122,6 +122,7 @@ describe("Supabase 作业闭环结构与分科权限", () => {
     expect(prestudyMigration).toMatch(/prestudy_lessons_select_authorized[\s\S]*can_access_prestudy_lesson/);
     expect(prestudyMigration).toMatch(/mark_prestudy_led[\s\S]*is_subject_tutor/);
     expect(prestudyMigration).toMatch(/validate_prestudy_lesson[\s\S]*is_subject_tutor/);
+    expect(prestudyMigration).toMatch(/revise_prestudy_content[\s\S]*is_subject_tutor/);
     expect(prestudyMigration).not.toMatch(/prestudy_lessons_(insert|update)_authorized/);
   });
 
@@ -139,11 +140,20 @@ describe("Supabase 作业闭环结构与分科权限", () => {
     expect(prestudyMigration).toMatch(/revoke_prestudy_state[\s\S]*reason required/);
   });
 
+  it("分科家教可受控修改预习内容且历史知识点不会被物理删除", () => {
+    expect(prestudyMigration).toMatch(/revise_prestudy_content[\s\S]*prestudy_content_revised/);
+    expect(prestudyMigration).toMatch(/content_edited_at[\s\S]*content_edited_by/);
+    expect(prestudyMigration).toMatch(/prestudy_knowledge_items set active = false/);
+    expect(prestudyMigration).toMatch(/家教已更新预习内容/);
+  });
+
   it("预习同步脚本幂等同步23节并拒绝覆盖已带学内容", () => {
     expect(prestudySyncScript).toContain("prestudy-2026.json");
     expect(prestudySyncScript).toContain("prestudy_lessons");
     expect(prestudySyncScript).toContain("prestudy_execution_records");
     expect(prestudySyncScript).toMatch(/lessons\.length !== 23/);
     expect(prestudySyncScript).toMatch(/refuse|拒绝/i);
+    expect(prestudySyncScript).toMatch(/content_edited_at/);
+    expect(prestudySyncScript).toMatch(/tutorEditedLessonIds/);
   });
 });

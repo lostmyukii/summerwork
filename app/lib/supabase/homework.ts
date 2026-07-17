@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Role } from "../demo-data";
 import { weekdayFor, type RequirementLevel, type SummerTask, type SummerTaskKind } from "../summer-plan";
 import type { MasteryLevel, WorkflowState } from "../workflow";
+import { loadPrestudyWorkspace } from "./prestudy";
 import {
   blankTaskProgress,
   type ArchivedHomeworkSummary,
@@ -246,10 +247,11 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
 
   if (!studentId) return { tasks: [], progress: {}, overrides: {}, audit: [], role: membership.role, userId, remoteEnabled: true, familyId: membership.family_id, dailyBlockCapacity: family.daily_block_capacity };
 
-  const [notificationResult, weeklyReportResult, planVersionResult] = await Promise.all([
+  const [notificationResult, weeklyReportResult, planVersionResult, prestudyWorkspace] = await Promise.all([
     client.from("notifications").select("id,notification_type,title,body,read_at,created_at").eq("recipient_id", userId).order("created_at", { ascending: false }).limit(30),
     client.from("weekly_reports").select("id,week_start,week_end,metrics,narrative,generated_at").eq("student_id", studentId).order("week_start", { ascending: false }).limit(12),
     client.from("student_plan_version_status").select("catalog_id,applied_version,available_version,update_available").eq("student_id", studentId).limit(1).maybeSingle(),
+    loadPrestudyWorkspace(client, studentId),
   ]);
   const notificationRows = requireData(notificationResult, "读取站内通知") as NotificationRow[];
   const weeklyReportRows = requireData(weeklyReportResult, "读取周报") as WeeklyReportRow[];
@@ -319,6 +321,8 @@ export async function loadInitialWorkspace(client: SupabaseClient, userId: strin
       availableVersion: planVersionRow.available_version,
       updateAvailable: planVersionRow.update_available,
     } : undefined,
+    prestudyLessons: prestudyWorkspace.lessons,
+    prestudyCourseSlots: prestudyWorkspace.courseSlots,
   };
 
   const taskRows = requireData(

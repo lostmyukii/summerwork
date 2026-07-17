@@ -404,6 +404,10 @@ select pg_temp.expect_error(
   'subject tutor access required'
 );
 select pg_temp.expect_error(
+  'select public.revise_prestudy_content(''14141414-0000-4000-8000-000000000001''::uuid, ''越权'', ''输入'', ''拆解'', ''自测'', ''输出'', ''验收'', array[''知识点''], ''越权修改'', 1, ''16161616-0000-4000-8000-000000000012''::uuid)',
+  'subject tutor access required'
+);
+select pg_temp.expect_error(
   'select public.validate_prestudy_lesson(''14141414-0000-4000-8000-000000000002''::uuid, 2, ''{}''::uuid[], ''{}''::text[], 1, ''16161616-0000-4000-8000-000000000004''::uuid)',
   'prestudy lesson must be led before validation'
 );
@@ -438,14 +442,32 @@ select pg_temp.assert_true((
   select count(*) = 2 from public.prestudy_unmastered_items
   where lesson_id = '14141414-0000-4000-8000-000000000001'
 ), 'preset and custom unmastered knowledge should both be stored');
+select pg_temp.assert_true(public.revise_prestudy_content(
+  '14141414-0000-4000-8000-000000000001', '直线与圆预习',
+  '先读教材定义', '拆解两道例题', '完成四道自测', '输出方法卡',
+  '能区分直线与圆的位置关系', array['直线斜率', '圆的切线'],
+  '根据实际学情调整', 1, '16161616-0000-4000-8000-000000000013'
+) = 2, 'subject tutor should revise own prestudy content through the controlled command');
+select pg_temp.assert_true((
+  select title = '直线与圆预习' and version = 2 and content_edited_by = :'math_tutor_id'::uuid
+  from public.prestudy_lessons where id = '14141414-0000-4000-8000-000000000001'
+), 'content revision should keep editor and version');
+select pg_temp.assert_true((
+  select count(*) = 2 from public.prestudy_knowledge_items
+  where lesson_id = '14141414-0000-4000-8000-000000000001' and active
+), 'content revision should replace the active preset knowledge list');
+select pg_temp.assert_true((
+  select count(*) = 2 from public.prestudy_unmastered_items
+  where lesson_id = '14141414-0000-4000-8000-000000000001'
+), 'content revision must preserve prior validation evidence');
 select pg_temp.expect_error(
-  'select public.move_prestudy_lesson(''14141414-0000-4000-8000-000000000001''::uuid, ''2026-08-12''::date, ''错误移动'', 1, ''16161616-0000-4000-8000-000000000008''::uuid)',
+  'select public.move_prestudy_lesson(''14141414-0000-4000-8000-000000000001''::uuid, ''2026-08-12''::date, ''错误移动'', 2, ''16161616-0000-4000-8000-000000000008''::uuid)',
   '2026-08-12 is a travel day without tutor lessons'
 );
 select pg_temp.assert_true(public.move_prestudy_lesson(
-  '14141414-0000-4000-8000-000000000001', '2026-07-23', '调到下一次数学家教课', 1,
+  '14141414-0000-4000-8000-000000000001', '2026-07-23', '调到下一次数学家教课', 2,
   '16161616-0000-4000-8000-000000000009'
-) = 2, 'lesson movement should require a matching tutor course slot');
+) = 3, 'lesson movement should require a matching tutor course slot');
 select pg_temp.expect_error(
   'select public.revoke_prestudy_state(''14141414-0000-4000-8000-000000000001''::uuid, ''validated'', '''', 2, ''16161616-0000-4000-8000-000000000010''::uuid)',
   'reason required'
@@ -458,7 +480,7 @@ reset role;
 
 select pg_temp.assert_true((select count(*) = :'homework_count_before_prestudy'::integer from public.homework_tasks), 'prestudy commands must not change homework task count');
 select pg_temp.assert_true((select count(*) >= 1 from public.notifications where recipient_id = :'parent_id' and entity_type = 'prestudy_lesson'), 'prestudy changes should notify parent only inside the system');
-select pg_temp.assert_true((select count(*) = 4 from public.change_events where entity_id = '14141414-0000-4000-8000-000000000001'), 'led, validated, moved and revoked prestudy events should remain auditable');
+select pg_temp.assert_true((select count(*) = 5 from public.change_events where entity_id = '14141414-0000-4000-8000-000000000001'), 'led, validated, content revision, moved and revoked prestudy events should remain auditable');
 
 select id as math_assignment_id from public.tutor_assignments
 where student_id = :'student_record_id' and subject_id = 'math' and ends_at is null \gset

@@ -26,8 +26,15 @@ test("server-renders the homework closed-loop platform", async () => {
   assert.match(html, /<title>学业闭环 · 暑假作业管理<\/title>/i);
   assert.match(html, /学业闭环/);
   assert.match(html, /数学家教/);
-  assert.match(html, /闭环状态/);
+  assert.match(html, /作业<\/span><small>批改与闭环/);
   assert.match(html, /学校提交/);
+  assert.match(html, /独立预习线/);
+  assert.match(html, /家教带学与验收/);
+  assert.match(html, /预习线/);
+  assert.match(html, /学校作业线/);
+  assert.match(html, /预习<\/span><small>带学与验收/);
+  assert.match(html, /实际完成题数/);
+  assert.match(html, /未掌握知识点/);
   assert.match(html, /真实计划已导入/);
   assert.match(html, /203(?:<!-- -->)?条/);
   assert.match(html, /本体已核对/);
@@ -73,6 +80,8 @@ test("removes all disposable starter and fake homework artifacts", async () => {
   assert.doesNotMatch(packageJson, /react-loading-skeleton|site-creator-vinext-starter/);
   assert.match(platform, /Record<string, TaskProgress>/);
   assert.match(platform, /planOverrides/);
+  assert.match(platform, /prestudyLessons/);
+  assert.match(platform, /onRevisePrestudyContent/);
   assert.doesNotMatch(`${platform}\n${demoData}`, /TUTOR_TASKS|WEEK_DAYS|vector-review/);
   await assert.rejects(access(new URL("app/_sites-preview", projectRoot)));
 });

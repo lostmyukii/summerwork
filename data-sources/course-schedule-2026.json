@@ -1,6 +1,7 @@
 {
   "sourceFile": "假期课表初排.xlsx",
-  "sourceSha256": "f2cd21f188ee4b10720cbfc6a27d5dae9845aec9fa9339908cdf28222e7fabfd",
+  "sourceSha256": "5482604ba97064b415ecd91ed24248752e6cc17b35fca76af7fb5fab3eaa760d",
+  "sourceContentAudit": "2026-07-17复核：7月、8月全部单元格值、表格尺寸和合并区域与项目内留存副本一致，仅工作簿封装指纹变化。",
   "sheets": ["7月", "8月"],
   "entries": [
     { "date": "2026-07-05", "rawLabels": ["数学13:00-15:00", "化学18:00"], "labels": ["数学", "化学"], "subjects": ["数学", "化学"], "disposition": "excluded_by_user", "reason": "后续明确删除7月5日全部安排" },

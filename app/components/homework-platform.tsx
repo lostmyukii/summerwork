@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { PrestudyTrack } from "./prestudy-track";
+import { PrestudyWorkspace } from "./prestudy-workspace";
 import {
   ERROR_TAGS,
   MASTERY_COPY,
@@ -43,11 +45,22 @@ import {
   type InitialWorkspace,
   type NotificationSummary,
   type PlanOverride,
+  type PrestudyCourseSlot,
+  type PrestudyLesson,
   type StoredWorkspace,
   type TaskProgress,
   type WeeklyReportSummary,
   type WorkspaceTask,
 } from "../lib/workspace";
+import { previewPrestudyCourseSlots, previewPrestudyLessons } from "../lib/supabase/prestudy";
+import {
+  markPrestudyLed,
+  movePrestudyLesson,
+  revisePrestudyContent,
+  revokePrestudyState,
+  type PrestudyContentRevision,
+  validatePrestudyLesson,
+} from "../lib/supabase/prestudy-actions";
 import {
   addSubmissionCheckpoint,
   appendPlanBlock,
@@ -150,17 +163,21 @@ function SummerPlanBrowser({
   dailyCapacity,
   role,
   onAction,
+  onPrestudyAction,
   onPlanChange,
   overrides,
   planTasks,
+  prestudyLessons,
   progress,
 }: {
   dailyCapacity: number;
   role: Role;
   onAction: (task: WorkspaceTask) => void;
+  onPrestudyAction?: (lesson: PrestudyLesson) => void;
   onPlanChange?: (task: WorkspaceTask) => void;
   overrides: Record<string, PlanOverride>;
   planTasks: WorkspaceTask[];
+  prestudyLessons: PrestudyLesson[];
   progress: Record<string, TaskProgress>;
 }) {
   const referenceDate = currentPlanDate();
@@ -180,7 +197,9 @@ function SummerPlanBrowser({
   }, [overrides, planTasks, progress, referenceDate]);
   const allDayTasks = scheduleByDate.get(selectedDate) ?? [];
   const tasks = allDayTasks.filter((task) => subject === "全部" || task.subject === subject);
+  const dayPrestudy = prestudyLessons.filter((lesson) => lesson.plannedDate === selectedDate && (subject === "全部" || lesson.subject === subject));
   const independentDayTasks = allDayTasks.filter((task) => !task.courseIntegrated && task.kind !== "submission");
+  const visibleIndependentDayTasks = independentDayTasks.filter((task) => subject === "全部" || task.subject === subject);
   const course = courseForDate(selectedDate);
   const importantDate = importantDateFor(selectedDate);
   const travelDefinition = TRAVEL_SOFT_TASKS.find((item) => item.travelDate === selectedDate && planTasks.some((task) => task.id === item.taskId) && (subject === "全部" || item.subject === subject));
@@ -192,7 +211,8 @@ function SummerPlanBrowser({
   const showRecoveryRule = Boolean(recoveryRule && (subject === "全部" || visibleConvertedSubjects.length || visibleRestoredSubjects.length || (subject === "语文" && recoveryRule.chineseExtraBlock) || recoveryRule.concentratedFallbackLimit));
   const requirement = subject === "全部" ? undefined : SUBJECT_REQUIREMENTS.find((item) => item.subject === subject);
   const actionCopy = role === "parent" ? "查看任务" : role === "tutor" ? "进入批改" : "开始做题";
-  const availableSubjects = SUMMER_SUBJECTS.filter((item) => planTasks.some((task) => task.subject === item));
+  const availableSubjects = SUMMER_SUBJECTS.filter((item) => planTasks.some((task) => task.subject === item) || prestudyLessons.some((lesson) => lesson.subject === item));
+  const totalDayMinutes = allDayTasks.reduce((sum, task) => sum + task.blockMinutes, 0) + prestudyLessons.filter((lesson) => lesson.plannedDate === selectedDate).reduce((sum, lesson) => sum + lesson.plannedMinutes, 0);
 
   function moveWeek(amount: number) {
     setSelectedDate(clampPlanDate(addPlanDays(selectedDate, amount * 7)));
@@ -233,7 +253,8 @@ function SummerPlanBrowser({
         {weekDates.map((date) => {
           const dateTasks = scheduleByDate.get(date) ?? [];
           const count = dateTasks.filter((task) => subject === "全部" || task.subject === subject).length;
-          const independentCount = dateTasks.filter((task) => !task.courseIntegrated && task.kind !== "submission").length;
+          const prestudyCount = prestudyLessons.filter((lesson) => lesson.plannedDate === date && (subject === "全部" || lesson.subject === subject)).length;
+          const independentCount = dateTasks.filter((task) => !task.courseIntegrated && task.kind !== "submission" && (subject === "全部" || task.subject === subject)).length;
           return (
             <button
               key={date}
@@ -244,15 +265,15 @@ function SummerPlanBrowser({
             >
               <span>周{weekdayFor(date)}</span>
               <strong>{Number(date.slice(-2))}</strong>
-              <small>{count ? `${count}项` : "—"}</small>
+              <small>{prestudyCount || count ? `预${prestudyCount}·作${count}` : "—"}</small>
             </button>
           );
         })}
       </div>
 
       <div className="selected-day-summary">
-        <div><strong>{formatPlanDate(selectedDate, true)} · 周{weekdayFor(selectedDate)}</strong><span>{subject === "全部" ? `课内 ${allDayTasks.filter((task) => task.courseIntegrated).length} · 独立作业 ${independentDayTasks.length} · 提交节点 ${allDayTasks.filter((task) => task.kind === "submission").length}` : `${subject} ${tasks.length}个任务块`}</span></div>
-        {independentDayTasks.length > dailyCapacity ? <StatusPill tone="red">超过容量 {dailyCapacity} · 独立作业 {independentDayTasks.length}块</StatusPill> : travelDefinition ? <StatusPill tone="mint">旅行软任务 1/1</StatusPill> : <StatusPill tone="green">家庭容量 {dailyCapacity} · 负荷可控</StatusPill>}
+        <div><strong>{formatPlanDate(selectedDate, true)} · 周{weekdayFor(selectedDate)}</strong><span>{subject === "全部" ? `预习 ${dayPrestudy.length} · 作业 ${allDayTasks.length} · 总负荷 ${totalDayMinutes}分钟` : `${subject}：预习 ${dayPrestudy.length} · 作业 ${tasks.length}`}</span></div>
+        {visibleIndependentDayTasks.length > dailyCapacity ? <StatusPill tone="red">超过容量 {dailyCapacity} · 独立作业 {visibleIndependentDayTasks.length}块</StatusPill> : travelDefinition ? <StatusPill tone="mint">旅行软任务 1/1</StatusPill> : <StatusPill tone="green">家庭容量 {dailyCapacity} · 负荷可控</StatusPill>}
       </div>
 
       {course && isTravelCourseConflictDate(selectedDate) ? <div className="plan-alert travel-conflict"><MiniIcon>停</MiniIcon><div><strong>旅行冲突 · 原课程未执行</strong><p>{course.labels.join(" / ")}仅保留原课表记录，不计入家教容量。</p></div></div> : course ? <div className="course-banner"><MiniIcon>课</MiniIcon><div><strong>当天课程</strong><p>{course.labels.join(" / ")}</p></div></div> : null}
@@ -262,7 +283,11 @@ function SummerPlanBrowser({
       {importantDate ? <div className="plan-alert"><MiniIcon>!</MiniIcon><div><strong>重要节点</strong><p>{importantDate.label}</p></div></div> : null}
       {requirement ? <div className="ontology-brief"><strong>{requirement.workBody}</strong><p>{requirement.splitRule}</p><p>{requirement.executionRules.join("；")}</p><small>答案：{requirement.answerSource}</small></div> : null}
 
-      <div className="real-task-list">
+      <div className="dual-track-stack">
+        <PrestudyTrack lessons={dayPrestudy} role={role} onAction={onPrestudyAction} />
+        <section className="calendar-track homework-calendar-track" aria-labelledby="homework-track-title">
+          <header className="calendar-track-head"><div><span className="track-line-mark" /><div><strong id="homework-track-title">学校作业线</strong><small>首做 · 批改 · 订正 · 复做 · 提交</small></div></div><span>{tasks.length} 项</span></header>
+          <div className="real-task-list">
         {tasks.length ? tasks.map((task) => {
           const travelMeta = travelTaskMeta(task, progress[task.id], referenceDate);
           const submissionTiming = deriveSubmissionTiming(task, progress[task.id] ?? blankTaskProgress(), submissionReferenceAt);
@@ -299,6 +324,8 @@ function SummerPlanBrowser({
         }) : (
           <div className="empty-day"><span>✓</span><h3>筛选范围内无任务</h3><p>可切换科目或选择其他日期。</p></div>
         )}
+          </div>
+        </section>
       </div>
     </section>
   );
@@ -318,6 +345,10 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
   const [progress, setProgress] = useState<Record<string, TaskProgress>>(initialWorkspace?.progress ?? {});
   const [planOverrides, setPlanOverrides] = useState<Record<string, PlanOverride>>(initialWorkspace?.overrides ?? {});
   const [auditEntries, setAuditEntries] = useState<AuditEntry[]>(initialWorkspace?.audit ?? []);
+  const [prestudyLessons, setPrestudyLessons] = useState<PrestudyLesson[]>(() => initialWorkspace ? initialWorkspace.prestudyLessons ?? [] : previewPrestudyLessons());
+  const prestudyCourseSlots: PrestudyCourseSlot[] = initialWorkspace ? initialWorkspace.prestudyCourseSlots ?? [] : previewPrestudyCourseSlots();
+  const [tutorTrack, setTutorTrack] = useState<"prestudy" | "homework">("prestudy");
+  const [selectedPrestudyId, setSelectedPrestudyId] = useState<string | undefined>(() => (initialWorkspace?.prestudyLessons ?? previewPrestudyLessons())[0]?.id);
   const [persistenceReady, setPersistenceReady] = useState(remoteEnabled);
   const [planDate, setPlanDate] = useState(referenceDate);
   const [planReason, setPlanReason] = useState("课程冲突");
@@ -362,6 +393,8 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
       setProgress(initialWorkspace.progress);
       setPlanOverrides(initialWorkspace.overrides);
       setAuditEntries(initialWorkspace.audit);
+      setPrestudyLessons(initialWorkspace.prestudyLessons ?? []);
+      setSelectedPrestudyId((current) => current && initialWorkspace.prestudyLessons?.some((lesson) => lesson.id === current) ? current : initialWorkspace.prestudyLessons?.[0]?.id);
     });
   }, [initialWorkspace, remoteEnabled]);
 
@@ -425,6 +458,8 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
       .on("postgres_changes", { event: "*", schema: "public", table: "mastery_snapshots" }, refresh)
       .on("postgres_changes", { event: "*", schema: "public", table: "submission_checkpoints" }, refresh)
       .on("postgres_changes", { event: "*", schema: "public", table: "notifications" }, refresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "prestudy_lessons" }, refresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "prestudy_execution_records" }, refresh)
       .subscribe();
     return () => { void supabase.removeChannel(channel); };
   }, [initialWorkspace?.userId, remoteEnabled, router]);
@@ -432,6 +467,103 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
   function showToast(message: string) {
     setToast(message);
     window.setTimeout(() => setToast(""), 2400);
+  }
+
+  function updatePreviewPrestudy(lessonId: string, update: (lesson: PrestudyLesson) => PrestudyLesson) {
+    setPrestudyLessons((current) => current.map((lesson) => lesson.id === lessonId ? update(lesson) : lesson));
+  }
+
+  async function confirmPrestudyLed(lesson: PrestudyLesson) {
+    try {
+      if (remoteEnabled) {
+        await markPrestudyLed(lesson);
+        router.refresh();
+      } else {
+        updatePreviewPrestudy(lesson.id, (current) => ({ ...current, state: "led", ledAt: new Date().toISOString(), executionVersion: current.executionVersion + 1 }));
+      }
+      showToast("预习已标记为已带学");
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : "带学状态未同步");
+    }
+  }
+
+  async function confirmPrestudyValidation(lesson: PrestudyLesson, input: { actualQuestionCount: number; knowledgeItemIds: string[]; customUnmastered: string[] }) {
+    try {
+      if (remoteEnabled) {
+        await validatePrestudyLesson(lesson, input);
+        router.refresh();
+      } else {
+        const knowledgeById = new Map(lesson.knowledgeItems.map((item) => [item.id, item.label]));
+        updatePreviewPrestudy(lesson.id, (current) => ({
+          ...current,
+          state: "validated",
+          validatedAt: new Date().toISOString(),
+          actualQuestionCount: input.actualQuestionCount,
+          executionVersion: current.executionVersion + 1,
+          unmasteredItems: [
+            ...input.knowledgeItemIds.map((id) => ({ id: `preview-${id}`, knowledgeItemId: id, label: knowledgeById.get(id) ?? "未掌握知识点", custom: false })),
+            ...input.customUnmastered.map((label, index) => ({ id: `preview-custom-${index}`, label, custom: true })),
+          ],
+        }));
+      }
+      showToast("预习验收已保存；不会自动点亮掌握");
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : "预习验收未同步");
+    }
+  }
+
+  async function revokePrestudy(lesson: PrestudyLesson, state: "led" | "validated") {
+    const reason = window.prompt(state === "validated" ? "请输入撤销验收原因" : "请输入撤销带学原因");
+    if (!reason?.trim()) return;
+    try {
+      if (remoteEnabled) {
+        await revokePrestudyState(lesson, state, reason.trim());
+        router.refresh();
+      } else {
+        updatePreviewPrestudy(lesson.id, (current) => state === "validated"
+          ? { ...current, state: "led", validatedAt: undefined, executionVersion: current.executionVersion + 1 }
+          : { ...current, state: "pending", ledAt: undefined, validatedAt: undefined, executionVersion: current.executionVersion + 1 });
+      }
+      showToast("预习状态已撤销并留痕");
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : "撤销失败");
+    }
+  }
+
+  async function movePrestudy(lesson: PrestudyLesson, date: string, reason: string) {
+    try {
+      if (remoteEnabled) {
+        await movePrestudyLesson(lesson, date, reason);
+        router.refresh();
+      } else {
+        updatePreviewPrestudy(lesson.id, (current) => ({ ...current, plannedDate: date, scheduleAdjustmentReason: reason, version: current.version + 1 }));
+      }
+      showToast(`预习已调整到 ${formatPlanDate(date)}`);
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : "预习日期未同步");
+    }
+  }
+
+  async function editPrestudyContent(lesson: PrestudyLesson, input: PrestudyContentRevision) {
+    try {
+      if (remoteEnabled) {
+        await revisePrestudyContent(lesson, input);
+        router.refresh();
+      } else {
+        updatePreviewPrestudy(lesson.id, (current) => ({
+          ...current,
+          title: input.title,
+          phases: input.phases,
+          acceptanceCriteria: input.acceptanceCriteria,
+          knowledgeItems: input.knowledgeLabels.map((label, index) => ({ id: `${current.id}-edited-${current.version + 1}-${index}`, label, sortOrder: index })),
+          version: current.version + 1,
+          contentEditedAt: new Date().toISOString(),
+        }));
+      }
+      showToast("预习内容已更新，旧版本已留痕");
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : "预习内容未同步");
+    }
   }
 
   async function signOut() {
@@ -859,7 +991,7 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
     }
   }
 
-  if (remoteEnabled && planTasks.length === 0 && !(role === "tutor" && initialWorkspace?.archivedPlanBlocks?.length)) {
+  if (remoteEnabled && planTasks.length === 0 && prestudyLessons.length === 0 && !(role === "tutor" && initialWorkspace?.archivedPlanBlocks?.length)) {
     return (
       <main className="empty-workspace-page">
         <div className="brand-mark">闭</div>
@@ -921,8 +1053,8 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
 
         {role === "parent" && initialWorkspace?.planVersionStatus?.updateAvailable ? <div className="plan-alert"><MiniIcon>!</MiniIcon><div><strong>暑期计划有新版本</strong><p>当前家庭保留 v{initialWorkspace.planVersionStatus.appliedVersion}，模板已更新至 v{initialWorkspace.planVersionStatus.availableVersion}；既有进度未被覆盖，请核对变更后再迁移。</p></div></div> : null}
 
-        {role === "parent" && activeNav.parent === "总览" ? <ParentView auditEntries={auditEntries} dailyCapacity={dailyCapacity} overrides={planOverrides} planRisks={planRisks} planTasks={planTasks} progress={progress} showToast={showToast} /> : null}
-        {role === "parent" && activeNav.parent === "日历" ? <CalendarHome dailyCapacity={dailyCapacity} role="parent" overrides={planOverrides} planTasks={planTasks} progress={progress} showToast={showToast} /> : null}
+        {role === "parent" && activeNav.parent === "总览" ? <ParentView auditEntries={auditEntries} dailyCapacity={dailyCapacity} overrides={planOverrides} planRisks={planRisks} planTasks={planTasks} prestudyLessons={prestudyLessons} progress={progress} showToast={showToast} /> : null}
+        {role === "parent" && activeNav.parent === "日历" ? <CalendarHome dailyCapacity={dailyCapacity} role="parent" overrides={planOverrides} planTasks={planTasks} prestudyLessons={prestudyLessons} progress={progress} showToast={showToast} /> : null}
         {role === "parent" && activeNav.parent === "作业" ? <HomeworkLibraryView archivedHomeworks={initialWorkspace?.archivedHomeworks ?? []} onAdd={addHomework} onAddCheckpoint={addCheckpoint} onArchive={archiveHomework} onArchiveCheckpoint={archiveCheckpoint} onEdit={editHomework} onEditCheckpoint={editCheckpoint} onRestore={restoreHomework} onRestoreCheckpoint={restoreCheckpoint} planTasks={planTasks} studentId={initialWorkspace?.studentId} /> : null}
         {role === "parent" && activeNav.parent === "知识" ? <KnowledgeDashboard planTasks={planTasks} progress={progress} role="parent" /> : null}
         {role === "parent" && activeNav.parent === "设置" ? <AccountCenter dailyCapacity={dailyCapacity} notifications={initialWorkspace?.notifications ?? []} onBackup={createCurrentBackup} onCapacityChange={saveDailyCapacity} onDownload={downloadArchive} onGenerateReport={createCurrentWeeklyReport} onMarkRead={async (id) => { await markNotificationRead(id); router.refresh(); }} remoteEnabled={remoteEnabled} reports={initialWorkspace?.weeklyReports ?? []} role="parent" signOut={signOut} /> : null}
@@ -937,11 +1069,22 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
             overrides={planOverrides}
             planTasks={planTasks}
             planRisks={planRisks}
+            prestudyCourseSlots={prestudyCourseSlots}
+            prestudyLessons={prestudyLessons}
             progress={activeProgress}
             remoteEnabled={remoteEnabled}
             setPlanOpen={openPlanChange}
+            selectedPrestudyId={selectedPrestudyId}
+            setSelectedPrestudyId={setSelectedPrestudyId}
             setReviewOpen={setReviewOpen}
+            setTutorTrack={setTutorTrack}
             setWorkflowTask={setWorkflowTask}
+            tutorTrack={tutorTrack}
+            onMarkPrestudyLed={confirmPrestudyLed}
+            onMovePrestudy={movePrestudy}
+            onRevokePrestudy={revokePrestudy}
+            onRevisePrestudyContent={editPrestudyContent}
+            onValidatePrestudy={confirmPrestudyValidation}
             workflowTask={workflowTask}
             workflowState={workflowState}
           />
@@ -954,13 +1097,14 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
             dailyCapacity={dailyCapacity}
             overrides={planOverrides}
             planTasks={planTasks}
+            prestudyLessons={prestudyLessons}
             progress={progress}
             setWorkflowTask={setWorkflowTask}
             showToast={showToast}
             updateTaskProgress={updateTaskProgress}
           />
         ) : null}
-        {role === "student" && activeNav.student === "本周" ? <CalendarHome dailyCapacity={dailyCapacity} role="student" overrides={planOverrides} planTasks={planTasks} progress={progress} showToast={showToast} /> : null}
+        {role === "student" && activeNav.student === "本周" ? <CalendarHome dailyCapacity={dailyCapacity} role="student" overrides={planOverrides} planTasks={planTasks} prestudyLessons={prestudyLessons} progress={progress} showToast={showToast} /> : null}
         {role === "student" && activeNav.student === "知识" ? <KnowledgeDashboard planTasks={planTasks} progress={progress} role="student" /> : null}
         {role === "student" && activeNav.student === "我的" ? <AccountCenter notifications={initialWorkspace?.notifications ?? []} onBackup={createCurrentBackup} onDownload={downloadArchive} onGenerateReport={createCurrentWeeklyReport} onMarkRead={async (id) => { await markNotificationRead(id); router.refresh(); }} remoteEnabled={remoteEnabled} reports={initialWorkspace?.weeklyReports ?? []} role="student" signOut={signOut} /> : null}
 
@@ -1020,11 +1164,11 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
   );
 }
 
-function CalendarHome({ dailyCapacity, role, overrides, planTasks, progress, showToast }: { dailyCapacity: number; role: "parent" | "student"; overrides: Record<string, PlanOverride>; planTasks: WorkspaceTask[]; progress: Record<string, TaskProgress>; showToast: (message: string) => void }) {
+function CalendarHome({ dailyCapacity, role, overrides, planTasks, prestudyLessons, progress, showToast }: { dailyCapacity: number; role: "parent" | "student"; overrides: Record<string, PlanOverride>; planTasks: WorkspaceTask[]; prestudyLessons: PrestudyLesson[]; progress: Record<string, TaskProgress>; showToast: (message: string) => void }) {
   return (
     <div className="page-content">
       <AppHeader eyebrow={role === "parent" ? "家长管理员" : "我的学习"} title="暑期日历" subtitle="日期级计划 · 每个任务块标准90分钟 · 精确截止单独显示" />
-      <SummerPlanBrowser dailyCapacity={dailyCapacity} role={role} overrides={overrides} planTasks={planTasks} progress={progress} onAction={(task) => showToast(`已选择：${task.subject} · ${task.title}`)} />
+      <SummerPlanBrowser dailyCapacity={dailyCapacity} role={role} overrides={overrides} planTasks={planTasks} prestudyLessons={prestudyLessons} progress={progress} onAction={(task) => showToast(`已选择：${task.subject} · ${task.title}`)} />
     </div>
   );
 }
@@ -1205,7 +1349,7 @@ function AccountCenter({ archivedPlanBlocks = [], dailyCapacity = 2, notificatio
   return <div className="page-content"><AppHeader eyebrow={ROLE_COPY[role].label} title={role === "parent" ? "设置与档案" : "我的"} subtitle="只在系统内提醒，不发送微信、短信或邮件" /><section className="metric-grid"><article className="metric-card"><span>未读通知</span><strong>{unread}</strong><small>站内实时同步</small></article><article className="metric-card"><span>周报</span><strong>{reports.length}</strong><small>长期趋势数据已预留</small></article></section>{role === "parent" ? <section className="ontology-brief"><strong>家庭负荷与数据</strong><p>容量只统计独立作业，课内任务另行显示；调高容量不会删除超负荷历史。</p><div className="choice-row"><label>每日独立作业容量<select value={capacityDraft} onChange={(event) => setCapacityDraft(Number(event.target.value))}>{Array.from({ length: 8 }, (_, index) => index + 1).map((value) => <option value={value} key={value}>{value} 个90分钟块</option>)}</select></label><button className="secondary-button" type="button" disabled={!onCapacityChange || capacityDraft === dailyCapacity} onClick={() => void onCapacityChange?.(capacityDraft)}>保存容量</button></div><p>导出和备份均包含作业版本、任务块、学习事件、批改、订正、提交与知识证据。</p><div className="task-card-actions"><button className="primary-button" type="button" onClick={() => void onGenerateReport()}>生成本周周报</button><button className="secondary-button" type="button" onClick={() => void onBackup()}>生成校验备份</button><button className="secondary-button" type="button" onClick={() => void onDownload()}>导出完整档案</button></div></section> : null}{role === "tutor" && archivedPlanBlocks.length ? <><SectionHeading title={`可恢复任务块 · ${archivedPlanBlocks.length}`} /><div className="real-task-list archived-list">{archivedPlanBlocks.map((task) => <article className="real-task-card" key={task.id}><div className="real-task-top"><StatusPill tone={SUBJECT_TONES[task.subject]}>{task.subject}</StatusPill><span>已归档 · v{task.recordVersion}</span></div><h3>{task.title}</h3><p>{formatPlanDate(task.date)} · {task.blockMinutes} 分钟 · 恢复后重新进入本科计划</p><button className="secondary-button" type="button" disabled={!onRestorePlanBlock} onClick={() => void onRestorePlanBlock?.(task)}>恢复任务块</button></article>)}</div></> : null}<SectionHeading title="站内通知" /><div className="task-audit-list">{notifications.length ? notifications.map((item) => <article key={item.id}><div className={`timeline-dot ${item.readAt ? "green" : "orange"}`} /><div><strong>{item.title}</strong><p>{item.body}</p><small>{new Date(item.createdAt).toLocaleString("zh-CN")}</small>{!item.readAt ? <button className="text-action" type="button" onClick={() => void onMarkRead(item.id)}>标为已读</button> : null}</div></article>) : <div className="empty-audit"><span>静</span><div><strong>暂无通知</strong><p>计划变更、待批改和提交确认会出现在这里。</p></div></div>}</div>{reports[0] ? <><SectionHeading title="最新周报" /><article className="ontology-brief"><strong>{reports[0].weekStart}—{reports[0].weekEnd}</strong><p>{reports[0].narrative}</p></article></> : null}<button className="account-link" type="button" disabled={!remoteEnabled} onClick={() => void signOut()}>{remoteEnabled ? "退出当前账号" : "开发预览无需退出"}</button></div>;
 }
 
-function ParentView({ auditEntries, dailyCapacity, overrides, planRisks, planTasks, progress, showToast }: { auditEntries: AuditEntry[]; dailyCapacity: number; overrides: Record<string, PlanOverride>; planRisks: PlanRisk[]; planTasks: WorkspaceTask[]; progress: Record<string, TaskProgress>; showToast: (message: string) => void }) {
+function ParentView({ auditEntries, dailyCapacity, overrides, planRisks, planTasks, prestudyLessons, progress, showToast }: { auditEntries: AuditEntry[]; dailyCapacity: number; overrides: Record<string, PlanOverride>; planRisks: PlanRisk[]; planTasks: WorkspaceTask[]; prestudyLessons: PrestudyLesson[]; progress: Record<string, TaskProgress>; showToast: (message: string) => void }) {
   const subjectCounts = SUMMER_SUBJECTS.map((subject) => ({ subject, count: planTasks.filter((task) => task.subject === subject).length }));
   const submittedCount = Object.values(progress).filter((item) => item.schoolSubmitted).length;
   const completedCount = Object.values(progress).filter((item) => item.runState === "completed").length;
@@ -1227,7 +1371,7 @@ function ParentView({ auditEntries, dailyCapacity, overrides, planRisks, planTas
         <article className="metric-card"><span>提交确认</span><strong>{submittedCount}</strong><small>7月5日无安排</small></article>
       </section>
 
-      <SummerPlanBrowser dailyCapacity={dailyCapacity} role="parent" overrides={overrides} planTasks={planTasks} progress={progress} onAction={(task) => showToast(`已选择：${task.subject} · ${task.title}`)} />
+      <SummerPlanBrowser dailyCapacity={dailyCapacity} role="parent" overrides={overrides} planTasks={planTasks} prestudyLessons={prestudyLessons} progress={progress} onAction={(task) => showToast(`已选择：${task.subject} · ${task.title}`)} />
 
       <div className="content-columns">
         <section>
@@ -1284,11 +1428,22 @@ type TutorViewProps = {
   overrides: Record<string, PlanOverride>;
   planTasks: WorkspaceTask[];
   planRisks: PlanRisk[];
+  prestudyCourseSlots: PrestudyCourseSlot[];
+  prestudyLessons: PrestudyLesson[];
   progress: TaskProgress;
   remoteEnabled: boolean;
+  selectedPrestudyId?: string;
   setPlanOpen: (task: WorkspaceTask) => void;
+  setSelectedPrestudyId: (lessonId: string) => void;
   setReviewOpen: (open: boolean) => void;
+  setTutorTrack: (track: "prestudy" | "homework") => void;
   setWorkflowTask: (task: WorkspaceTask) => void;
+  tutorTrack: "prestudy" | "homework";
+  onMarkPrestudyLed: (lesson: PrestudyLesson) => Promise<void>;
+  onMovePrestudy: (lesson: PrestudyLesson, date: string, reason: string) => Promise<void>;
+  onRevokePrestudy: (lesson: PrestudyLesson, state: "led" | "validated") => Promise<void>;
+  onRevisePrestudyContent: (lesson: PrestudyLesson, input: PrestudyContentRevision) => Promise<void>;
+  onValidatePrestudy: (lesson: PrestudyLesson, input: { actualQuestionCount: number; knowledgeItemIds: string[]; customUnmastered: string[] }) => Promise<void>;
   workflowTask: WorkspaceTask;
   workflowState: ReturnType<typeof deriveWorkflowState>;
 };
@@ -1316,16 +1471,34 @@ function TutorView(props: TutorViewProps) {
         action={<button className="avatar-button" type="button" aria-label={`${tutorSubject}家教账户`}>{tutorSubject.slice(0, 1)}</button>}
       />
 
+      <div className="dual-line-switch" aria-label="家教工作线切换">
+        <button className={props.tutorTrack === "prestudy" ? "active" : ""} type="button" onClick={() => props.setTutorTrack("prestudy")}><span>预习</span><small>带学与验收</small></button>
+        <button className={props.tutorTrack === "homework" ? "active" : ""} type="button" onClick={() => props.setTutorTrack("homework")}><span>作业</span><small>批改与闭环</small></button>
+      </div>
+
       <SummerPlanBrowser
         dailyCapacity={props.dailyCapacity}
         role="tutor"
         overrides={props.overrides}
         planTasks={props.planTasks}
+        prestudyLessons={props.prestudyLessons}
         progress={props.allProgress}
         onAction={(task) => { props.setWorkflowTask(task); props.setReviewOpen(true); }}
+        onPrestudyAction={(lesson) => { props.setSelectedPrestudyId(lesson.id); props.setTutorTrack("prestudy"); }}
         onPlanChange={(task) => { props.setWorkflowTask(task); props.setPlanOpen(task); }}
       />
 
+      {props.tutorTrack === "prestudy" ? <PrestudyWorkspace
+        lessons={props.prestudyLessons}
+        courseSlots={props.prestudyCourseSlots}
+        selectedLessonId={props.selectedPrestudyId}
+        onSelectLesson={props.setSelectedPrestudyId}
+        onMarkLed={props.onMarkPrestudyLed}
+        onValidate={props.onValidatePrestudy}
+        onRevoke={props.onRevokePrestudy}
+        onMove={props.onMovePrestudy}
+        onReviseContent={props.onRevisePrestudyContent}
+      /> : <>
       <div className="workflow-section-head"><span>真实任务闭环</span><p>每个任务独立记录，切换学科或日期不会串状态。</p></div>
       <div className="tutor-grid workflow-workspace">
         <section>
@@ -1367,6 +1540,7 @@ function TutorView(props: TutorViewProps) {
           <article className="deadline-card"><span className="date-tile"><strong>{taskRisk ? "!" : props.workflowTask.subject.slice(0, 1)}</strong><small>{taskRisk ? "风险" : "规则"}</small></span><div><strong>{taskRisk?.title ?? ANSWER_POLICY_COPY[props.workflowTask.answerPolicy]}</strong><p>{taskRisk?.detail ?? (props.workflowTask.notes || props.workflowTask.submission)}</p></div></article>
         </aside>
       </div>
+      </>}
     </div>
   );
 }
@@ -1383,13 +1557,14 @@ type StudentViewProps = {
   dailyCapacity: number;
   overrides: Record<string, PlanOverride>;
   planTasks: WorkspaceTask[];
+  prestudyLessons: PrestudyLesson[];
   progress: Record<string, TaskProgress>;
   setWorkflowTask: (task: WorkspaceTask) => void;
   showToast: (message: string) => void;
   updateTaskProgress: (taskId: string, patch: Partial<TaskProgress>, persistActivity?: boolean) => Promise<boolean>;
 };
 
-function StudentView({ dailyCapacity, overrides, planTasks, progress, setWorkflowTask, showToast, updateTaskProgress }: StudentViewProps) {
+function StudentView({ dailyCapacity, overrides, planTasks, prestudyLessons, progress, setWorkflowTask, showToast, updateTaskProgress }: StudentViewProps) {
   const referenceDate = currentPlanDate();
   const scheduledTasks = useMemo(() => planTasks.flatMap((task) => {
     const date = scheduledDateForTask(task, overrides, progress, referenceDate);
@@ -1432,7 +1607,7 @@ function StudentView({ dailyCapacity, overrides, planTasks, progress, setWorkflo
   return (
     <div className="page-content student-page">
       <AppHeader eyebrow="我的学习" title="今天" subtitle={`${todayTasks.length}个任务块 · 共${todayTasks.length * 90}分钟`} action={<button className="avatar-button" type="button" aria-label="孩子账户">学</button>} />
-      <SummerPlanBrowser dailyCapacity={dailyCapacity} role="student" overrides={overrides} planTasks={planTasks} progress={progress} onAction={(task) => { setFocusTask(task); setWorkflowTask(task); showToast(`已切换到：${task.subject} · ${task.title}`); }} />
+      <SummerPlanBrowser dailyCapacity={dailyCapacity} role="student" overrides={overrides} planTasks={planTasks} prestudyLessons={prestudyLessons} progress={progress} onAction={(task) => { setFocusTask(task); setWorkflowTask(task); showToast(`已切换到：${task.subject} · ${task.title}`); }} />
       <div className="student-grid">
         <section className="focus-task">
           <div className="focus-top"><StatusPill tone={SUBJECT_TONES[focusTask.subject]}>{focusTask.subject === "语文" ? "语文·考背" : focusTask.subject}</StatusPill><span>标准 {focusTask.blockMinutes} 分钟</span></div>

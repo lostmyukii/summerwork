@@ -1,9 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { splitIntoChunks } from "../app/lib/supabase/homework";
+import { previewPrestudyCourseSlots, previewPrestudyLessons } from "../app/lib/supabase/prestudy";
 import { canCloseLoop, deriveWorkflowState } from "../app/lib/workflow";
 import { blankTaskProgress, deriveSubmissionTiming, evidenceFor } from "../app/lib/workspace";
 
 describe("逐任务独立闭环状态", () => {
+  it("预习预览保持23节独立状态且排除8月12日课程槽", () => {
+    const prestudy = previewPrestudyLessons();
+    expect(prestudy).toHaveLength(23);
+    expect(prestudy.every((lesson) => lesson.state === "pending" && lesson.executionVersion === 0)).toBe(true);
+    expect(previewPrestudyCourseSlots().some((slot) => slot.date === "2026-08-12")).toBe(false);
+    expect(prestudy.find((lesson) => lesson.lessonCode === "M03")?.plannedDate).toBe("2026-08-14");
+  });
   it("大计划查询按固定上限拆分，避免超长URL", () => {
     const values = Array.from({ length: 203 }, (_, index) => `task-${index + 1}`);
     const chunks = splitIntoChunks(values);

@@ -81,11 +81,12 @@ for (const lesson of plan.lessons) {
 }
 
 const existingLessons = requireSuccess(
-  await admin.from("prestudy_lessons").select("id,source_key,source_digest,version").eq("student_id", student.id),
+  await admin.from("prestudy_lessons").select("id,source_key,source_digest,version,content_edited_at").eq("student_id", student.id),
   "读取现有预习课",
 );
 const existingBySource = new Map(existingLessons.map((lesson) => [lesson.source_key, lesson]));
 const existingIds = existingLessons.map((lesson) => lesson.id);
+const tutorEditedLessonIds = new Set(existingLessons.filter((lesson) => lesson.content_edited_at).map((lesson) => lesson.id));
 const executionRows = existingIds.length === 0 ? [] : requireSuccess(
   await admin.from("prestudy_execution_records").select("lesson_id,led_at").in("lesson_id", existingIds),
   "读取预习执行记录",
@@ -98,7 +99,7 @@ const lessons = plan.lessons.slice(0, limit);
 const preparedLessons = lessons.map((lesson) => {
   const existing = existingBySource.get(lesson.sourceKey);
   const sourceDigest = createHash("sha256").update(JSON.stringify(lesson)).digest("hex");
-  if (existing && startedLessonIds.has(existing.id) && existing.source_digest !== sourceDigest) {
+  if (existing && startedLessonIds.has(existing.id) && !existing.content_edited_at && existing.source_digest !== sourceDigest) {
     throw new Error(`拒绝覆盖已带学预习：${lesson.lessonCode}。请建立人工版本变更。`);
   }
   return {
@@ -128,7 +129,8 @@ const preparedLessons = lessons.map((lesson) => {
 
 for (const row of preparedLessons) {
   const started = startedLessonIds.has(row.id);
-  if (started) {
+  const tutorEdited = tutorEditedLessonIds.has(row.id);
+  if (started || tutorEdited) {
     requireSuccess(
       await admin.from("prestudy_lessons").update({ assigned_tutor_user_id: row.assigned_tutor_user_id }).eq("id", row.id),
       `更新${row.lesson_code}负责家教`,
@@ -151,8 +153,10 @@ if (syncedLessons.length !== lessons.length) throw new Error(`预习同步数量
 for (const lesson of lessons) {
   const lessonId = syncedBySource.get(lesson.sourceKey);
   const started = startedLessonIds.has(lessonId);
+  const tutorEdited = tutorEditedLessonIds.has(lessonId);
+  if (tutorEdited) continue;
   const existingKnowledge = requireSuccess(
-    await admin.from("prestudy_knowledge_items").select("id,label").eq("lesson_id", lessonId),
+    await admin.from("prestudy_knowledge_items").select("id,label,active").eq("lesson_id", lessonId),
     `读取${lesson.lessonCode}知识点`,
   );
   const knowledgeByLabel = new Map(existingKnowledge.map((item) => [item.label, item.id]));
@@ -162,10 +166,11 @@ for (const lesson of lessons) {
       lesson_id: lessonId,
       label,
       sort_order: index,
+      active: true,
     })), { onConflict: "lesson_id,label" }),
     `同步${lesson.lessonCode}知识点`,
   );
-  const staleKnowledgeIds = existingKnowledge.filter((item) => !lesson.knowledgePoints.includes(item.label)).map((item) => item.id);
+  const staleKnowledgeIds = existingKnowledge.filter((item) => item.active && !lesson.knowledgePoints.includes(item.label)).map((item) => item.id);
   if (staleKnowledgeIds.length > 0 && started) throw new Error(`拒绝删除已带学预习的知识点：${lesson.lessonCode}。`);
   if (staleKnowledgeIds.length > 0) {
     requireSuccess(await admin.from("prestudy_knowledge_items").delete().in("id", staleKnowledgeIds), `清理${lesson.lessonCode}旧知识点`);

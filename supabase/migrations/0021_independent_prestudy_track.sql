@@ -35,6 +35,8 @@ create table if not exists public.prestudy_lessons (
   acceptance_criteria text not null,
   planned_minutes integer not null default 90 check (planned_minutes = 90),
   version integer not null default 1 check (version > 0),
+  content_edited_at timestamptz,
+  content_edited_by uuid references public.profiles(id),
   created_by uuid not null references public.profiles(id),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
@@ -46,10 +48,18 @@ create table if not exists public.prestudy_knowledge_items (
   lesson_id uuid not null references public.prestudy_lessons(id) on delete cascade,
   label text not null check (nullif(trim(label), '') is not null),
   sort_order smallint not null default 0 check (sort_order >= 0),
+  active boolean not null default true,
   created_at timestamptz not null default now(),
   unique(lesson_id, label),
   unique(id, lesson_id)
 );
+
+alter table public.prestudy_lessons
+  add column if not exists content_edited_at timestamptz,
+  add column if not exists content_edited_by uuid references public.profiles(id);
+
+alter table public.prestudy_knowledge_items
+  add column if not exists active boolean not null default true;
 
 create table if not exists public.prestudy_execution_records (
   lesson_id uuid primary key references public.prestudy_lessons(id) on delete cascade,
@@ -463,6 +473,112 @@ begin
 end;
 $$;
 
+create or replace function public.revise_prestudy_content(
+  target_lesson_id uuid,
+  target_title text,
+  target_input_0_25 text,
+  target_analysis_25_55 text,
+  target_practice_55_80 text,
+  target_output_80_90 text,
+  target_acceptance_criteria text,
+  target_knowledge_labels text[],
+  change_reason text,
+  expected_version integer,
+  target_idempotency_key uuid
+)
+returns integer
+language plpgsql security definer set search_path = public
+as $$
+declare
+  lesson_row public.prestudy_lessons%rowtype;
+  prior_version integer;
+  next_version integer;
+  normalized_labels text[];
+begin
+  if auth.uid() is null then raise exception 'authentication required'; end if;
+  if expected_version is null or expected_version < 1 then raise exception 'expected version required'; end if;
+  if target_idempotency_key is null then raise exception 'idempotency key required'; end if;
+  if nullif(trim(change_reason), '') is null then raise exception 'reason required'; end if;
+  if nullif(trim(target_title), '') is null
+    or nullif(trim(target_input_0_25), '') is null
+    or nullif(trim(target_analysis_25_55), '') is null
+    or nullif(trim(target_practice_55_80), '') is null
+    or nullif(trim(target_output_80_90), '') is null
+    or nullif(trim(target_acceptance_criteria), '') is null then
+    raise exception 'prestudy content fields cannot be empty';
+  end if;
+
+  select coalesce(array_agg(trim(label) order by ordinal), '{}'::text[])
+  into normalized_labels
+  from unnest(coalesce(target_knowledge_labels, '{}'::text[])) with ordinality as source(label, ordinal)
+  where nullif(trim(label), '') is not null;
+  if cardinality(normalized_labels) < 1 or cardinality(normalized_labels) > 12 then
+    raise exception 'knowledge labels must contain 1 to 12 items';
+  end if;
+  if (select count(*) from unnest(normalized_labels) label)
+    <> (select count(distinct lower(label)) from unnest(normalized_labels) label) then
+    raise exception 'knowledge labels must be unique';
+  end if;
+
+  select (after_value ->> 'version')::integer into prior_version
+  from public.change_events
+  where actor_id = auth.uid() and idempotency_key = target_idempotency_key;
+  if prior_version is not null then return prior_version; end if;
+
+  select * into lesson_row from public.prestudy_lessons where id = target_lesson_id for update;
+  if lesson_row.id is null or not public.is_subject_tutor(lesson_row.student_id, lesson_row.subject_id) then
+    raise exception 'subject tutor access required';
+  end if;
+  if lesson_row.version <> expected_version then raise exception 'version conflict'; end if;
+
+  next_version := lesson_row.version + 1;
+  update public.prestudy_lessons
+  set title = trim(target_title),
+      input_0_25 = trim(target_input_0_25),
+      analysis_25_55 = trim(target_analysis_25_55),
+      practice_55_80 = trim(target_practice_55_80),
+      output_80_90 = trim(target_output_80_90),
+      acceptance_criteria = trim(target_acceptance_criteria),
+      assigned_tutor_user_id = auth.uid(),
+      content_edited_at = now(),
+      content_edited_by = auth.uid(),
+      version = next_version
+  where id = target_lesson_id;
+
+  update public.prestudy_knowledge_items set active = false where lesson_id = target_lesson_id;
+  insert into public.prestudy_knowledge_items(lesson_id, label, sort_order, active)
+  select target_lesson_id, label, ordinal - 1, true
+  from unnest(normalized_labels) with ordinality as source(label, ordinal)
+  on conflict (lesson_id, label) do update
+    set sort_order = excluded.sort_order, active = true;
+
+  insert into public.change_events(
+    family_id, student_id, subject_id, entity_type, entity_id, event_type,
+    before_value, after_value, reason, actor_id, idempotency_key
+  ) values (
+    lesson_row.family_id, lesson_row.student_id, lesson_row.subject_id,
+    'prestudy_lesson', lesson_row.id::text, 'prestudy_content_revised',
+    jsonb_build_object(
+      'version', lesson_row.version, 'title', lesson_row.title,
+      'input_0_25', lesson_row.input_0_25, 'analysis_25_55', lesson_row.analysis_25_55,
+      'practice_55_80', lesson_row.practice_55_80, 'output_80_90', lesson_row.output_80_90,
+      'acceptance_criteria', lesson_row.acceptance_criteria
+    ),
+    jsonb_build_object(
+      'version', next_version, 'title', trim(target_title),
+      'input_0_25', trim(target_input_0_25), 'analysis_25_55', trim(target_analysis_25_55),
+      'practice_55_80', trim(target_practice_55_80), 'output_80_90', trim(target_output_80_90),
+      'acceptance_criteria', trim(target_acceptance_criteria), 'knowledge_labels', normalized_labels
+    ),
+    trim(change_reason), auth.uid(), target_idempotency_key
+  );
+  perform public.notify_prestudy_audience(
+    lesson_row.id, 'prestudy_content_revised', '家教已更新预习内容', trim(change_reason)
+  );
+  return next_version;
+end;
+$$;
+
 create or replace view public.prestudy_lesson_overview
 with (security_invoker = true)
 as
@@ -545,6 +661,8 @@ revoke all on function public.revoke_prestudy_state(uuid, text, text, integer, u
 grant execute on function public.revoke_prestudy_state(uuid, text, text, integer, uuid) to authenticated;
 revoke all on function public.move_prestudy_lesson(uuid, date, text, integer, uuid) from public, anon;
 grant execute on function public.move_prestudy_lesson(uuid, date, text, integer, uuid) to authenticated;
+revoke all on function public.revise_prestudy_content(uuid, text, text, text, text, text, text, text[], text, integer, uuid) from public, anon;
+grant execute on function public.revise_prestudy_content(uuid, text, text, text, text, text, text, text[], text, integer, uuid) to authenticated;
 
 do $$
 begin
@@ -558,3 +676,5 @@ begin
     end if;
   end if;
 end $$;
+
+notify pgrst, 'reload schema';

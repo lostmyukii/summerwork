@@ -145,8 +145,65 @@ export type PlanVersionStatus = {
   updateAvailable: boolean;
 };
 
+export type PrestudyState = "pending" | "led" | "validated";
+
+export type PrestudyKnowledgeItem = {
+  id: string;
+  label: string;
+  sortOrder: number;
+};
+
+export type PrestudyUnmasteredItem = {
+  id: string;
+  knowledgeItemId?: string;
+  label: string;
+  custom: boolean;
+};
+
+export type PrestudyLesson = {
+  id: string;
+  sourceKey: string;
+  studentId?: string;
+  subject: SummerTask["subject"];
+  subjectId: string;
+  assignedTutorUserId?: string;
+  assignedTutorLabel: string;
+  originalDate: string;
+  plannedDate: string;
+  scheduleAdjustmentReason?: string;
+  tutorLane: "本科" | "考背";
+  moduleCode: string;
+  lessonCode: string;
+  title: string;
+  phases: {
+    input: string;
+    analysis: string;
+    practice: string;
+    output: string;
+  };
+  acceptanceCriteria: string;
+  plannedMinutes: 90;
+  version: number;
+  contentEditedAt?: string;
+  state: PrestudyState;
+  executionVersion: number;
+  ledAt?: string;
+  validatedAt?: string;
+  actualQuestionCount?: number;
+  knowledgeItems: PrestudyKnowledgeItem[];
+  unmasteredItems: PrestudyUnmasteredItem[];
+};
+
+export type PrestudyCourseSlot = {
+  subject: SummerTask["subject"];
+  date: string;
+  tutorLane: "本科" | "考背";
+};
+
 export type InitialWorkspace = StoredWorkspace & {
   tasks: WorkspaceTask[];
+  prestudyLessons?: PrestudyLesson[];
+  prestudyCourseSlots?: PrestudyCourseSlot[];
   studentId?: string;
   notifications?: NotificationSummary[];
   weeklyReports?: WeeklyReportSummary[];
