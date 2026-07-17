@@ -347,6 +347,119 @@ reset role;
 select pg_temp.assert_true((select count(*) >= 1 from public.notifications where recipient_id = :'parent_id'), 'plan and submission changes should notify parent inside the system');
 select pg_temp.assert_true((select count(*) >= 1 from public.notifications where recipient_id = :'math_tutor_id'), 'student completion should notify the subject tutor');
 
+select count(*) as homework_count_before_prestudy from public.homework_tasks \gset
+insert into public.prestudy_course_slots(
+  family_id, student_id, subject_id, course_date, tutor_lane, source_reference
+) values
+  (:'family_id', :'student_record_id', 'math', '2026-07-19', '本科', 'integration'),
+  (:'family_id', :'student_record_id', 'math', '2026-07-23', '本科', 'integration'),
+  (:'family_id', :'student_record_id', 'math', '2026-08-12', '本科', 'integration'),
+  (:'family_id', :'student_record_id', 'physics', '2026-07-21', '本科', 'integration');
+
+insert into public.prestudy_lessons(
+  id, source_key, source_digest, family_id, student_id, subject_id,
+  assigned_tutor_user_id, original_date, planned_date, tutor_lane,
+  module_code, lesson_code, title, input_0_25, analysis_25_55,
+  practice_55_80, output_80_90, acceptance_criteria, created_by
+) values
+  ('14141414-0000-4000-8000-000000000001', 'integration-prestudy-math', 'digest-math',
+   :'family_id', :'student_record_id', 'math', :'math_tutor_id', '2026-07-19', '2026-07-19', '本科',
+   'M-LC', 'M01', '直线预习', '教材输入', '例题拆解', '最小自测', '输出卡', '能够说明斜率', :'parent_id'),
+  ('14141414-0000-4000-8000-000000000002', 'integration-prestudy-physics', 'digest-physics',
+   :'family_id', :'student_record_id', 'physics', :'physics_tutor_id', '2026-07-21', '2026-07-21', '本科',
+   'P-CIRADV', 'P01', '电路预习', '教材输入', '例题拆解', '最小自测', '输出卡', '能够区分电压', :'parent_id');
+
+insert into public.prestudy_knowledge_items(id, lesson_id, label, sort_order) values
+  ('15151515-0000-4000-8000-000000000001', '14141414-0000-4000-8000-000000000001', '直线斜率', 0),
+  ('15151515-0000-4000-8000-000000000002', '14141414-0000-4000-8000-000000000001', '直线方程', 1),
+  ('15151515-0000-4000-8000-000000000003', '14141414-0000-4000-8000-000000000002', '闭合电路', 0);
+
+select set_config('request.jwt.claim.sub', :'parent_id', false);
+set role authenticated;
+select pg_temp.assert_true((select count(*) = 2 from public.prestudy_lessons), 'parent should read all student prestudy lessons');
+select pg_temp.expect_error(
+  'select public.mark_prestudy_led(''14141414-0000-4000-8000-000000000001''::uuid, 0, ''16161616-0000-4000-8000-000000000001''::uuid)',
+  'subject tutor access required'
+);
+reset role;
+
+select set_config('request.jwt.claim.sub', :'student_user_id', false);
+set role authenticated;
+select pg_temp.assert_true((select count(*) = 2 from public.prestudy_lessons), 'student should read all own prestudy lessons');
+select pg_temp.expect_error(
+  'update public.prestudy_lessons set title = ''伪造修改'' where id = ''14141414-0000-4000-8000-000000000001''::uuid',
+  'permission denied'
+);
+select pg_temp.expect_error(
+  'select public.mark_prestudy_led(''14141414-0000-4000-8000-000000000001''::uuid, 0, ''16161616-0000-4000-8000-000000000002''::uuid)',
+  'subject tutor access required'
+);
+reset role;
+
+select set_config('request.jwt.claim.sub', :'physics_tutor_id', false);
+set role authenticated;
+select pg_temp.assert_true((select count(*) = 1 from public.prestudy_lessons where subject_id = 'physics'), 'physics tutor should only read physics prestudy');
+select pg_temp.expect_error(
+  'select public.mark_prestudy_led(''14141414-0000-4000-8000-000000000001''::uuid, 0, ''16161616-0000-4000-8000-000000000003''::uuid)',
+  'subject tutor access required'
+);
+select pg_temp.expect_error(
+  'select public.validate_prestudy_lesson(''14141414-0000-4000-8000-000000000002''::uuid, 2, ''{}''::uuid[], ''{}''::text[], 1, ''16161616-0000-4000-8000-000000000004''::uuid)',
+  'prestudy lesson must be led before validation'
+);
+reset role;
+
+select set_config('request.jwt.claim.sub', :'math_tutor_id', false);
+set role authenticated;
+select pg_temp.assert_true((select count(*) = 1 from public.prestudy_lessons where subject_id = 'math'), 'math tutor should only read math prestudy');
+select pg_temp.assert_true(public.mark_prestudy_led(
+  '14141414-0000-4000-8000-000000000001', 0,
+  '16161616-0000-4000-8000-000000000005'
+) = 1, 'math tutor should mark the lesson led');
+select pg_temp.assert_true(public.mark_prestudy_led(
+  '14141414-0000-4000-8000-000000000001', 0,
+  '16161616-0000-4000-8000-000000000005'
+) = 1, 'marking led should be idempotent');
+select pg_temp.expect_error(
+  'select public.validate_prestudy_lesson(''14141414-0000-4000-8000-000000000001''::uuid, -1, ''{}''::uuid[], ''{}''::text[], 1, ''16161616-0000-4000-8000-000000000006''::uuid)',
+  'actual question count must be a non-negative integer'
+);
+select pg_temp.assert_true(public.validate_prestudy_lesson(
+  '14141414-0000-4000-8000-000000000001', 4,
+  array['15151515-0000-4000-8000-000000000001'::uuid], array['斜率不存在情形'],
+  1, '16161616-0000-4000-8000-000000000007'
+) = 2, 'validation should save actual question count and unmastered knowledge');
+select pg_temp.assert_true((
+  select prestudy_state = 'validated' and actual_question_count = 4 and execution_version = 2
+  from public.prestudy_lesson_overview
+  where id = '14141414-0000-4000-8000-000000000001'
+), 'validated overview should keep execution facts separate from mastery');
+select pg_temp.assert_true((
+  select count(*) = 2 from public.prestudy_unmastered_items
+  where lesson_id = '14141414-0000-4000-8000-000000000001'
+), 'preset and custom unmastered knowledge should both be stored');
+select pg_temp.expect_error(
+  'select public.move_prestudy_lesson(''14141414-0000-4000-8000-000000000001''::uuid, ''2026-08-12''::date, ''错误移动'', 1, ''16161616-0000-4000-8000-000000000008''::uuid)',
+  '2026-08-12 is a travel day without tutor lessons'
+);
+select pg_temp.assert_true(public.move_prestudy_lesson(
+  '14141414-0000-4000-8000-000000000001', '2026-07-23', '调到下一次数学家教课', 1,
+  '16161616-0000-4000-8000-000000000009'
+) = 2, 'lesson movement should require a matching tutor course slot');
+select pg_temp.expect_error(
+  'select public.revoke_prestudy_state(''14141414-0000-4000-8000-000000000001''::uuid, ''validated'', '''', 2, ''16161616-0000-4000-8000-000000000010''::uuid)',
+  'reason required'
+);
+select pg_temp.assert_true(public.revoke_prestudy_state(
+  '14141414-0000-4000-8000-000000000001', 'validated', '复核后发现误点', 2,
+  '16161616-0000-4000-8000-000000000011'
+) = 3, 'validation revoke should reopen only the prestudy validation state');
+reset role;
+
+select pg_temp.assert_true((select count(*) = :'homework_count_before_prestudy'::integer from public.homework_tasks), 'prestudy commands must not change homework task count');
+select pg_temp.assert_true((select count(*) >= 1 from public.notifications where recipient_id = :'parent_id' and entity_type = 'prestudy_lesson'), 'prestudy changes should notify parent only inside the system');
+select pg_temp.assert_true((select count(*) = 4 from public.change_events where entity_id = '14141414-0000-4000-8000-000000000001'), 'led, validated, moved and revoked prestudy events should remain auditable');
+
 select id as math_assignment_id from public.tutor_assignments
 where student_id = :'student_record_id' and subject_id = 'math' and ends_at is null \gset
 select set_config('request.jwt.claim.sub', :'parent_id', false);

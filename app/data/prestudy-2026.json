@@ -1,0 +1,473 @@
+{
+  "meta": {
+    "id": "prestudy-2026-summer",
+    "title": "黑龙江高二上暑期家教带学预习计划",
+    "version": 1,
+    "dateRange": { "start": "2026-07-19", "end": "2026-08-29" },
+    "plannedMinutes": 90,
+    "allowedSubjects": ["语文", "数学", "俄语", "物理", "化学", "生物"],
+    "sourceFiles": ["黑龙江高二上每日90分钟预习计划_双方案统一版.xlsx#每日预习"]
+  },
+  "lessons": [
+    {
+      "sourceKey": "prestudy-2026-M01",
+      "subject": "数学",
+      "moduleCode": "M-LC",
+      "lessonCode": "M01",
+      "originalDate": "2026-07-19",
+      "plannedDate": "2026-07-19",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "直线的倾斜角、斜率与方程",
+      "phases": {
+        "input": "由高一期末已会的坐标与向量过渡，读倾斜角、斜率和五种直线方程",
+        "analysis": "跟做已知点斜率、两点求直线方程各1例",
+        "practice": "独立完成3道选择方程形式题",
+        "output": "写“条件—方程形式—限制”对照卡"
+      },
+      "acceptanceCriteria": "能根据条件选最短方程并识别斜率不存在",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["直线倾斜角", "斜率及不存在情形", "直线方程五种形式"]
+    },
+    {
+      "sourceKey": "prestudy-2026-C01",
+      "subject": "化学",
+      "moduleCode": "C-HEAT",
+      "lessonCode": "C01",
+      "originalDate": "2026-07-20",
+      "plannedDate": "2026-07-20",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "热化学方程式与摩尔反应焓",
+      "phases": {
+        "input": "用期末卷已考的能量图作桥接，读状态、化学计量数与ΔH规则",
+        "analysis": "把2个反应式改写为规范热化学方程式",
+        "practice": "完成2道反应物用量与放热量换算",
+        "output": "写“状态—系数—ΔH—单位”检查卡"
+      },
+      "acceptanceCriteria": "能从能量变化升级到按物质的量规范计算",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["热化学方程式规范", "化学计量数与反应焓", "反应焓单位与正负"]
+    },
+    {
+      "sourceKey": "prestudy-2026-P01",
+      "subject": "物理",
+      "moduleCode": "P-CIRADV",
+      "lessonCode": "P01",
+      "originalDate": "2026-07-21",
+      "plannedDate": "2026-07-21",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "电源、电动势与闭合电路欧姆定律",
+      "phases": {
+        "input": "从期末卷已会的电流电阻过渡，读电动势、内阻和路端电压",
+        "analysis": "跟做1道路端电压随外电阻变化例题",
+        "practice": "完成2道闭合电路和功率分配题",
+        "output": "画电源内外电路能量流"
+      },
+      "acceptanceCriteria": "能区分电动势、路端电压和内电压",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["电动势与内阻", "闭合电路欧姆定律", "路端电压与内电压", "电路功率分配"]
+    },
+    {
+      "sourceKey": "prestudy-2026-B01",
+      "subject": "生物",
+      "moduleCode": "B-HOMEOSTASIS",
+      "lessonCode": "B01",
+      "originalDate": "2026-07-22",
+      "plannedDate": "2026-07-22",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "人体内环境与稳态",
+      "phases": {
+        "input": "通读血浆、组织液、淋巴液及相互转化",
+        "analysis": "用箭头画三种液体的物质交换图",
+        "practice": "完成3道内环境成分/稳态判断题",
+        "output": "写出稳态不是恒定不变的解释"
+      },
+      "acceptanceCriteria": "能判定一种物质是否属于内环境并说明理由",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["内环境三种体液", "体液相互转化", "内环境成分判断", "稳态的动态性"]
+    },
+    {
+      "sourceKey": "prestudy-2026-M02",
+      "subject": "数学",
+      "moduleCode": "M-LC",
+      "lessonCode": "M02",
+      "originalDate": "2026-07-23",
+      "plannedDate": "2026-07-23",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "两直线的位置关系、交点、角与距离",
+      "phases": {
+        "input": "读平行、垂直判定和点到直线距离公式",
+        "analysis": "跟做求交点与点到直线距离各1例",
+        "practice": "独立完成3道平行/垂直/距离题",
+        "output": "整理斜率法与一般式法的适用条件"
+      },
+      "acceptanceCriteria": "能由方程判断位置关系并完成距离计算",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["两直线平行与垂直", "两直线交点", "点到直线距离", "斜率法与一般式法"]
+    },
+    {
+      "sourceKey": "prestudy-2026-R01",
+      "subject": "俄语",
+      "moduleCode": "R-GRAMMAR",
+      "lessonCode": "R01",
+      "originalDate": "2026-07-24",
+      "plannedDate": "2026-07-24",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "运动动词与常见前缀",
+      "phases": {
+        "input": "复习идти/ходить、ехать/ездить的单向与往返",
+        "analysis": "按в-/вы-/при-/у-整理含义与支配格",
+        "practice": "完成12个动词填空并口头造句4句",
+        "output": "制作运动动词前缀对照表"
+      },
+      "acceptanceCriteria": "能根据语境选择运动动词和前缀",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["运动动词单向与往返", "运动动词常见前缀", "前缀含义与支配格"]
+    },
+    {
+      "sourceKey": "prestudy-2026-P02",
+      "subject": "物理",
+      "moduleCode": "P-CIRADV",
+      "lessonCode": "P02",
+      "originalDate": "2026-07-25",
+      "plannedDate": "2026-07-25",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "测电源电动势和内阻：实验与图像",
+      "phases": {
+        "input": "读伏安法实验电路、滑动变阻器作用和U-I图像",
+        "analysis": "根据一组数据作图并读出E、r",
+        "practice": "完成2道误差来源与电路选择题",
+        "output": "写“接线—测量—作图—读截距斜率”流程"
+      },
+      "acceptanceCriteria": "能从实验图像求E、r并解释主要误差",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["伏安法测电源", "滑动变阻器作用", "U-I图像截距斜率", "实验误差来源"]
+    },
+    {
+      "sourceKey": "prestudy-2026-C02",
+      "subject": "化学",
+      "moduleCode": "C-HEAT",
+      "lessonCode": "C02",
+      "originalDate": "2026-08-13",
+      "plannedDate": "2026-08-13",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "盖斯定律、键能与反应焓计算",
+      "phases": {
+        "input": "读盖斯定律和平均键能估算ΔH的方法",
+        "analysis": "跟做1道反应路线叠加和1道键能计算",
+        "practice": "独立完成2道综合反应热计算",
+        "output": "写“倍乘同倍—逆反应变号—相加消元”卡"
+      },
+      "acceptanceCriteria": "能用两条独立路径计算并相互校验ΔH",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["盖斯定律", "反应式倍乘与反向", "平均键能估算反应焓", "反应焓路径校验"]
+    },
+    {
+      "sourceKey": "prestudy-2026-M03",
+      "subject": "数学",
+      "moduleCode": "M-LC",
+      "lessonCode": "M03",
+      "originalDate": "2026-08-12",
+      "plannedDate": "2026-08-14",
+      "scheduleAdjustmentReason": "8月12日仍在俄罗斯且无家教，顺延至8月14日数学家教课",
+      "tutorLane": "本科",
+      "title": "圆的标准方程、一般方程与切线",
+      "phases": {
+        "input": "读圆心半径的代数识别和一般式表示圆的条件",
+        "analysis": "跟做配方求圆心半径与切线方程各1例",
+        "practice": "独立完成3道求圆方程题",
+        "output": "整理圆方程三类给定条件"
+      },
+      "acceptanceCriteria": "能由条件求圆并检验切线",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["圆的标准方程", "圆的一般方程", "配方求圆心半径", "圆的切线方程"]
+    },
+    {
+      "sourceKey": "prestudy-2026-P03",
+      "subject": "物理",
+      "moduleCode": "P-CIREXP",
+      "lessonCode": "P03",
+      "originalDate": "2026-08-14",
+      "plannedDate": "2026-08-14",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "伏安特性、多用电表与电学实验读图",
+      "phases": {
+        "input": "读伏安法内外接、滑动变阻器两种接法和多用电表基本规则",
+        "analysis": "跟做1道器材选择和1道I-U图像识别",
+        "practice": "完成2道接线/读数/误差判断题",
+        "output": "写“目的—电路—器材—图像—误差”实验卡"
+      },
+      "acceptanceCriteria": "能按测量目的选电路，并从图像提取电阻变化",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["伏安法内外接", "滑动变阻器接法", "多用电表使用规则", "I-U图像读数"]
+    },
+    {
+      "sourceKey": "prestudy-2026-B02",
+      "subject": "生物",
+      "moduleCode": "B-NEURAL",
+      "lessonCode": "B02",
+      "originalDate": "2026-08-15",
+      "plannedDate": "2026-08-15",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "神经调节结构基础：反射与反射弧",
+      "phases": {
+        "input": "读反射弧五环节和兴奋传导方向",
+        "analysis": "画膝跳反射结构并标出感受器/效应器",
+        "practice": "完成3道反射弧受损判断题",
+        "output": "写“有刺激≠一定形成感觉”的解释"
+      },
+      "acceptanceCriteria": "能根据受损部位推断反射和感觉是否存在",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["反射弧五环节", "兴奋传导方向", "感受器与效应器", "反射弧受损判断"]
+    },
+    {
+      "sourceKey": "prestudy-2026-R02",
+      "subject": "俄语",
+      "moduleCode": "R-GRAMMAR",
+      "lessonCode": "R02",
+      "originalDate": "2026-08-17",
+      "plannedDate": "2026-08-17",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "形容词短尾：构成、意义与谓语用法",
+      "phases": {
+        "input": "从熟悉形容词长尾过渡到短尾的性数变化和暂时特征表达",
+        "analysis": "把8个长尾句改写为短尾谓语并比较语义",
+        "practice": "完成10个短尾构成与选用题",
+        "output": "整理常见短尾形式和支配搭配"
+      },
+      "acceptanceCriteria": "能构成常见短尾，并判断长尾/短尾的语义差别",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["形容词短尾构成", "短尾性数变化", "短尾谓语用法", "长尾短尾语义差别"]
+    },
+    {
+      "sourceKey": "prestudy-2026-Y01",
+      "subject": "语文",
+      "moduleCode": "Y-REV",
+      "lessonCode": "Y01",
+      "originalDate": "2026-08-18",
+      "plannedDate": "2026-08-18",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "考背",
+      "title": "选择性必修上第一单元：演讲与纪实文本",
+      "phases": {
+        "input": "通读《中国人民站起来了》，标出对象、场合、主张与情感推进",
+        "analysis": "拆解开篇—主体—号召的演讲结构",
+        "practice": "仿写一段120字有对象感的发言",
+        "output": "记录2处历史语境与2种表达策略"
+      },
+      "acceptanceCriteria": "能说明演讲内容如何服务特定场合与听众",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["演讲对象与场合", "演讲结构", "主张与情感推进", "演讲表达策略"]
+    },
+    {
+      "sourceKey": "prestudy-2026-C03",
+      "subject": "化学",
+      "moduleCode": "C-RATEEQ",
+      "lessonCode": "C03",
+      "originalDate": "2026-08-19",
+      "plannedDate": "2026-08-19",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "化学平衡常数K与三段式",
+      "phases": {
+        "input": "从期末卷的平衡状态判断过渡到K表达式、浓度幂次和固液体省略规则",
+        "analysis": "跟做1道Kc和1道平衡转化率三段式",
+        "practice": "完成2道基础K与转化率计算",
+        "output": "写ICE表模板和不列入K的物质清单"
+      },
+      "acceptanceCriteria": "能列K表达式并用三段式完成单反应基础计算",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["平衡常数K表达式", "固液体省略规则", "ICE三段式", "平衡转化率"]
+    },
+    {
+      "sourceKey": "prestudy-2026-M04",
+      "subject": "数学",
+      "moduleCode": "M-LC",
+      "lessonCode": "M04",
+      "originalDate": "2026-08-20",
+      "plannedDate": "2026-08-20",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "直线与圆的位置关系、弦长和轨迹",
+      "phases": {
+        "input": "复习圆心到直线距离与判别式两种判定",
+        "analysis": "跟做1道弦长和1道切线问题",
+        "practice": "独立做2道位置关系综合题",
+        "output": "写几何法与联立法选择规则"
+      },
+      "acceptanceCriteria": "能完成相切、弦长和简单轨迹问题",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["直线与圆位置关系", "圆心到直线距离", "弦长计算", "简单轨迹问题"]
+    },
+    {
+      "sourceKey": "prestudy-2026-B03",
+      "subject": "生物",
+      "moduleCode": "B-NEURAL",
+      "lessonCode": "B03",
+      "originalDate": "2026-08-21",
+      "plannedDate": "2026-08-21",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "兴奋传导、突触与神经系统分级调节",
+      "phases": {
+        "input": "读兴奋在神经纤维和突触处的传递",
+        "analysis": "画突触结构并标出单向传递原因",
+        "practice": "完成3道膜内外电位/传递方向题",
+        "output": "写大脑皮层、脊髓与自主神经功能表"
+      },
+      "acceptanceCriteria": "能解释传导方向和分级调节",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["神经纤维兴奋传导", "突触结构与单向传递", "膜内外电位", "神经系统分级调节"]
+    },
+    {
+      "sourceKey": "prestudy-2026-P04",
+      "subject": "物理",
+      "moduleCode": "P-OSC",
+      "lessonCode": "P04",
+      "originalDate": "2026-08-22",
+      "plannedDate": "2026-08-22",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "简谐运动、振幅周期与振动图像",
+      "phases": {
+        "input": "读弹簧振子模型，识别平衡位置、振幅、周期和相位状态",
+        "analysis": "跟做1道x-t图像读数与速度加速度方向例题",
+        "practice": "完成3道振动图像判断题",
+        "output": "整理位移、速度、加速度、回复力随位置变化表"
+      },
+      "acceptanceCriteria": "能从振动图像读周期，并判断各物理量方向和大小变化",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["简谐运动模型", "振幅与周期", "振动图像读数", "速度加速度回复力"]
+    },
+    {
+      "sourceKey": "prestudy-2026-Y02",
+      "subject": "语文",
+      "moduleCode": "Y-CLASSIC",
+      "lessonCode": "Y02",
+      "originalDate": "2026-08-24",
+      "plannedDate": "2026-08-24",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "考背",
+      "title": "《论语十二章》《大学之道》：导读与首轮背诵",
+      "phases": {
+        "input": "通读注释和译文，圈出学习、仁、修身、治国的核心命题",
+        "analysis": "各拆1条“观点—理由—结果”论证链并口头复述",
+        "practice": "背诵《大学之道》核心段和《论语》3则重点句",
+        "output": "闭卷默写4句并标出易错字"
+      },
+      "acceptanceCriteria": "能解释两篇修身路径，并完成首轮重点句默写",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["学习与仁的核心命题", "修身与治国路径", "观点理由结果链", "重点句背诵默写"]
+    },
+    {
+      "sourceKey": "prestudy-2026-R03",
+      "subject": "俄语",
+      "moduleCode": "R-GRAMMAR",
+      "lessonCode": "R03",
+      "originalDate": "2026-08-25",
+      "plannedDate": "2026-08-25",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "不定人称句与无人称句辨析",
+      "phases": {
+        "input": "读复数第三人称/过去时复数构成的不定人称句，复习无人称句主体与谓语",
+        "analysis": "把8个明确主语句改写为不定人称句",
+        "practice": "完成10个句型辨析与改写题",
+        "output": "整理“谁做不重要/主体不可指明”的判断卡"
+      },
+      "acceptanceCriteria": "能在语境中区分不定人称句和无人称句并完成改写",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["不定人称句构成", "无人称句主体与谓语", "两类句型辨析", "句型改写"]
+    },
+    {
+      "sourceKey": "prestudy-2026-M05",
+      "subject": "数学",
+      "moduleCode": "M-EL",
+      "lessonCode": "M05",
+      "originalDate": "2026-08-26",
+      "plannedDate": "2026-08-26",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "椭圆定义、焦点位置与标准方程",
+      "phases": {
+        "input": "用定长和轨迹语言理解椭圆定义",
+        "analysis": "推导焦点在x轴的标准方程关键步骤",
+        "practice": "完成3道由定义或条件求方程题",
+        "output": "写a、b、c关系卡"
+      },
+      "acceptanceCriteria": "能从焦点位置和条件写出椭圆标准方程",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["椭圆定义", "椭圆焦点位置", "椭圆标准方程", "a、b、c关系"]
+    },
+    {
+      "sourceKey": "prestudy-2026-C04",
+      "subject": "化学",
+      "moduleCode": "C-RATEEQ",
+      "lessonCode": "C04",
+      "originalDate": "2026-08-27",
+      "plannedDate": "2026-08-27",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "浓度商Q、平衡移动与速率—时间图像",
+      "phases": {
+        "input": "读Q与K的三种关系，串联浓度/压强/温度改变后的平衡移动",
+        "analysis": "跟做1道Q-K判断和1道v-t图像",
+        "practice": "完成3道平衡移动与图像题",
+        "output": "画“条件改变—瞬时速率—移动方向—新平衡”链"
+      },
+      "acceptanceCriteria": "能用Q与K解释移动方向，并画出基础速率变化图",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["浓度商Q与K", "化学平衡移动", "条件改变与瞬时速率", "速率时间图像"]
+    },
+    {
+      "sourceKey": "prestudy-2026-P05",
+      "subject": "物理",
+      "moduleCode": "P-WAVE",
+      "lessonCode": "P05",
+      "originalDate": "2026-08-28",
+      "plannedDate": "2026-08-28",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "机械波、波形图与v=λf",
+      "phases": {
+        "input": "从单个质点振动过渡到振动传播，读波长、频率、波速和传播方向",
+        "analysis": "跟做1道波形图质点振动方向例题",
+        "practice": "完成3道波形图与v=λf基础题",
+        "output": "写“波在走、质点不随波迁移”的辨析卡"
+      },
+      "acceptanceCriteria": "能区分振动图与波形图，并用v=λf完成基础计算",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["机械波传播", "波长频率波速", "波形图与振动图", "质点振动方向"]
+    },
+    {
+      "sourceKey": "prestudy-2026-B04",
+      "subject": "生物",
+      "moduleCode": "B-HUMORAL",
+      "lessonCode": "B04",
+      "originalDate": "2026-08-29",
+      "plannedDate": "2026-08-29",
+      "scheduleAdjustmentReason": null,
+      "tutorLane": "本科",
+      "title": "激素调节、反馈调节与血糖平衡",
+      "phases": {
+        "input": "读激素作用特点与分级调节",
+        "analysis": "画血糖调节和甲状腺激素分级调节图",
+        "practice": "完成3道反馈调节题",
+        "output": "列神经调节与体液调节对比表"
+      },
+      "acceptanceCriteria": "能根据曲线判断激素变化和反馈方向",
+      "plannedMinutes": 90,
+      "knowledgePoints": ["激素作用特点", "激素分级调节", "反馈调节", "血糖平衡", "神经体液调节比较"]
+    }
+  ]
+}

@@ -7,7 +7,9 @@ const identityMigration = readFileSync(new URL("../supabase/migrations/0001_iden
 const bootstrapMigration = readFileSync(new URL("../supabase/migrations/0017_single_family_bootstrap.sql", import.meta.url), "utf8");
 const selfHostedMigration = readFileSync(new URL("../supabase/migrations/0018_self_hosted_crypto_and_verification_cleanup.sql", import.meta.url), "utf8");
 const travelRecoveryMigration = readFileSync(new URL("../supabase/migrations/0020_travel_recovery_schedule.sql", import.meta.url), "utf8");
+const prestudyMigration = readFileSync(new URL("../supabase/migrations/0021_independent_prestudy_track.sql", import.meta.url), "utf8");
 const syncScript = readFileSync(new URL("../scripts/sync-summer-plan.mjs", import.meta.url), "utf8");
+const prestudySyncScript = readFileSync(new URL("../scripts/sync-prestudy-plan.mjs", import.meta.url), "utf8");
 
 describe("Supabase 作业闭环结构与分科权限", () => {
   it("把孩子活动、家教批改、计划变更和知识掌握分表保存", () => {
@@ -101,5 +103,47 @@ describe("Supabase 作业闭环结构与分科权限", () => {
     expect(travelRecoveryMigration).toMatch(/revoke all on table public\.task_travel_recovery_schedules from public, anon, authenticated/);
     expect(travelRecoveryMigration).toMatch(/grant select on table public\.task_travel_recovery_schedules to authenticated/);
     expect(travelRecoveryMigration).toMatch(/grant execute on function public\.set_travel_recovery_schedule[\s\S]*to authenticated/);
+  });
+
+  it("预习课、预设知识点、执行记录和未掌握项独立于学校作业", () => {
+    for (const table of [
+      "prestudy_lessons",
+      "prestudy_knowledge_items",
+      "prestudy_execution_records",
+      "prestudy_unmastered_items",
+    ]) expect(prestudyMigration).toContain(`public.${table}`);
+    expect(prestudyMigration).toMatch(/unique\(student_id, source_key\)/);
+    expect(prestudyMigration).toMatch(/planned_minutes integer not null default 90 check \(planned_minutes = 90\)/);
+    expect(prestudyMigration).not.toMatch(/insert into public\.(homework_tasks|mastery_evidence|mastery_snapshots)/);
+  });
+
+  it("预习读取按家庭和分科授权，写入只能走受控命令", () => {
+    expect(prestudyMigration).toMatch(/can_access_prestudy_lesson[\s\S]*is_family_parent[\s\S]*is_student_owner[\s\S]*is_subject_tutor/);
+    expect(prestudyMigration).toMatch(/prestudy_lessons_select_authorized[\s\S]*can_access_prestudy_lesson/);
+    expect(prestudyMigration).toMatch(/mark_prestudy_led[\s\S]*is_subject_tutor/);
+    expect(prestudyMigration).toMatch(/validate_prestudy_lesson[\s\S]*is_subject_tutor/);
+    expect(prestudyMigration).not.toMatch(/prestudy_lessons_(insert|update)_authorized/);
+  });
+
+  it("预习验收要求先带学、实际题数和乐观版本，并保留审计", () => {
+    expect(prestudyMigration).toMatch(/validate_prestudy_lesson[\s\S]*prestudy lesson must be led before validation/);
+    expect(prestudyMigration).toMatch(/actual question count must be a non-negative integer/);
+    expect(prestudyMigration).toMatch(/expected_version[\s\S]*version conflict/);
+    expect(prestudyMigration).toMatch(/entity_type[\s\S]*prestudy_lesson/);
+    expect(prestudyMigration).toMatch(/change_events[\s\S]*actor_id = auth\.uid\(\) and idempotency_key = target_idempotency_key/);
+  });
+
+  it("预习日期移动只允许有效课表槽且明确排除8月12日", () => {
+    expect(prestudyMigration).toContain("public.prestudy_course_slots");
+    expect(prestudyMigration).toMatch(/move_prestudy_lesson[\s\S]*2026-08-12[\s\S]*active tutor course slot required/);
+    expect(prestudyMigration).toMatch(/revoke_prestudy_state[\s\S]*reason required/);
+  });
+
+  it("预习同步脚本幂等同步23节并拒绝覆盖已带学内容", () => {
+    expect(prestudySyncScript).toContain("prestudy-2026.json");
+    expect(prestudySyncScript).toContain("prestudy_lessons");
+    expect(prestudySyncScript).toContain("prestudy_execution_records");
+    expect(prestudySyncScript).toMatch(/lessons\.length !== 23/);
+    expect(prestudySyncScript).toMatch(/refuse|拒绝/i);
   });
 });
