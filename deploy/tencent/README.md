@@ -6,9 +6,10 @@
 
 - 应用：`https://summerwork.ilelezhan.cn`
 - API：`https://summerwork-api.ilelezhan.cn`
-- 数据库迁移：20 份（最新 `0020_travel_recovery_schedule.sql`）
+- 数据库迁移：21 份（最新 `0021_independent_prestudy_track.sql`）
 - 计划目录：v2，203 个任务模板、175 项作业本体、6 科、23 个课程日
-- 正式家庭：尚未启用；四账号合成验收完成后已清理
+- 独立预习：23 节、62 个有效课程槽、90 个预设知识点
+- 正式家庭：1 个；家长、六科家教和孩子账号已启用
 
 ## 固定边界
 
