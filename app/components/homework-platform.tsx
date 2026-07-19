@@ -654,6 +654,7 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
   async function saveReview() {
     const normalizedWrongNumbers = activeProgress.accuracy === "100%" ? "" : normalizeQuestionNumbers(activeProgress.wrongNumbers);
     const tutorConfirmedFirstAttempt = workflowTask.kind !== "submission" && activeProgress.runState !== "completed";
+    const workflowAwaitingCorrection = activeProgress.workflowStage === "awaiting_correction" || activeProgress.workflowStage === "awaiting_redo";
     if (activeProgress.accuracy !== "100%" && !normalizedWrongNumbers) {
       showToast("请填写错题号");
       return;
@@ -681,9 +682,19 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
             workflowVersion: nextWorkflow.version,
             workflowStage: nextWorkflow.stage,
           };
-        } else if (hasErrors && (!activeProgress.correctionPassed || (activeProgress.redoRequired && !activeProgress.redoPassed))) {
+          if (hasErrors && savedProgress.correctionPassed) {
+            const correctionProgress = { ...savedProgress, workflowVersion: nextWorkflow.version, workflowStage: nextWorkflow.stage };
+            const correctionWorkflow = await persistCorrectionValidation(workflowTask, correctionProgress);
+            savedProgress = { ...savedProgress, workflowVersion: correctionWorkflow.version, workflowStage: correctionWorkflow.stage };
+            actionLabel = savedProgress.redoRequired && !savedProgress.redoPassed ? "批改与订正已保存，等待独立复做" : "批改、订正与复做已验收";
+          }
+        } else if (hasErrors && (workflowAwaitingCorrection || !activeProgress.correctionPassed || (activeProgress.redoRequired && !activeProgress.redoPassed))) {
           if (!activeProgress.correctionPassed) {
             showToast("请先勾选订正是否通过");
+            return;
+          }
+          if (activeProgress.workflowStage === "awaiting_redo" && activeProgress.redoRequired && !activeProgress.redoPassed) {
+            showToast("请先勾选独立复做是否通过");
             return;
           }
           const nextWorkflow = await persistCorrectionValidation(workflowTask, savedProgress);
@@ -1689,19 +1700,22 @@ type ReviewPanelProps = {
 function ReviewPanel(props: ReviewPanelProps) {
   const hasErrors = props.progress.accuracy !== "100%" && normalizeQuestionNumbers(props.progress.wrongNumbers).length > 0;
   const submissionTiming = deriveSubmissionTiming(props.task, props.progress);
+  const workflowAwaitingCorrection = props.workflowState === "awaiting_correction" || props.workflowState === "awaiting_redo";
+  const workflowReadyForMastery = props.workflowState === "awaiting_acceptance" || props.workflowState === "closed_loop";
+  const correctionEvidenceSatisfied = props.progress.reviewSaved
+    && (!hasErrors || props.progress.correctionPassed)
+    && (!props.progress.redoRequired || props.progress.redoPassed);
   const workflowDetail = props.progress.reviewSaved
     ? "批改与订正"
     : props.progress.runState === "completed"
       ? "首做已完成"
       : "保存批改时自动补首做完成";
-  const canConfirmMastery = props.progress.reviewSaved
-    && (!hasErrors || props.progress.correctionPassed)
-    && (!props.progress.redoRequired || props.progress.redoPassed);
+  const canConfirmMastery = workflowReadyForMastery && correctionEvidenceSatisfied;
   const primaryAction = !props.progress.reviewSaved
     ? "确认已批改"
-    : hasErrors && !props.progress.correctionPassed
+    : hasErrors && (props.workflowState === "awaiting_correction" || !props.progress.correctionPassed)
       ? "验收订正"
-      : props.progress.redoRequired && !props.progress.redoPassed
+      : hasErrors && props.progress.redoRequired && (props.workflowState === "awaiting_redo" || !props.progress.redoPassed)
         ? "验收独立复做"
         : !props.progress.masteryConfirmed
           ? "确认知识点掌握"
@@ -1726,7 +1740,7 @@ function ReviewPanel(props: ReviewPanelProps) {
           <fieldset><legend><span>4</span>备注（选填）</legend><input className="line-input" value={props.progress.note} maxLength={200} onChange={(event) => props.setProgress({ note: event.target.value })} placeholder="仅在需要时补充一句" /></fieldset>
           <fieldset><legend><span>5</span>订正与复做</legend><div className="check-stack"><label><input type="checkbox" checked={props.progress.correctionPassed} onChange={(event) => props.setProgress({ correctionPassed: event.target.checked })} /><span><strong>订正已通过</strong><small>孩子已改对全部必改错题</small></span></label><label><input type="checkbox" checked={props.progress.redoRequired} onChange={(event) => props.setProgress({ redoRequired: event.target.checked, redoPassed: event.target.checked ? props.progress.redoPassed : false })} /><span><strong>要求独立复做</strong><small>不查看原答案再次完成</small></span></label><label className={!props.progress.redoRequired ? "disabled" : ""}><input type="checkbox" disabled={!props.progress.redoRequired} checked={props.progress.redoPassed} onChange={(event) => props.setProgress({ redoPassed: event.target.checked })} /><span><strong>独立复做已通过</strong><small>通过后才可点亮“已掌握”</small></span></label></div></fieldset>
           <fieldset><legend><span>6</span>双确认</legend><div className="confirmation-grid"><label className={props.progress.reviewConfirmed ? "confirm-box checked" : "confirm-box"}><input type="checkbox" checked={props.progress.reviewConfirmed} readOnly disabled /><span className="check-mark">✓</span><span><strong>已完成批改</strong><small>{props.progress.reviewConfirmedAt ? `确认于 ${new Date(props.progress.reviewConfirmedAt).toLocaleString("zh-CN")}` : "点击下方“确认已批改”后记录时间"}</small></span></label><label className={props.progress.schoolSubmitted ? "confirm-box checked green" : !props.task.requiresSubmission ? "confirm-box disabled" : "confirm-box"}><input type="checkbox" checked={props.progress.schoolSubmitted} readOnly disabled /><span className="check-mark">✓</span><span><strong>{props.task.requiresSubmission ? "已在学校平台提交" : "无需学校平台提交"}</strong><small>{!props.task.requiresSubmission ? "按作业本体规则自动判定" : props.progress.schoolSubmittedAt ? `确认于 ${new Date(props.progress.schoolSubmittedAt).toLocaleString("zh-CN")}` : "本系统只做标记，不上传作业"}</small></span></label></div>{props.task.requiresSubmission ? <div className="task-card-actions"><button className="secondary-button" type="button" disabled={props.progress.schoolSubmitted} onClick={() => void props.onConfirmSubmission()}>单独确认学校提交</button>{props.progress.schoolSubmitted ? <button className="text-action" type="button" onClick={() => void props.onRevokeSubmission()}>撤销提交确认</button> : null}</div> : null}</fieldset>
-          <label className={props.progress.masteryConfirmed ? "mastery-confirm checked" : canConfirmMastery ? "mastery-confirm" : "mastery-confirm disabled"}><input type="checkbox" checked={props.progress.masteryConfirmed} readOnly disabled /><span><strong>确认本次掌握等级</strong><small>{canConfirmMastery ? "订正与复做证据已满足" : "先确认批改，并完成必要的订正与复做"}</small></span><StatusPill tone={MASTERY_COPY[props.masteryLevel].tone}>{MASTERY_COPY[props.masteryLevel].label}</StatusPill></label>
+          <label className={props.progress.masteryConfirmed ? "mastery-confirm checked" : canConfirmMastery ? "mastery-confirm" : "mastery-confirm disabled"}><input type="checkbox" checked={props.progress.masteryConfirmed} readOnly disabled /><span><strong>确认本次掌握等级</strong><small>{canConfirmMastery ? "订正与复做证据已满足" : workflowAwaitingCorrection ? "先点击下方验收订正/复做" : "先确认批改，并完成必要的订正与复做"}</small></span><StatusPill tone={MASTERY_COPY[props.masteryLevel].tone}>{MASTERY_COPY[props.masteryLevel].label}</StatusPill></label>
           <button className={props.closeLoopReady ? "primary-button full success-button" : "primary-button full"} type="submit" disabled={props.progress.masteryConfirmed && !props.closeLoopReady}>{primaryAction}</button>
         </form>
       </section>
