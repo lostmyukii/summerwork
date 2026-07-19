@@ -9,6 +9,7 @@ const selfHostedMigration = readFileSync(new URL("../supabase/migrations/0018_se
 const travelRecoveryMigration = readFileSync(new URL("../supabase/migrations/0020_travel_recovery_schedule.sql", import.meta.url), "utf8");
 const prestudyMigration = readFileSync(new URL("../supabase/migrations/0021_independent_prestudy_track.sql", import.meta.url), "utf8");
 const dailyScheduleMigration = readFileSync(new URL("../supabase/migrations/0022_daily_dual_track_schedule.sql", import.meta.url), "utf8");
+const tutorReviewWithoutStudentCompletionMigration = readFileSync(new URL("../supabase/migrations/0023_tutor_review_without_student_completion.sql", import.meta.url), "utf8");
 const syncScript = readFileSync(new URL("../scripts/sync-summer-plan.mjs", import.meta.url), "utf8");
 const prestudySyncScript = readFileSync(new URL("../scripts/sync-prestudy-plan.mjs", import.meta.url), "utf8");
 const dailyScheduleSyncScript = readFileSync(new URL("../scripts/sync-daily-dual-track.mjs", import.meta.url), "utf8");
@@ -34,6 +35,15 @@ describe("Supabase 作业闭环结构与分科权限", () => {
     expect(migration).toMatch(/task_activity_insert_student[\s\S]*public\.is_student_owner\(student_id\)/);
     expect(migration).toMatch(/task_reviews_insert_subject_tutor[\s\S]*public\.can_manage_task_subject\(task_id\)/);
     expect(migration).not.toMatch(/task_reviews_insert_student/);
+  });
+
+  it("家教保存批改时可代确认首做并保留完成审计", () => {
+    expect(tutorReviewWithoutStudentCompletionMigration).toMatch(/workflow_row\.stage not in \('ready', 'in_progress', 'awaiting_review'\)/);
+    expect(tutorReviewWithoutStudentCompletionMigration).toMatch(/tutor_completed_first_attempt := true/);
+    expect(tutorReviewWithoutStudentCompletionMigration).toMatch(/student_task_activity[\s\S]*run_state = 'completed'/);
+    expect(tutorReviewWithoutStudentCompletionMigration).toMatch(/study_session_events[\s\S]*'completed'[\s\S]*'confirmed_by', 'tutor'/);
+    expect(tutorReviewWithoutStudentCompletionMigration).toMatch(/tutor_confirmed_first_attempt/);
+    expect(tutorReviewWithoutStudentCompletionMigration).toMatch(/review_confirmed[\s\S]*tutor_completed_first_attempt/);
   });
 
   it("计划移动只能走留痕函数", () => {

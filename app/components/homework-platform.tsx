@@ -652,18 +652,22 @@ export function HomeworkPlatform({ initialWorkspace }: { initialWorkspace?: Init
   }
 
   async function saveReview() {
-    if (workflowTask.kind !== "submission" && activeProgress.runState !== "completed") {
-      showToast("孩子完成独立首做后才能保存批改");
-      return;
-    }
-    if (activeProgress.accuracy !== "100%" && !normalizeQuestionNumbers(activeProgress.wrongNumbers)) {
+    const normalizedWrongNumbers = activeProgress.accuracy === "100%" ? "" : normalizeQuestionNumbers(activeProgress.wrongNumbers);
+    const tutorConfirmedFirstAttempt = workflowTask.kind !== "submission" && activeProgress.runState !== "completed";
+    if (activeProgress.accuracy !== "100%" && !normalizedWrongNumbers) {
       showToast("请填写错题号");
       return;
     }
     const now = new Date().toISOString();
-    const hasErrors = activeProgress.accuracy !== "100%" && Boolean(normalizeQuestionNumbers(activeProgress.wrongNumbers));
-    let savedProgress: TaskProgress = { ...activeProgress, wrongNumbers: normalizeQuestionNumbers(activeProgress.wrongNumbers) };
-    let actionLabel = "批改已确认";
+    const hasErrors = activeProgress.accuracy !== "100%" && Boolean(normalizedWrongNumbers);
+    let savedProgress: TaskProgress = {
+      ...activeProgress,
+      wrongNumbers: normalizedWrongNumbers,
+      runState: tutorConfirmedFirstAttempt ? "completed" : activeProgress.runState,
+      completedAt: tutorConfirmedFirstAttempt ? now : activeProgress.completedAt,
+      activeStartedAt: tutorConfirmedFirstAttempt ? undefined : activeProgress.activeStartedAt,
+    };
+    let actionLabel = tutorConfirmedFirstAttempt ? "已代确认首做并完成批改" : "批改已确认";
     if (remoteEnabled) {
       try {
         if (!activeProgress.reviewSaved) {
@@ -1344,9 +1348,9 @@ function KnowledgeDashboard({ planTasks, progress, role }: { planTasks: Workspac
 function ReviewQueueView({ onOpen, planTasks, progress }: { onOpen: (task: WorkspaceTask) => void; planTasks: WorkspaceTask[]; progress: Record<string, TaskProgress> }) {
   const queue = planTasks.filter((task) => {
     const item = progress[task.id] ?? blankTaskProgress();
-    return item.runState === "completed" && (!item.reviewSaved || !item.masteryConfirmed || (task.requiresSubmission && !item.schoolSubmitted));
+    return !item.reviewSaved || !item.masteryConfirmed || (task.requiresSubmission && !item.schoolSubmitted);
   });
-  return <div className="page-content"><AppHeader eyebrow={`${planTasks[0]?.subject ?? "分科"}家教`} title="待办队列" subtitle="批改、订正验收、复做、掌握和提交确认分步处理" /><div className="real-task-list">{queue.length ? queue.map((task) => { const item = progress[task.id] ?? blankTaskProgress(); const state = item.workflowStage ?? deriveWorkflowState(evidenceFor(item, task.requiresSubmission)); return <article className="real-task-card" key={task.id}><div className="real-task-top"><StatusPill tone={SUBJECT_TONES[task.subject]}>{task.subject}</StatusPill><StatusPill tone="orange">{WORKFLOW_COPY[state]}</StatusPill></div><h3>{task.title}</h3><p>不会题号：{item.unknown || "无"} · 错题：{item.wrongNumbers || "待批改"}</p><button className="primary-button" type="button" onClick={() => onOpen(task)}>继续处理</button></article>; }) : <div className="empty-day"><span>✓</span><h3>当前没有待办</h3><p>孩子完成任务后会自动进入这里。</p></div>}</div></div>;
+  return <div className="page-content"><AppHeader eyebrow={`${planTasks[0]?.subject ?? "分科"}家教`} title="待办队列" subtitle="未完成首做也可由家教代确认后直接批改" /><div className="real-task-list">{queue.length ? queue.map((task) => { const item = progress[task.id] ?? blankTaskProgress(); const state = item.workflowStage ?? deriveWorkflowState(evidenceFor(item, task.requiresSubmission)); const firstAttemptCopy = item.runState === "completed" ? "首做已完成" : "可代确认首做"; return <article className="real-task-card" key={task.id}><div className="real-task-top"><StatusPill tone={SUBJECT_TONES[task.subject]}>{task.subject}</StatusPill><StatusPill tone="orange">{WORKFLOW_COPY[state]}</StatusPill></div><h3>{task.title}</h3><p>{firstAttemptCopy} · 不会题号：{item.unknown || "无"} · 错题：{item.wrongNumbers || "待批改"}</p><button className="primary-button" type="button" onClick={() => onOpen(task)}>{item.runState === "completed" || item.reviewSaved ? "继续处理" : "代确认并批改"}</button></article>; }) : <div className="empty-day"><span>✓</span><h3>当前没有待办</h3><p>本科任务均已闭环。</p></div>}</div></div>;
 }
 
 function AccountCenter({ archivedPlanBlocks = [], dailyCapacity = 2, notifications, onBackup, onCapacityChange, onDownload, onGenerateReport, onMarkRead, onRestorePlanBlock, remoteEnabled, reports, role, signOut }: {
@@ -1482,6 +1486,11 @@ function TutorView(props: TutorViewProps) {
   ].filter(Boolean).length;
   const taskRisk = props.planRisks.find((risk) => risk.taskIds.includes(props.workflowTask.id));
   const submissionTiming = deriveSubmissionTiming(props.workflowTask, props.progress);
+  const workflowDetail = props.progress.reviewSaved
+    ? "批改记录已保存"
+    : props.progress.runState === "completed"
+      ? "等待家教批改"
+      : "家教可代确认首做后批改";
 
   return (
     <div className="page-content tutor-page">
@@ -1551,7 +1560,7 @@ function TutorView(props: TutorViewProps) {
           <SectionHeading title="闭环状态" />
           <article className="closure-card">
             <div className="closure-head"><div><span>{props.workflowTask.subject} · {props.workflowTask.title}</span><strong>{closeLoopReadyLabel(props.closeLoopReady)}</strong></div><span className="closure-score">{completedSteps}/6</span></div>
-            <StatusTrack label="作业流程" value={WORKFLOW_COPY[props.workflowState]} tone={props.workflowState === "closed_loop" ? "green" : "blue"} detail={props.progress.reviewSaved ? "批改记录已保存" : props.progress.runState === "completed" ? "等待家教批改" : "等待孩子独立完成"} />
+            <StatusTrack label="作业流程" value={WORKFLOW_COPY[props.workflowState]} tone={props.workflowState === "closed_loop" ? "green" : "blue"} detail={workflowDetail} />
             <StatusTrack label="知识掌握" value={MASTERY_COPY[props.masteryLevel].label} tone={MASTERY_COPY[props.masteryLevel].tone} detail="订正与复做证据单独判断" />
             <StatusTrack label="学校提交" value={submissionTiming.label} tone={submissionTiming.tone} detail={submissionTiming.detail} />
             <button className="primary-button full" type="button" onClick={() => props.setReviewOpen(true)}>继续处理闭环</button>
@@ -1680,6 +1689,11 @@ type ReviewPanelProps = {
 function ReviewPanel(props: ReviewPanelProps) {
   const hasErrors = props.progress.accuracy !== "100%" && normalizeQuestionNumbers(props.progress.wrongNumbers).length > 0;
   const submissionTiming = deriveSubmissionTiming(props.task, props.progress);
+  const workflowDetail = props.progress.reviewSaved
+    ? "批改与订正"
+    : props.progress.runState === "completed"
+      ? "首做已完成"
+      : "保存批改时自动补首做完成";
   const canConfirmMastery = props.progress.reviewSaved
     && (!hasErrors || props.progress.correctionPassed)
     && (!props.progress.redoRequired || props.progress.redoPassed);
@@ -1700,7 +1714,7 @@ function ReviewPanel(props: ReviewPanelProps) {
         <div className="review-task-context"><p><strong>知识点</strong>{props.task.knowledge || "待补充"}</p><p><strong>答案规则</strong>{ANSWER_POLICY_COPY[props.task.answerPolicy]}</p><p><strong>提交标记</strong>{props.task.submission}</p></div>
 
         <div className="triple-track">
-          <StatusTrack label="作业流程" value={WORKFLOW_COPY[props.workflowState]} tone={props.workflowState === "closed_loop" ? "green" : "blue"} detail="练习与订正" />
+          <StatusTrack label="作业流程" value={WORKFLOW_COPY[props.workflowState]} tone={props.workflowState === "closed_loop" ? "green" : "blue"} detail={workflowDetail} />
           <StatusTrack label="知识掌握" value={MASTERY_COPY[props.masteryLevel].label} tone={MASTERY_COPY[props.masteryLevel].tone} detail="证据单独判断" />
           <StatusTrack label="学校提交" value={submissionTiming.label} tone={submissionTiming.tone} detail={submissionTiming.detail} />
         </div>
