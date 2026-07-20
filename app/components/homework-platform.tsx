@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 import { PrestudyTrack } from "./prestudy-track";
 import { PrestudyWorkspace } from "./prestudy-workspace";
 import {
-  ERROR_TAGS,
   MASTERY_COPY,
   ROLE_COPY,
+  errorTagsForSubject,
   type Role,
 } from "../lib/demo-data";
 import {
@@ -1698,6 +1698,7 @@ type ReviewPanelProps = {
 };
 
 function ReviewPanel(props: ReviewPanelProps) {
+  const errorTags = errorTagsForSubject(props.task.subject);
   const hasErrors = props.progress.accuracy !== "100%" && normalizeQuestionNumbers(props.progress.wrongNumbers).length > 0;
   const submissionTiming = deriveSubmissionTiming(props.task, props.progress);
   const workflowAwaitingCorrection = props.workflowState === "awaiting_correction" || props.workflowState === "awaiting_redo";
@@ -1736,7 +1737,7 @@ function ReviewPanel(props: ReviewPanelProps) {
         <form className="review-form" onSubmit={(event) => { event.preventDefault(); void props.onSave(); }}>
           <fieldset><legend><span>1</span>正确率</legend><div className="choice-row">{["100%", "90%以上", "70%—89%", "70%以下"].map((item) => <label key={item} className={props.progress.accuracy === item ? "choice-chip selected" : "choice-chip"}><input type="radio" name="accuracy" checked={props.progress.accuracy === item} onChange={() => props.setProgress({ accuracy: item })} />{item}</label>)}</div></fieldset>
           <fieldset><legend><span>2</span>错题号</legend><input className="line-input" value={props.progress.wrongNumbers} onChange={(event) => props.setProgress({ wrongNumbers: event.target.value })} placeholder="例如 3、7、12(2)" /><small>支持顿号、逗号或空格分隔</small></fieldset>
-          <fieldset><legend><span>3</span>错误类型</legend><div className="choice-row">{ERROR_TAGS.map((tag) => <label key={tag} className={props.progress.errorTags.includes(tag) ? "choice-chip selected" : "choice-chip"}><input type="checkbox" checked={props.progress.errorTags.includes(tag)} onChange={() => props.toggleErrorTag(tag)} />{tag}</label>)}</div></fieldset>
+          <fieldset><legend><span>3</span>错误类型</legend><div className="choice-row">{errorTags.map((tag) => <label key={tag} className={props.progress.errorTags.includes(tag) ? "choice-chip selected" : "choice-chip"}><input type="checkbox" checked={props.progress.errorTags.includes(tag)} onChange={() => props.toggleErrorTag(tag)} />{tag}</label>)}</div></fieldset>
           <fieldset><legend><span>4</span>备注（选填）</legend><input className="line-input" value={props.progress.note} maxLength={200} onChange={(event) => props.setProgress({ note: event.target.value })} placeholder="仅在需要时补充一句" /></fieldset>
           <fieldset><legend><span>5</span>订正与复做</legend><div className="check-stack"><label><input type="checkbox" checked={props.progress.correctionPassed} onChange={(event) => props.setProgress({ correctionPassed: event.target.checked })} /><span><strong>订正已通过</strong><small>孩子已改对全部必改错题</small></span></label><label><input type="checkbox" checked={props.progress.redoRequired} onChange={(event) => props.setProgress({ redoRequired: event.target.checked, redoPassed: event.target.checked ? props.progress.redoPassed : false })} /><span><strong>要求独立复做</strong><small>不查看原答案再次完成</small></span></label><label className={!props.progress.redoRequired ? "disabled" : ""}><input type="checkbox" disabled={!props.progress.redoRequired} checked={props.progress.redoPassed} onChange={(event) => props.setProgress({ redoPassed: event.target.checked })} /><span><strong>独立复做已通过</strong><small>通过后才可点亮“已掌握”</small></span></label></div></fieldset>
           <fieldset><legend><span>6</span>双确认</legend><div className="confirmation-grid"><label className={props.progress.reviewConfirmed ? "confirm-box checked" : "confirm-box"}><input type="checkbox" checked={props.progress.reviewConfirmed} readOnly disabled /><span className="check-mark">✓</span><span><strong>已完成批改</strong><small>{props.progress.reviewConfirmedAt ? `确认于 ${new Date(props.progress.reviewConfirmedAt).toLocaleString("zh-CN")}` : "点击下方“确认已批改”后记录时间"}</small></span></label><label className={props.progress.schoolSubmitted ? "confirm-box checked green" : !props.task.requiresSubmission ? "confirm-box disabled" : "confirm-box"}><input type="checkbox" checked={props.progress.schoolSubmitted} readOnly disabled /><span className="check-mark">✓</span><span><strong>{props.task.requiresSubmission ? "已在学校平台提交" : "无需学校平台提交"}</strong><small>{!props.task.requiresSubmission ? "按作业本体规则自动判定" : props.progress.schoolSubmittedAt ? `确认于 ${new Date(props.progress.schoolSubmittedAt).toLocaleString("zh-CN")}` : "本系统只做标记，不上传作业"}</small></span></label></div>{props.task.requiresSubmission ? <div className="task-card-actions"><button className="secondary-button" type="button" disabled={props.progress.schoolSubmitted} onClick={() => void props.onConfirmSubmission()}>单独确认学校提交</button>{props.progress.schoolSubmitted ? <button className="text-action" type="button" onClick={() => void props.onRevokeSubmission()}>撤销提交确认</button> : null}</div> : null}</fieldset>

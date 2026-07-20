@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { ERROR_TAGS, errorTagsForSubject } from "../app/lib/demo-data";
 import { splitIntoChunks } from "../app/lib/supabase/homework";
 import { previewPrestudyCourseSlots, previewPrestudyLessons } from "../app/lib/supabase/prestudy";
 import { canCloseLoop, deriveWorkflowState } from "../app/lib/workflow";
@@ -26,6 +27,16 @@ describe("逐任务独立闭环状态", () => {
     const physics = blankTaskProgress();
     math.errorTags.push("计算错误");
     expect(physics.errorTags).toEqual([]);
+  });
+
+  it("俄语批改显示专属语言类错误标签，其他科目保持通用标签", () => {
+    expect(errorTagsForSubject("俄语")).toEqual([
+      ...ERROR_TAGS,
+      "单词拼写错误",
+      "词汇搭配不当",
+      "语法错误",
+    ]);
+    expect(errorTagsForSubject("数学")).toEqual(ERROR_TAGS);
   });
 
   it("未完成独立首做时保持待开始或进行中", () => {
